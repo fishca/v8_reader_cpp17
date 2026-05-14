@@ -9,7 +9,8 @@ on:
 
 env:
   BUILD_TYPE: Release
-  VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+  # GitHub runners уже имеют vcpkg в этой папке
+  VCPKG_ROOT: C:\vcpkg
 
 jobs:
   build-windows:
@@ -17,18 +18,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 1. Клонируем vcpkg вручную
-      - name: Clone vcpkg
+      # Синхронизируем предустановленный vcpkg
+      - name: Update vcpkg
         run: |
-          git clone https://github.com/microsoft/vcpkg.git
-          cd vcpkg
-          ./bootstrap-vcpkg.bat
+          cd C:\vcpkg
+          git pull
+          .\bootstrap-vcpkg.bat
 
-      # 2. Устанавливаем зависимости
+      # Устанавливаем зависимости (тихо, без спама в логах)
       - name: Install dependencies via vcpkg
-        run: vcpkg install qt6-base qt6-tools zlib --triplet=x64-windows
+        run: vcpkg install qt6-base qt6-tools zlib --triplet=x64-windows --no-print-usage
 
-      # 3. Устанавливаем Qt (action добавляет в PATH и CMAKE_PREFIX_PATH)
+      # Устанавливаем Qt
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -36,7 +37,7 @@ jobs:
           cache: true
           arch: 'win64_msvc2022_64'
 
-      # 4. Конфигурация CMake с явными путями
+      # Конфигурация CMake
       - name: Configure CMake
         run: >
           cmake -B build
@@ -46,11 +47,11 @@ jobs:
           -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake
           -DCMAKE_PREFIX_PATH=${{ env.Qt6_DIR }}
 
-      # 5. Сборка
+      # Сборка
       - name: Build
         run: cmake --build build --config ${{env.BUILD_TYPE}} --parallel
 
-      # 6. Тесты
+      # Тесты
       - name: Run Tests
         working-directory: build
         run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure
