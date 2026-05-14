@@ -20,10 +20,10 @@ jobs:
       - name: Update vcpkg
         run: |
           cd C:\vcpkg
-          git pull
+          git fetch --depth=1 origin master
+          git checkout master
           .\bootstrap-vcpkg.bat
 
-      # ✅ Исправлено: без имён пакетов
       - name: Install dependencies via vcpkg
         run: vcpkg install --triplet=x64-windows --no-print-usage
 
