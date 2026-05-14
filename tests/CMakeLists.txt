@@ -1,0 +1,5 @@
+﻿find_package(Qt6 REQUIRED COMPONENTS Test)
+add_executable(v8reader_tests core/V8File_test.cpp)
+target_link_libraries(v8reader_tests PRIVATE v8reader::core Qt6::Test)
+target_compile_features(v8reader_tests PRIVATE cxx_std_17)
+add_test(NAME v8reader_tests COMMAND v8reader_tests)

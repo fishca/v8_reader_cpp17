@@ -1,0 +1,10 @@
+﻿{
+  "name": "v8-reader-cpp17",
+  "version": "0.1.0",
+  "dependencies": [
+    "qt6-base",
+    "qt6-tools",
+    "zlib"
+  ],
+  "builtin-baseline": "latest"
+}

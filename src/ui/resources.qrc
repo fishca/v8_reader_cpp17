@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="/icons">
+    <!-- Заглушки. При необходимости добавьте реальные .png -->
+  </qresource>
+</RCC>
