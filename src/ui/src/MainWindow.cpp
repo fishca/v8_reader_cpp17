@@ -13,87 +13,97 @@
 #include <QApplication>
 #include <QtConcurrent>
 #include <QFileInfo>
+#include <QLabel>          // üîë –ö–†–ò–¢–ò–ß–ï–°–ö–ò –í–ê–ñ–ù–û: –ø–æ–ª–Ω–æ–µ –æ–ø—Ä–µ–¥–µ–ª–µ–Ω–∏–µ QLabel
+#include <QFuture>         // –î–ª—è Qt6
 
 namespace v8::ui {
 
-MainWindow::MainWindow(std::unique_ptr<v8::core::IV8Repository> repo, QWidget* parent)
-    : QMainWindow(parent), repository_(std::move(repo))
-{
-    setWindowTitle("v8_reader ó œÓÒÏÓÚ ÍÓÌÙË„Û‡ˆËË 1—");
-    resize(1200, 700);
-    setupMenu(); setupCentralWidget(); setupStatusBar();
-    
-    repository_->setLoadCallback([this](bool ok, const std::wstring& err) {
-        onLoadComplete(ok, QString::fromStdWString(err));
-    });
-}
+    MainWindow::MainWindow(std::unique_ptr<v8::core::IV8Repository> repo, QWidget* parent)
+        : QMainWindow(parent), repository_(std::move(repo))
+    {
+        setWindowTitle(tr("v8_reader ‚Äî –ü—Ä–æ—Å–º–æ—Ç—Ä –∫–æ–Ω—Ñ–∏–≥—É—Ä–∞—Ü–∏–∏ 1–°"));
+        resize(1200, 700);
+        setupMenu();
+        setupCentralWidget();
+        setupStatusBar();
 
-MainWindow::~MainWindow() = default;
-
-void MainWindow::setupMenu() {
-    auto* fileMenu = menuBar()->addMenu(tr("&‘‡ÈÎ"));
-    auto* openAction = new QAction(tr("&ŒÚÍ˚Ú¸..."), this);
-    openAction->setShortcut(QKeySequence::Open);
-    connect(openAction, &QAction::triggered, this, &MainWindow::onOpenFile);
-    fileMenu->addAction(openAction);
-    
-    fileMenu->addSeparator();
-    auto* exitAction = new QAction(tr("¬˚ıÓ‰"), this);
-    connect(exitAction, &QAction::triggered, qApp, &QApplication::quit);
-    fileMenu->addAction(exitAction);
-    
-    auto* helpMenu = menuBar()->addMenu(tr("&—Ô‡‚Í‡"));
-    auto* aboutAction = new QAction(tr("Œ ÔÓ„‡ÏÏÂ..."), this);
-    connect(aboutAction, &QAction::triggered, [this]() {
-        QMessageBox::about(this, "v8_reader", "œÓÒÏÓÚ˘ËÍ ÍÓÌÙË„Û‡ˆËÈ 1—\nC++17 + Qt6");
-    });
-    helpMenu->addAction(aboutAction);
-}
-
-void MainWindow::setupCentralWidget() {
-    splitter_ = new QSplitter(Qt::Horizontal, this);
-    treeView_ = new MetadataTree(this);
-    treeView_->setMinimumWidth(250);
-    contentPane_ = new ContentPane(this);
-    
-    splitter_->addWidget(treeView_);
-    splitter_->addWidget(contentPane_);
-    splitter_->setStretchFactor(1, 1);
-    setCentralWidget(splitter_);
-    
-    connect(treeView_, &MetadataTree::itemSelected, this, &MainWindow::onItemSelected);
-}
-
-void MainWindow::setupStatusBar() {
-    statusLabel_ = new QLabel("√ÓÚÓ‚ Í ‡·ÓÚÂ");
-    statusBar()->addWidget(statusLabel_, 1);
-}
-
-void MainWindow::onOpenFile() {
-    const auto path = QFileDialog::getOpenFileName(this, tr("ŒÚÍ˚Ú¸ ÍÓÌÙË„Û‡ˆË˛"),
-        QString(), "‘‡ÈÎ˚ 1— (*.cf *.cfu *.1CD);;¬ÒÂ Ù‡ÈÎ˚ (*.*)");
-    if (path.isEmpty()) return;
-    
-    statusLabel_->setText(tr("«‡„ÛÁÍ‡: %1").arg(QFileInfo(path).fileName()));
-    QApplication::setOverrideCursor(Qt::WaitCursor);
-    
-    QtConcurrent::run([this, p = path.toStdWString()]() {
-        return repository_->loadFromFile(p);
-    });
-}
-
-void MainWindow::onItemSelected(const std::wstring& itemId, const std::wstring& itemType) {
-    contentPane_->showContent(itemId, itemType);
-}
-
-void MainWindow::onLoadComplete(bool success, const QString& message) {
-    QApplication::restoreOverrideCursor();
-    if (success) {
-        treeView_->populate(repository_->getRoot());
-        statusLabel_->setText(tr("«‡„ÛÊÂÌÓ: %1 ˝ÎÂÏÂÌÚÓ‚").arg(repository_->getRoot()->children.size()));
-    } else {
-        QMessageBox::critical(this, tr("Œ¯Ë·Í‡"), message);
+        repository_->setLoadCallback([this](bool ok, const std::wstring& err) {
+            onLoadComplete(ok, QString::fromStdWString(err));
+            });
     }
-}
 
-}
+    MainWindow::~MainWindow() = default;
+
+    void MainWindow::setupMenu() {
+        auto* fileMenu = menuBar()->addMenu(tr("&–§–∞–π–ª"));
+        auto* openAction = new QAction(tr("&–û—Ç–∫—Ä—ã—Ç—å..."), this);
+        openAction->setShortcut(QKeySequence::Open);
+        connect(openAction, &QAction::triggered, this, &MainWindow::onOpenFile);
+        fileMenu->addAction(openAction);
+
+        fileMenu->addSeparator();
+        auto* exitAction = new QAction(tr("–í—ã—Ö–æ–¥"), this);
+        connect(exitAction, &QAction::triggered, qApp, &QApplication::quit);
+        fileMenu->addAction(exitAction);
+
+        auto* helpMenu = menuBar()->addMenu(tr("&–°–ø—Ä–∞–≤–∫–∞"));
+        auto* aboutAction = new QAction(tr("–û –ø—Ä–æ–≥—Ä–∞–º–º–µ..."), this);
+        connect(aboutAction, &QAction::triggered, [this]() {
+            QMessageBox::about(this, tr("v8_reader"),
+                tr("–ü—Ä–æ—Å–º–æ—Ç—Ä—â–∏–∫ –∫–æ–Ω—Ñ–∏–≥—É—Ä–∞—Ü–∏–π 1–°\nC++17 + Qt6"));
+            });
+        helpMenu->addAction(aboutAction);
+    }
+
+    void MainWindow::setupCentralWidget() {
+        splitter_ = new QSplitter(Qt::Horizontal, this);
+        treeView_ = new MetadataTree(this);
+        treeView_->setMinimumWidth(250);
+        contentPane_ = new ContentPane(this);
+
+        splitter_->addWidget(treeView_);
+        splitter_->addWidget(contentPane_);
+        splitter_->setStretchFactor(1, 1);
+        setCentralWidget(splitter_);
+
+        connect(treeView_, &MetadataTree::itemSelected, this, &MainWindow::onItemSelected);
+    }
+
+    void MainWindow::setupStatusBar() {
+        statusLabel_ = new QLabel(tr("–ì–æ—Ç–æ–≤ –∫ —Ä–∞–±–æ—Ç–µ")); // ‚úÖ –¢–µ–ø–µ—Ä—å —Ä–∞–±–æ—Ç–∞–µ—Ç
+        statusBar()->addWidget(statusLabel_, 1);
+    }
+
+    void MainWindow::onOpenFile() {
+        const auto path = QFileDialog::getOpenFileName(this, tr("–û—Ç–∫—Ä—ã—Ç—å –∫–æ–Ω—Ñ–∏–≥—É—Ä–∞—Ü–∏—é"),
+            QString(), tr("–§–∞–π–ª—ã 1–° (*.cf *.cfu *.1CD);;–í—Å–µ —Ñ–∞–π–ª—ã (*.*)"));
+        if (path.isEmpty()) return;
+
+        statusLabel_->setText(tr("–ó–∞–≥—Ä—É–∑–∫–∞: %1").arg(QFileInfo(path).fileName()));
+        QApplication::setOverrideCursor(Qt::WaitCursor);
+
+        // üîë –ò—Å–ø—Ä–∞–≤–ª–µ–Ω–∏–µ –ø—Ä–µ–¥—É–ø—Ä–µ–∂–¥–µ–Ω–∏—è C4858 –≤ Qt6
+        auto future = QtConcurrent::run([this, p = path.toStdWString()]() {
+            return repository_->loadFromFile(p);
+            });
+        // –Ø–≤–Ω–æ –∏–≥–Ω–æ—Ä–∏—Ä—É–µ–º QFuture, —á—Ç–æ–±—ã –∞–Ω–∞–ª–∏–∑–∞—Ç–æ—Ä –Ω–µ —Ä—É–≥–∞–ª—Å—è
+        Q_UNUSED(future);
+    }
+
+    void MainWindow::onItemSelected(const std::wstring& itemId, const std::wstring& itemType) {
+        contentPane_->showContent(itemId, itemType);
+    }
+
+    void MainWindow::onLoadComplete(bool success, const QString& message) {
+        QApplication::restoreOverrideCursor();
+        if (success) {
+            treeView_->populate(repository_->getRoot());
+            statusLabel_->setText(tr("–ó–∞–≥—Ä—É–∂–µ–Ω–æ: %1 —ç–ª–µ–º–µ–Ω—Ç–æ–≤")
+                .arg(repository_->getRoot()->children.size()));
+        }
+        else {
+            QMessageBox::critical(this, tr("–û—à–∏–±–∫–∞"), message);
+        }
+    }
+
+} // namespace v8::ui

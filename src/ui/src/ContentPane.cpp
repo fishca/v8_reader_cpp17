@@ -11,16 +11,16 @@ ContentPane::ContentPane(QWidget* parent) : QTabWidget(parent) {
 
 void ContentPane::showContent(const std::wstring& itemId, const std::wstring&) {
     if (count() == 0) {
-        addTab(createModuleTab(), tr("Ìîäóëü"));
-        addTab(createPropertiesTab(), tr("Ñâîéñòâà"));
+        addTab(createModuleTab(), tr("ÐœÐ¾Ð´ÑƒÐ»ÑŒ"));
+        addTab(createPropertiesTab(), tr("Ð¡Ð²Ð¾Ð¹ÑÑ‚Ð²Ð°"));
     }
     
     if (itemId == L"item_1") {
-        moduleEdit_->setPlainText("&ÍàÊëèåíòå\nÏðîöåäóðà ÎáðàáîòêàÏðîâåäåíèÿ()\n  // TODO\nÊîíåöÏðîöåäóðû");
+        moduleEdit_->setPlainText("&ÐÐ°ÐšÐ»Ð¸ÐµÐ½Ñ‚Ðµ\nÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ°ÐŸÑ€Ð¾Ð²ÐµÐ´ÐµÐ½Ð¸Ñ()\n  // TODO\nÐšÐ¾Ð½ÐµÑ†ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ñ‹");
         propsTable_->setRowCount(3);
-        propsTable_->setItem(0, 0, new QTableWidgetItem("Èìÿ")); propsTable_->setItem(0, 1, new QTableWidgetItem("Íîìåíêëàòóðà"));
-        propsTable_->setItem(1, 0, new QTableWidgetItem("Òèï")); propsTable_->setItem(1, 1, new QTableWidgetItem("Ñïðàâî÷íèê"));
-        propsTable_->setItem(2, 0, new QTableWidgetItem("Èåðàðõèÿ")); propsTable_->setItem(2, 1, new QTableWidgetItem("Äà"));
+        propsTable_->setItem(0, 0, new QTableWidgetItem("Ð˜Ð¼Ñ")); propsTable_->setItem(0, 1, new QTableWidgetItem("ÐÐ¾Ð¼ÐµÐ½ÐºÐ»Ð°Ñ‚ÑƒÑ€Ð°"));
+        propsTable_->setItem(1, 0, new QTableWidgetItem("Ð¢Ð¸Ð¿")); propsTable_->setItem(1, 1, new QTableWidgetItem("Ð¡Ð¿Ñ€Ð°Ð²Ð¾Ñ‡Ð½Ð¸Ðº"));
+        propsTable_->setItem(2, 0, new QTableWidgetItem("Ð˜ÐµÑ€Ð°Ñ€Ñ…Ð¸Ñ")); propsTable_->setItem(2, 1, new QTableWidgetItem("Ð”Ð°"));
     }
 }
 
@@ -38,7 +38,7 @@ QWidget* ContentPane::createPropertiesTab() {
     auto* widget = new QWidget();
     auto* layout = new QVBoxLayout(widget);
     propsTable_ = new QTableWidget(0, 2);
-    propsTable_->setHorizontalHeaderLabels({"Ñâîéñòâî", "Çíà÷åíèå"});
+    propsTable_->setHorizontalHeaderLabels({"Ð¡Ð²Ð¾Ð¹ÑÑ‚Ð²Ð¾", "Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ"});
     propsTable_->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     propsTable_->verticalHeader()->setVisible(false);
     layout->addWidget(propsTable_);

@@ -1,10 +1,12 @@
+#include "v8reader/core/IV8Repository.h"  // Содержит полное определение MetadataItem
+
 #include "v8reader/ui/MetadataTree.h"
 #include <QIcon>
 
 namespace v8::ui {
 
 MetadataTree::MetadataTree(QWidget* parent) : QTreeWidget(parent) {
-    setHeaderLabel(tr("����������"));
+    setHeaderLabel(tr("Метаданные"));
     setExpandsOnDoubleClick(true);
     setAlternatingRowColors(true);
     connect(this, &QTreeWidget::currentItemChanged, this, &MetadataTree::onCurrentItemChanged);

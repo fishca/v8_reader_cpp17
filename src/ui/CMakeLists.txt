@@ -4,9 +4,16 @@ add_library(v8reader_ui STATIC)
 add_library(v8reader::ui ALIAS v8reader_ui)
 
 target_sources(v8reader_ui PRIVATE
+    # Реализации
     src/MainWindow.cpp
     src/MetadataTree.cpp
     src/ContentPane.cpp
+    
+    # 🔑 КРИТИЧЕСКИ ВАЖНО: заголовки с Q_OBJECT должны быть в target_sources для AUTOMOC
+    include/v8reader/ui/MainWindow.h
+    include/v8reader/ui/MetadataTree.h
+    include/v8reader/ui/ContentPane.h
+    
     resources.qrc
 )
 

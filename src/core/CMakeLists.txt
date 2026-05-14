@@ -16,5 +16,9 @@ target_include_directories(v8reader_core
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_link_libraries(v8reader_core PRIVATE ZLIB::ZLIB)
+# find_package(ZLIB REQUIRED)  # <-- Раскомментируете, когда начнёте работу с zlib
+target_link_libraries(v8reader_core 
+    # PRIVATE ZLIB::ZLIB  # <-- Временно закомментировано
+)
+
 target_compile_features(v8reader_core PUBLIC cxx_std_17)
