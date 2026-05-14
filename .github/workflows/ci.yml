@@ -14,24 +14,40 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      
+
+      # 1. Настройка vcpkg
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         with:
           vcpkgGitCommitId: "latest"
-          
+
+      # 2. Явная установка зависимостей vcpkg (часто пропускается в CI)
+      - name: Install vcpkg dependencies
+        run: vcpkg install --triplet=x64-windows
+
+      # 3. Установка Qt (версия 6.7.2 стабильнее для CI)
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
-          version: '6.6.0'
-          modules: 'qtconcurrent'
-          
+          version: '6.7.2'
+          cache: true
+          # modules: 'qtconcurrent'  <-- УДАЛЕНО: в Qt6 Concurrent уже в qtbase
+
+      # 4. Конфигурация CMake с явными путями
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
-        
+        run: >
+          cmake -B ${{github.workspace}}/build
+          -G "Visual Studio 17 2022"
+          -A x64
+          -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake
+          -DCMAKE_PREFIX_PATH=${{ env.Qt6_DIR }}
+
+      # 5. Сборка
       - name: Build
-        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-        
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel
+
+      # 6. Тесты
       - name: Run Tests
         working-directory: ${{github.workspace}}/build
         run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure
