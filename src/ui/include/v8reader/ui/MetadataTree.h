@@ -17,8 +17,9 @@ namespace v8::ui {
     public:
         explicit MetadataTree(QWidget* parent = nullptr);
 
+        // 🔑 Меняем аргумент на сырой указатель
         void populate(const std::shared_ptr<v8::core::MetadataItem>& root,
-            std::unique_ptr<v8::core::V8Container> container);
+            v8::core::V8Container* container);
 
     signals:
         void itemSelected(const std::wstring& itemId, const std::wstring& itemType);
@@ -29,7 +30,8 @@ namespace v8::ui {
         QIcon getIconForType(const QString& type, bool isFolder) const;
 
         std::unordered_map<QTreeWidgetItem*, std::wstring> itemMap_;
-        std::unique_ptr<v8::core::V8Container> container_;
+        //std::unique_ptr<v8::core::V8Container> container_;
+        v8::core::V8Container* container_ = nullptr; // 🔑 Теперь храним указатель
 
     private slots:
         void onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);

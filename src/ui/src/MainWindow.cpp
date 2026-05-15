@@ -4,6 +4,7 @@
 #include "v8reader/core/V8Container.h"
 #include "v8reader/core/IV8Repository.h"
 
+#include <QDebug> // 🔑 Добавляем для вывода в консоль Visual Studio
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
@@ -70,32 +71,55 @@ namespace v8::ui {
 
     void MainWindow::onOpenFile() {
         const auto filters = tr("Файлы конфигурации 1С (*.cf *.cfu);;Все файлы (*.*)");
-        const auto path = QFileDialog::getOpenFileName(
-            this, tr("Открыть конфигурацию"), QString(), filters);
+        const auto path = QFileDialog::getOpenFileName(this, tr("Открыть конфигурацию"), QString(), filters);
 
         if (path.isEmpty()) return;
 
-        // 🔑 Сохраняем путь в член класса
-        currentFilePath_ = path;
+        qDebug() << "📂 Opening file:" << path;
 
         statusLabel_->setText(tr("Загрузка: %1").arg(QFileInfo(path).fileName()));
         QApplication::setOverrideCursor(Qt::WaitCursor);
 
-        // Используем V8Container напрямую для загрузки
+        // 1. Создаем контейнер
         auto container = std::make_unique<v8::core::V8Container>(path.toStdWString());
+
+        // 2. Загружаем
         int result = container->load();
+
+        // 🔍 ДИАГНОСТИКА: Выводим результаты в окно "Вывод" (Output) в VS
+        qDebug() << "🔍 Load Result Code:" << result;
+        qDebug() << "🔍 Last Error:" << QString::fromStdWString(container->getLastError());
+        qDebug() << "🔍 Elements Found:" << container->getElements().size();
 
         QApplication::restoreOverrideCursor();
 
         if (result == v8::core::V8_OK) {
-            // Построение дерева метаданных
+            // 3. Строим дерево
             auto tree = container->buildMetadataTree();
-            treeView_->populate(tree, std::move(container));
-            statusLabel_->setText(tr("Загружено: %1").arg(QFileInfo(path).fileName()));
+            qDebug() << "🌳 Tree Root Children:" << tree->children.size();
+
+            if (tree->children.empty()) {
+                QMessageBox::warning(this, tr("Внимание"),
+                    tr("Файл загружен, но метаданные не найдены.\nПроверьте формат файла."));
+            }
+            else {
+                // 🔑 ИСПРАВЛЕНИЕ АРХИТЕКТУРЫ:
+                // Сохраняем контейнер в MainWindow, чтобы ContentPane мог потом читать модули
+                container_ = std::move(container);
+
+                // Передаем УКАЗАТЕЛЬ (не unique_ptr), чтобы дерево и контент использовали один экземпляр
+                treeView_->populate(tree, container_.get());
+                contentPane_->setContainer(container_.get());
+
+                statusLabel_->setText(tr("Загружено: %1").arg(QFileInfo(path).fileName()));
+                setWindowTitle(tr("V8 Reader - %1").arg(QFileInfo(path).fileName()));
+            }
         }
         else {
             QMessageBox::critical(this, tr("Ошибка"),
-                tr("Не удалось загрузить файл:\n%1").arg(container->getLastError()));
+                tr("Не удалось загрузить файл:\nКод: %1\n%2")
+                .arg(result)
+                .arg(QString::fromStdWString(container->getLastError())));
             statusLabel_->setText(tr("Ошибка загрузки"));
         }
     }

@@ -35,7 +35,7 @@ namespace v8::core {
         // ✅ ИСПРАВЛЕНО: Статическая константа для шаблонов
         static constexpr uint32_t UNDEFINED_VALUE = FAT_UNDEFINED_32;
         static constexpr size_t Size() { return 12; }
-        [[nodiscard]] bool isTerminator() const { return terminator == UNDEFINED_VALUE; }
+        [[nodiscard]] bool isTerminator() const { return header_addr == UNDEFINED_VALUE; }
     };
 
     struct FatEntry16 {
@@ -45,7 +45,7 @@ namespace v8::core {
 
         static constexpr uint64_t UNDEFINED_VALUE = FAT_UNDEFINED_64;
         static constexpr size_t Size() { return 24; }
-        [[nodiscard]] bool isTerminator() const { return terminator == UNDEFINED_VALUE; }
+        [[nodiscard]] bool isTerminator() const { return header_addr == UNDEFINED_VALUE; }
     };
 
     // ========== Block Headers ==========

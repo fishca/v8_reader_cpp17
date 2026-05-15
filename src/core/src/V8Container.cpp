@@ -111,7 +111,7 @@ namespace v8::core {
                 BlockHdr data_hdr;
                 file.read(reinterpret_cast<char*>(&data_hdr), data_hdr.Size());
                 if (file && data_hdr.isValid()) {
-                    auto data = readBlockData(file, fat.data_addr + Format::BASE_OFFSET + BlockHdr::Size(), false);
+                    auto data = readBlockData(file, fat.data_addr + Format::BASE_OFFSET, false);
                     if (!data.empty()) {
                         elem.setData(std::move(data));
                         if (data.size() >= 2 && data[0] == 0x78 && (data[1] == 0x9C || data[1] == 0xDA || data[1] == 0x01)) {
@@ -130,29 +130,47 @@ namespace v8::core {
     }
 
     std::vector<uint8_t> V8Container::readBlockData(std::ifstream& file, uint64_t start_addr, bool compressed) const {
-        // ✅ ИСПРАВЛЕНО: Убран std::conditional_t. Используем ветвление по флагу формата.
-        if (is_format16_) {
-            file.seekg(start_addr);
-            BlockHeader16 hdr;
-            file.read(reinterpret_cast<char*>(&hdr), hdr.Size());
-            if (!file || !hdr.isValid()) return {};
+        std::vector<uint8_t> data;
 
-            auto size = hdr.getDataSize();
-            std::vector<uint8_t> data(size);
-            file.read(reinterpret_cast<char*>(data.data()), size);
-            return (!file) ? std::vector<uint8_t>{} : (compressed ? decompressZlib(data) : data);
+        if (is_format16_) {
+            uint64_t current_addr = start_addr;
+            while (current_addr != FAT_UNDEFINED_64) {
+                file.seekg(current_addr);
+                BlockHeader16 hdr;
+                file.read(reinterpret_cast<char*>(&hdr), hdr.Size());
+                if (!file || !hdr.isValid()) return {};
+
+                const auto chunk_size = static_cast<size_t>(hdr.getDataSize());
+                const auto old_size = data.size();
+                data.resize(old_size + chunk_size);
+                file.read(reinterpret_cast<char*>(data.data() + old_size), static_cast<std::streamsize>(chunk_size));
+                if (!file) return {};
+
+                current_addr = hdr.getNextAddr();
+                if (current_addr != FAT_UNDEFINED_64) {
+                    current_addr += FORMAT16_BASE_OFFSET;
+                }
+            }
         }
         else {
-            file.seekg(start_addr);
-            BlockHeader15 hdr;
-            file.read(reinterpret_cast<char*>(&hdr), hdr.Size());
-            if (!file || !hdr.isValid()) return {};
+            uint64_t current_addr = start_addr;
+            while (current_addr != FAT_UNDEFINED_32) {
+                file.seekg(current_addr);
+                BlockHeader15 hdr;
+                file.read(reinterpret_cast<char*>(&hdr), hdr.Size());
+                if (!file || !hdr.isValid()) return {};
 
-            auto size = hdr.getDataSize();
-            std::vector<uint8_t> data(size);
-            file.read(reinterpret_cast<char*>(data.data()), size);
-            return (!file) ? std::vector<uint8_t>{} : (compressed ? decompressZlib(data) : data);
+                const auto chunk_size = static_cast<size_t>(hdr.getDataSize());
+                const auto old_size = data.size();
+                data.resize(old_size + chunk_size);
+                file.read(reinterpret_cast<char*>(data.data() + old_size), static_cast<std::streamsize>(chunk_size));
+                if (!file) return {};
+
+                current_addr = hdr.getNextAddr();
+            }
         }
+
+        return compressed ? decompressZlib(data) : data;
     }
 
     // ... (начало файла без изменений) ...

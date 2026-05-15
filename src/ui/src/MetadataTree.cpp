@@ -19,26 +19,26 @@ namespace v8::ui {
     }
 
     void MetadataTree::populate(const std::shared_ptr<v8::core::MetadataItem>& root,
-        std::unique_ptr<v8::core::V8Container> container)
+        v8::core::V8Container* container) // 🔑 Принимаем указатель
     {
         clear();
         itemMap_.clear();
-        container_ = std::move(container);
+        container_ = container; // Сохраняем указатель
 
         if (!root) return;
 
-        // Добавляем корневые элементы
         for (const auto& child : root->children) {
             addItem(nullptr, child);
         }
-
         expandAll();
     }
 
     QTreeWidgetItem* MetadataTree::addItem(QTreeWidgetItem* parent,
         const std::shared_ptr<v8::core::MetadataItem>& item)
     {
-        auto* treeItem = new QTreeWidgetItem(parent);
+        auto* treeItem = parent
+            ? new QTreeWidgetItem(parent)
+            : new QTreeWidgetItem(this);
         treeItem->setText(0, QString::fromStdWString(item->name));
         treeItem->setIcon(0, getIconForType(QString::fromStdWString(item->type), item->is_folder));
 
