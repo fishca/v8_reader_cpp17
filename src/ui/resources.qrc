@@ -1,5 +1,12 @@
-<RCC>
-  <qresource prefix="/icons">
-    <!-- Заглушки. При необходимости добавьте реальные .png -->
-  </qresource>
+<!DOCTYPE RCC>
+<RCC version="1.0">
+	<qresource prefix="/icons">
+		<file>icons/folder.png</file>
+		<file>icons/catalog.png</file>
+		<file>icons/document.png</file>
+		<file>icons/module.png</file>
+		<file>icons/report.png</file>
+		<file>icons/processing.png</file>
+		<file>icons/file.png</file>
+	</qresource>
 </RCC>

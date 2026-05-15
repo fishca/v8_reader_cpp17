@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <QMainWindow>
 #include <memory>
 
@@ -31,5 +31,7 @@ namespace v8::ui {
         QSplitter* splitter_{};
         QLabel* statusLabel_{};
         std::unique_ptr<v8::core::IV8Repository> repository_;
+        // 🔑 НОВОЕ: Храним путь к текущему файлу
+        QString currentFilePath_;
     };
 }

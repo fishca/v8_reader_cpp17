@@ -1,4 +1,4 @@
-﻿#include <QApplication>
+#include <QApplication>
 #include <QCommandLineParser>
 #include <QStyleFactory>
 #include <QTimer>

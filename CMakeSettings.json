@@ -12,8 +12,8 @@
       "ctestCommandArgs": "",
       "variables": [
         {
-          "name": "CMAKE_PREFIX_PATH",
-          "value": "E:/qt/"
+          "name": "CMAKE_TOOLCHAIN_FILE",
+          "value": "E:/work/repo_github/vcpkg/scripts/buildsystems/vcpkg.cmake"
         }
       ]
     }

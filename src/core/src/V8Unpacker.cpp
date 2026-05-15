@@ -1,54 +1,66 @@
+// src/core/src/V8Unpacker.cpp
 #include "v8reader/core/V8Unpacker.h"
+#include "v8reader/core/V8Container.h"
+#include <filesystem>
 
 namespace v8::core {
 
-bool V8Unpacker::loadFromFile(const String& path) {
-    root_ = std::make_shared<MetadataItem>();
-    root_->name = L"Конфигурация";
-    root_->type = L"Root";
-    root_->is_folder = true;
-    
-    auto catalog = std::make_shared<MetadataItem>();
-    catalog->id = L"cat_1";
-    catalog->name = L"Справочники";
-    catalog->type = L"CatalogFolder";
-    catalog->is_folder = true;
-    root_->children.push_back(catalog);
-    
-    auto item = std::make_shared<MetadataItem>();
-    item->id = L"item_1";
-    item->name = L"Номенклатура";
-    item->type = L"Catalog";
-    item->uuid = L"{12345678-1234-5678-9ABC-123456789ABC}";
-    catalog->children.push_back(item);
-    
-    if (callback_) callback_(true, L"");
-    return true;
-}
+    bool V8Unpacker::loadFromFile(const String& path) {
+        try {
+            const auto ext = std::filesystem::path(path).extension().wstring();
+            if (ext != EXT_CF && ext != EXT_CFU && ext != EXT_CFE &&
+                ext != EXT_EPF && ext != EXT_ERF) {
+                last_error_ = L"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ: " + ext;
+                if (callback_) callback_(false, last_error_);
+                return false;
+            }
 
-const std::shared_ptr<MetadataItem>& V8Unpacker::getRoot() const { return root_; }
+            V8Container container(path);
+            int result = container.load();
+            if (result != V8_OK) {
+                last_error_ = container.getLastError();
+                if (callback_) callback_(false, last_error_);
+                return false;
+            }
 
-std::optional<String> V8Unpacker::getModuleText(const String& itemId) const {
-    if (itemId == L"item_1") {
-        return L"&НаКлиенте\nПроцедура ОбработкаПроведения()\n  // TODO\nКонецПроцедуры";
+            root_ = container.buildMetadataTree();
+            container_ = std::make_unique<V8Container>(std::move(container));
+
+            if (callback_) callback_(true, L"");
+            return true;
+
+        }
+        catch (const std::exception& e) {
+            last_error_ = String(e.what(), e.what() + std::strlen(e.what()));
+            if (callback_) callback_(false, last_error_);
+            return false;
+        }
     }
-    return std::nullopt;
-}
 
-std::optional<ByteArray> V8Unpacker::getBinaryData(const String&) const { return std::nullopt; }
-
-std::optional<PropertyMap> V8Unpacker::getProperties(const String& itemId) const {
-    if (itemId == L"item_1") {
-        return PropertyMap{{L"Имя", L"Номенклатура"}, {L"Тип", L"Справочник"}, {L"Иерархия", L"Да"}};
+    const std::shared_ptr<MetadataItem>& V8Unpacker::getRoot() const {
+        return root_;
     }
-    return std::nullopt;
-}
 
-void V8Unpacker::setLoadCallback(LoadCallback cb) { callback_ = std::move(cb); }
-String V8Unpacker::getLastError() const { return last_error_; }
+    std::optional<String> V8Unpacker::getModuleText(const String& itemId) const {
+        if (!container_) return std::nullopt;
+        return container_->getModuleText(itemId);
+    }
 
-std::unique_ptr<IV8Repository> createV8Repository() {
-    return std::make_unique<V8Unpacker>();
-}
+    std::optional<ByteArray> V8Unpacker::getBinaryData(const String& itemId) const {
+        if (!container_) return std::nullopt;
+        return container_->extractData(itemId);
+    }
 
-}
+    std::optional<PropertyMap> V8Unpacker::getProperties(const String&) const {
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 1пїЅ
+        return std::nullopt;
+    }
+
+    void V8Unpacker::setLoadCallback(LoadCallback cb) { callback_ = std::move(cb); }
+    String V8Unpacker::getLastError() const { return last_error_; }
+
+    std::unique_ptr<IV8Repository> createV8Repository() {
+        return std::make_unique<V8Unpacker>();
+    }
+
+} // namespace v8::core
