@@ -1,8 +1,76 @@
 #include "v8reader/core/V8Container.h"
 #include <zlib.h>
 #include <algorithm>
+#include <unordered_set>
+#include <regex>
+#include <cwctype>
 
 namespace v8::core {
+    namespace {
+        struct SectionInfo {
+            const wchar_t* guid;
+            const wchar_t* title;
+        };
+
+        constexpr SectionInfo kSections[] = {
+            {L"cf4abea6-37b2-11d4-940f-008048da11f9", L"Catalogs"},
+            {L"061d872a-5787-460e-95ac-ed74ea3a3e84", L"Documents"},
+            {L"631b75a0-29e2-11d6-a3c7-0050bae0a776", L"Reports"},
+            {L"bf845118-327b-4682-b5c6-285d2a0eb296", L"Processings"},
+            {L"0fe48980-252d-11d6-a3c7-0050bae0a776", L"CommonModules"},
+            {L"f6a80749-5ad7-400b-8519-39dc5dff2542", L"Enums"},
+            {L"0195e80c-b157-11d4-9435-004095e12fc7", L"Constants"},
+            {L"13134201-f60b-11d5-a3c7-0050bae0a776", L"InfoRegisters"},
+            {L"b64d9a40-1642-11d6-a3c7-0050bae0a776", L"AccumRegisters"},
+            {L"2deed9b8-0056-4ffe-a473-c20a6c32a0bc", L"AccountingRegisters"},
+            {L"f2de87a8-64e5-45eb-a22d-b3aedab050e7", L"CalculationRegisters"},
+            {L"238e7e88-3c5f-48b2-8a3b-81ebbecb20ed", L"ChartOfAccounts"},
+            {L"82a1b659-b220-4d94-a9bd-14d757b95a48", L"ChartOfCharacteristicTypes"},
+            {L"30b100d6-b29f-47ac-aec7-cb8ca8a54767", L"ChartOfCalculationTypes"},
+            {L"857c4a91-e5f4-4fac-86ec-787626f1c108", L"ExchangePlans"},
+            {L"4612bd75-71b7-4a5c-8cc5-2b0b65f9fa0d", L"DocumentJournals"},
+            {L"36a8e346-9aaa-4af9-bdbd-83be3c177977", L"Numerators"},
+            {L"3e63355c-1378-4953-be9b-1deb5fb6bec5", L"Tasks"},
+            {L"fcd3404e-1523-48ce-9bc0-ecdb822684a1", L"BusinessProcesses"},
+            {L"37f2fa9a-b276-11d4-9435-004095e12fc7", L"Subsystems"},
+        };
+
+        bool isGuidLike(const String& value) {
+            static const std::wregex re(
+                LR"(^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$)");
+            return std::regex_match(value, re);
+        }
+
+        String toLowerCopy(String value) {
+            std::transform(value.begin(), value.end(), value.begin(),
+                [](wchar_t c) { return static_cast<wchar_t>(std::towlower(c)); });
+            return value;
+        }
+
+        std::optional<String> decodeUtf16LE(const std::vector<uint8_t>& data) {
+            if (data.empty() || (data.size() % 2) != 0) return std::nullopt;
+#ifdef _WIN32
+            String result(data.size() / 2, L'\0');
+            std::memcpy(result.data(), data.data(), data.size());
+            return result;
+#else
+            try {
+                std::wstring_convert<std::codecvt_utf16<wchar_t, 0x10ffff, std::little_endian>, wchar_t> conv;
+                return conv.from_bytes(reinterpret_cast<const char*>(data.data()),
+                    reinterpret_cast<const char*>(data.data() + data.size()));
+            }
+            catch (...) { return std::nullopt; }
+#endif
+        }
+
+        std::optional<String> decodeAnsi(const std::vector<uint8_t>& data) {
+            if (data.empty()) return std::nullopt;
+            String out;
+            out.reserve(data.size());
+            for (uint8_t c : data) out.push_back(static_cast<wchar_t>(c));
+            return out;
+        }
+    } // namespace
 
     V8Container::V8Container(const String& filepath) : filepath_(filepath) {}
 
@@ -41,14 +109,14 @@ namespace v8::core {
             }
         }
 
-        last_error_ = L"Не распознан формат файла 1С";
+        last_error_ = L"Unrecognized 1C file format";
         return false;
     }
 
     int V8Container::load() {
         std::ifstream file(filepath_, std::ios::binary);
         if (!file) {
-            last_error_ = L"Не удалось открыть файл: " + filepath_;
+            last_error_ = L"Failed to open file: " + filepath_;
             return V8_FILE_NOT_FOUND;
         }
 
@@ -69,14 +137,14 @@ namespace v8::core {
         FileHdr file_hdr;
         file.read(reinterpret_cast<char*>(&file_hdr), file_hdr.Size());
         if (!file || !file_hdr.isValid()) {
-            last_error_ = L"Ошибка чтения заголовка файла";
+            last_error_ = L"Failed to read file header";
             return V8_HEADER_CORRUPT;
         }
 
         BlockHdr fat_block_hdr;
         file.read(reinterpret_cast<char*>(&fat_block_hdr), fat_block_hdr.Size());
         if (!file || !fat_block_hdr.isValid()) {
-            last_error_ = L"Ошибка чтения заголовка блока FAT";
+            last_error_ = L"Failed to read FAT block header";
             return V8_HEADER_CORRUPT;
         }
 
@@ -173,14 +241,14 @@ namespace v8::core {
         return compressed ? decompressZlib(data) : data;
     }
 
-    // ... (начало файла без изменений) ...
+    // ... (РЅР°С‡Р°Р»Рѕ С„Р°Р№Р»Р° Р±РµР· РёР·РјРµРЅРµРЅРёР№) ...
 
     std::vector<uint8_t> V8Container::decompressZlib(const std::vector<uint8_t>& src) const {
         z_stream stream{};
         stream.next_in = const_cast<Bytef*>(src.data());
         stream.avail_in = static_cast<uInt>(src.size());
 
-        // ✅ Подавляем [[nodiscard]], так как ошибку обрабатываем ниже
+        // вњ… РџРѕРґР°РІР»СЏРµРј [[nodiscard]], С‚Р°Рє РєР°Рє РѕС€РёР±РєСѓ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РЅРёР¶Рµ
         if (inflateInit2(&stream, -MAX_WBITS) != Z_OK) return {};
 
         std::vector<uint8_t> output(1024 * 1024);
@@ -194,17 +262,17 @@ namespace v8::core {
                 break;
             }
             if (ret != Z_OK) {
-                (void)inflateEnd(&stream); // ✅ Явно игнорируем, если уже упали
+                (void)inflateEnd(&stream); // вњ… РЇРІРЅРѕ РёРіРЅРѕСЂРёСЂСѓРµРј, РµСЃР»Рё СѓР¶Рµ СѓРїР°Р»Рё
                 return {};
             }
             if (stream.avail_out == 0) output.resize(output.size() * 2);
         }
 
-        (void)inflateEnd(&stream); // ✅ Подавляем предупреждение
+        (void)inflateEnd(&stream); // вњ… РџРѕРґР°РІР»СЏРµРј РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ
         return output;
     }
 
-    // ... (остальной код без изменений) ...
+    // ... (РѕСЃС‚Р°Р»СЊРЅРѕР№ РєРѕРґ Р±РµР· РёР·РјРµРЅРµРЅРёР№) ...
 
     const V8Element* V8Container::findElement(const String& name) const {
         auto it = name_index_.find(name);
@@ -244,34 +312,212 @@ namespace v8::core {
 
     std::shared_ptr<MetadataItem> V8Container::buildMetadataTree() const {
         auto root = std::make_shared<MetadataItem>();
-        root->name = L"Конфигурация"; root->type = L"Root"; root->is_folder = true;
-
-        std::unordered_map<String, std::shared_ptr<MetadataItem>> folders;
-        for (const auto& elem : elements_) {
-            const auto& name = elem.getName();
-            if (name.empty() || name[0] == L'.') continue;
-
-            String type = L"Unknown";
-            if (name.find(L"CommonModule.") == 0) type = L"CommonModule";
-            else if (name.find(L"Catalog.") == 0) type = L"Catalog";
-            else if (name.find(L"Document.") == 0) type = L"Document";
-            else if (name.find(L"Form.") == 0) type = L"Form";
-
-            if (folders.find(type) == folders.end()) {
-                auto folder = std::make_shared<MetadataItem>();
-                folder->id = L"folder_" + type; folder->name = type;
-                folder->type = L"Folder"; folder->is_folder = true;
-                folders[type] = folder; root->children.push_back(folder);
+        root->name = L"Configuration";
+        root->type = L"Root";
+        root->is_folder = true;
+        auto ensureRawFallback = [&]() -> std::shared_ptr<MetadataItem> {
+            if (!root->children.empty()) return root;
+            auto rawFolder = std::make_shared<MetadataItem>();
+            rawFolder->id = L"folder_raw";
+            rawFolder->name = L"ContainerRaw";
+            rawFolder->type = L"Folder";
+            rawFolder->is_folder = true;
+            std::unordered_map<String, std::vector<String>> groups;
+            std::vector<String> special;
+            for (const auto& elem : elements_) {
+                const String& name = elem.getName();
+                if (name.empty() || name[0] == L'.') continue;
+                if (name == L"root" || name == L"version" || name == L"versions") {
+                    special.push_back(name);
+                    continue;
+                }
+                const auto dotPos = name.find(L'.');
+                if (dotPos != String::npos && isGuidLike(name.substr(0, dotPos))) {
+                    groups[name.substr(0, dotPos)].push_back(name);
+                } else if (isGuidLike(name)) {
+                    groups[name].push_back(name);
+                }
             }
 
-            auto item = std::make_shared<MetadataItem>();
-            item->id = name; item->name = name; item->type = type; item->is_folder = elem.isCatalog();
-            folders[type]->children.push_back(item);
-        }
-        return root;
-    }
+            for (const auto& [baseGuid, entries] : groups) {
+                if (entries.empty()) continue;
+                if (entries.size() == 1 && entries.front() == baseGuid) {
+                    auto item = std::make_shared<MetadataItem>();
+                    item->id = baseGuid;
+                    item->name = baseGuid;
+                    item->type = L"Raw";
+                    item->is_folder = false;
+                    rawFolder->children.push_back(item);
+                    continue;
+                }
 
-    // 🔑 Явная инстанциация шаблонов (обязательно для компиляции)
+                auto groupNode = std::make_shared<MetadataItem>();
+                groupNode->id = L"group_" + baseGuid;
+                groupNode->name = baseGuid;
+                groupNode->type = L"RawGroup";
+                groupNode->is_folder = true;
+                for (const auto& fullName : entries) {
+                    auto child = std::make_shared<MetadataItem>();
+                    child->id = fullName;
+                    child->name = fullName;
+                    child->type = L"Raw";
+                    child->is_folder = false;
+                    groupNode->children.push_back(child);
+                }
+                rawFolder->children.push_back(groupNode);
+            }
+
+            for (const auto& name : special) {
+                auto item = std::make_shared<MetadataItem>();
+                item->id = name;
+                item->name = name;
+                item->type = L"Raw";
+                item->is_folder = false;
+                rawFolder->children.push_back(item);
+            }
+            if (!rawFolder->children.empty()) root->children.push_back(rawFolder);
+            return root;
+            };
+        auto inflateWith = [](const std::vector<uint8_t>& src, int windowBits) -> std::vector<uint8_t> {
+            z_stream stream{};
+            stream.next_in = const_cast<Bytef*>(src.data());
+            stream.avail_in = static_cast<uInt>(src.size());
+            if (inflateInit2(&stream, windowBits) != Z_OK) return {};
+            std::vector<uint8_t> out(1024 * 1024);
+            while (true) {
+                stream.next_out = out.data() + stream.total_out;
+                stream.avail_out = static_cast<uInt>(out.size() - stream.total_out);
+                const int ret = inflate(&stream, Z_NO_FLUSH);
+                if (ret == Z_STREAM_END) {
+                    out.resize(stream.total_out);
+                    break;
+                }
+                if (ret != Z_OK) {
+                    (void)inflateEnd(&stream);
+                    return {};
+                }
+                if (stream.avail_out == 0) out.resize(out.size() * 2);
+            }
+            (void)inflateEnd(&stream);
+            return out;
+            };
+
+        std::unordered_map<String, const V8Element*> byName;
+        byName.reserve(elements_.size());
+        for (const auto& elem : elements_) {
+            byName[toLowerCopy(elem.getName())] = &elem;
+        }
+
+        const auto rootIt = byName.find(L"root");
+        if (rootIt == byName.end()) return ensureRawFallback();
+
+        const auto& rootRawData = rootIt->second->getData();
+        std::vector<std::vector<uint8_t>> rootCandidates;
+        rootCandidates.push_back(rootRawData);
+        auto rootInflatedRaw = inflateWith(rootRawData, -MAX_WBITS);
+        if (!rootInflatedRaw.empty() && rootInflatedRaw != rootRawData) rootCandidates.push_back(std::move(rootInflatedRaw));
+        auto rootInflatedZlib = inflateWith(rootRawData, MAX_WBITS);
+        if (!rootInflatedZlib.empty() && rootInflatedZlib != rootRawData) rootCandidates.push_back(std::move(rootInflatedZlib));
+
+        String configGuid;
+        std::wregex rgxRootGuid(LR"(\{([0-9a-fA-F-]{36})\})");
+        for (const auto& blob : rootCandidates) {
+            auto maybeText = decodeUtf16LE(blob);
+            if (!maybeText) maybeText = decodeAnsi(blob);
+            if (!maybeText) continue;
+            std::wsmatch match;
+            if (std::regex_search(*maybeText, match, rgxRootGuid) && match.size() >= 2) {
+                configGuid = toLowerCopy(match[1].str());
+                break;
+            }
+        }
+        if (configGuid.empty()) return ensureRawFallback();
+
+        const auto cfgIt = byName.find(configGuid);
+        if (cfgIt == byName.end()) return ensureRawFallback();
+
+        const auto& cfgRawData = cfgIt->second->getData();
+        std::vector<std::vector<uint8_t>> cfgCandidates;
+        cfgCandidates.push_back(cfgRawData);
+        auto cfgInflatedRaw = inflateWith(cfgRawData, -MAX_WBITS);
+        if (!cfgInflatedRaw.empty() && cfgInflatedRaw != cfgRawData) cfgCandidates.push_back(std::move(cfgInflatedRaw));
+        auto cfgInflatedZlib = inflateWith(cfgRawData, MAX_WBITS);
+        if (!cfgInflatedZlib.empty() && cfgInflatedZlib != cfgRawData) cfgCandidates.push_back(std::move(cfgInflatedZlib));
+
+        std::optional<String> cfgText;
+        for (const auto& blob : cfgCandidates) {
+            auto maybeText = decodeUtf16LE(blob);
+            if (!maybeText) maybeText = decodeAnsi(blob);
+            if (maybeText) {
+                cfgText = std::move(maybeText);
+                break;
+            }
+        }
+        if (!cfgText) return ensureRawFallback();
+
+        std::unordered_map<String, std::vector<String>> groups;
+        for (const auto& s : kSections) groups[toLowerCopy(s.guid)] = {};
+
+        std::wregex rgxPair(LR"(\{([0-9a-fA-F-]{36}),\s*0\})");
+        auto begin = std::wsregex_iterator(cfgText->begin(), cfgText->end(), rgxPair);
+        auto end = std::wsregex_iterator();
+        String activeSection;
+        for (auto it = begin; it != end; ++it) {
+            const String guid = toLowerCopy((*it)[1].str());
+            if (groups.find(guid) != groups.end()) {
+                activeSection = guid;
+                continue;
+            }
+            if (!activeSection.empty() && byName.find(guid) != byName.end()) {
+                groups[activeSection].push_back(guid);
+            }
+        }
+
+        std::wregex rgxQuoted(LR"re("([^"]+)")re");
+        for (const auto& section : kSections) {
+            const String sectionGuid = toLowerCopy(section.guid);
+            auto grpIt = groups.find(sectionGuid);
+            if (grpIt == groups.end() || grpIt->second.empty()) continue;
+
+            auto folder = std::make_shared<MetadataItem>();
+            folder->id = L"folder_" + sectionGuid;
+            folder->name = section.title;
+            folder->type = L"Folder";
+            folder->is_folder = true;
+
+            std::unordered_set<String> uniq;
+            for (const auto& objGuid : grpIt->second) {
+                if (!uniq.insert(objGuid).second) continue;
+                const auto fileIt = byName.find(objGuid);
+                if (fileIt == byName.end()) continue;
+
+                auto objData = fileIt->second->isCompressed() ? decompressZlib(fileIt->second->getData()) : fileIt->second->getData();
+                auto objText = decodeUtf16LE(objData);
+
+                String displayName = objGuid;
+                if (objText) {
+                    std::wsmatch qMatch;
+                    if (std::regex_search(*objText, qMatch, rgxQuoted) && qMatch.size() >= 2) {
+                        const String candidate = qMatch[1].str();
+                        if (!candidate.empty() && !isGuidLike(candidate)) displayName = candidate;
+                    }
+                }
+
+                auto item = std::make_shared<MetadataItem>();
+                item->id = objGuid;
+                item->name = displayName;
+                item->type = section.title;
+                item->uuid = objGuid;
+                item->is_folder = false;
+                folder->children.push_back(item);
+            }
+
+            if (!folder->children.empty()) root->children.push_back(folder);
+        }
+
+        return ensureRawFallback();
+    }
+    // рџ”‘ РЇРІРЅР°СЏ РёРЅСЃС‚Р°РЅС†РёР°С†РёСЏ С€Р°Р±Р»РѕРЅРѕРІ (РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РґР»СЏ РєРѕРјРїРёР»СЏС†РёРё)
     template int V8Container::loadImpl<Format15>();
     template int V8Container::loadImpl<Format16>();
 
