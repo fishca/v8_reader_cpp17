@@ -14,6 +14,9 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <QFileInfo>
+#include <QVBoxLayout>
+#include <QWidget>
+#include <QPlainTextEdit>
 
 namespace v8::ui {
 
@@ -48,10 +51,21 @@ namespace v8::ui {
 
         treeView_ = new MetadataTree(this);
         treeView_->setMinimumWidth(300);
+        memo_ = new QPlainTextEdit(this);
+        memo_->setReadOnly(true);
+        memo_->setPlaceholderText(tr("Metadata summary"));
+        memo_->setMinimumHeight(160);
 
         contentPane_ = new ContentPane(this);
 
-        splitter_->addWidget(treeView_);
+        auto* leftPanel = new QWidget(this);
+        auto* leftLayout = new QVBoxLayout(leftPanel);
+        leftLayout->setContentsMargins(0, 0, 0, 0);
+        leftLayout->setSpacing(4);
+        leftLayout->addWidget(treeView_, 3);
+        leftLayout->addWidget(memo_, 2);
+
+        splitter_->addWidget(leftPanel);
         splitter_->addWidget(contentPane_);
         splitter_->setStretchFactor(1, 1);
 
@@ -97,6 +111,7 @@ namespace v8::ui {
             // 3. Строим дерево
             auto tree = container->buildMetadataTree();
             qDebug() << "🌳 Tree Root Children:" << tree->children.size();
+            memo_->setPlainText(QString::fromStdWString(container->getMetadataSummaryText()));
 
             if (tree->children.empty()) {
                 QMessageBox::warning(this, tr("Внимание"),

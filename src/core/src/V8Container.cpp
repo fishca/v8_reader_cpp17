@@ -1,9 +1,13 @@
 #include "v8reader/core/V8Container.h"
+#include "v8reader/core/TreeReader.h"
 #include <zlib.h>
 #include <algorithm>
 #include <unordered_set>
 #include <regex>
 #include <cwctype>
+#include <string>
+#include <functional>
+#include <iostream>
 
 namespace v8::core {
     namespace {
@@ -69,6 +73,75 @@ namespace v8::core {
             out.reserve(data.size());
             for (uint8_t c : data) out.push_back(static_cast<wchar_t>(c));
             return out;
+        }
+
+        std::string toAsciiFiltered(const std::vector<uint8_t>& data, bool stripZeroBytes) {
+            std::string out;
+            out.reserve(data.size());
+            for (uint8_t b : data) {
+                if (stripZeroBytes && b == 0) continue;
+                const char c = static_cast<char>(b);
+                if ((c >= '0' && c <= '9') ||
+                    (c >= 'a' && c <= 'f') ||
+                    (c >= 'A' && c <= 'F') ||
+                    c == '{' || c == '}' || c == '-' || c == ',' || c == ' ' || c == '"' ||
+                    c == '\n' || c == '\r' || c == '\t') {
+                    out.push_back(c);
+                } else {
+                    out.push_back(' ');
+                }
+            }
+            return out;
+        }
+
+        String pickDisplayNameFromText(const String& text) {
+            if (text.empty()) return {};
+            auto isLikelyHumanName = [](const String& v) -> bool {
+                if (v.size() < 3 || v.size() > 120) return false;
+                if (v.find(L'{') != String::npos || v.find(L'}') != String::npos ||
+                    v.find(L',') != String::npos || v.find(L';') != String::npos) return false;
+                size_t letters = 0;
+                size_t allowed = 0;
+                for (wchar_t c : v) {
+                    const bool isCyr = (c >= 0x0400 && c <= 0x04FF);
+                    const bool isLat = (c >= L'A' && c <= L'Z') || (c >= L'a' && c <= L'z');
+                    const bool isNum = (c >= L'0' && c <= L'9');
+                    const bool isSep = (c == L' ' || c == L'_' || c == L'-' || c == L'.' || c == L'(' || c == L')');
+                    if (isCyr || isLat) letters++;
+                    if (isCyr || isLat || isNum || isSep) allowed++;
+                }
+                if (letters == 0) return false;
+                const double ratio = static_cast<double>(allowed) / static_cast<double>(v.size());
+                return ratio >= 0.95;
+            };
+
+            std::wregex quoted(LR"re("([^"]{3,120})")re");
+            auto it = std::wsregex_iterator(text.begin(), text.end(), quoted);
+            auto end = std::wsregex_iterator();
+            for (; it != end; ++it) {
+                String v = (*it)[1].str();
+                if (isGuidLike(v)) continue;
+                if (isLikelyHumanName(v)) return v;
+            }
+            return {};
+        }
+
+        bool isLikelyHumanNameStrict(const String& v) {
+            if (v.size() < 3 || v.size() > 120) return false;
+            if (v.find(L'{') != String::npos || v.find(L'}') != String::npos ||
+                v.find(L',') != String::npos || v.find(L';') != String::npos ||
+                v.find(L'\n') != String::npos || v.find(L'\r') != String::npos ||
+                v.find(L'\t') != String::npos) return false;
+            size_t letters = 0;
+            for (wchar_t c : v) {
+                const bool isCyr = (c >= 0x0400 && c <= 0x04FF);
+                const bool isLat = (c >= L'A' && c <= L'Z') || (c >= L'a' && c <= L'z');
+                const bool isNum = (c >= L'0' && c <= L'9');
+                const bool isSep = (c == L' ' || c == L'_' || c == L'-' || c == L'.' || c == L'(' || c == L')');
+                if (!(isCyr || isLat || isNum || isSep)) return false;
+                if (isCyr || isLat) letters++;
+            }
+            return letters > 0;
         }
     } // namespace
 
@@ -310,75 +383,20 @@ namespace v8::core {
         return elem->isCompressed() ? decompressZlib(elem->getData()) : elem->getData();
     }
 
-    std::shared_ptr<MetadataItem> V8Container::buildMetadataTree() const {
-        auto root = std::make_shared<MetadataItem>();
-        root->name = L"Configuration";
-        root->type = L"Root";
-        root->is_folder = true;
-        auto ensureRawFallback = [&]() -> std::shared_ptr<MetadataItem> {
-            if (!root->children.empty()) return root;
-            auto rawFolder = std::make_shared<MetadataItem>();
-            rawFolder->id = L"folder_raw";
-            rawFolder->name = L"ContainerRaw";
-            rawFolder->type = L"Folder";
-            rawFolder->is_folder = true;
-            std::unordered_map<String, std::vector<String>> groups;
-            std::vector<String> special;
-            for (const auto& elem : elements_) {
-                const String& name = elem.getName();
-                if (name.empty() || name[0] == L'.') continue;
-                if (name == L"root" || name == L"version" || name == L"versions") {
-                    special.push_back(name);
-                    continue;
-                }
-                const auto dotPos = name.find(L'.');
-                if (dotPos != String::npos && isGuidLike(name.substr(0, dotPos))) {
-                    groups[name.substr(0, dotPos)].push_back(name);
-                } else if (isGuidLike(name)) {
-                    groups[name].push_back(name);
-                }
-            }
-
-            for (const auto& [baseGuid, entries] : groups) {
-                if (entries.empty()) continue;
-                if (entries.size() == 1 && entries.front() == baseGuid) {
-                    auto item = std::make_shared<MetadataItem>();
-                    item->id = baseGuid;
-                    item->name = baseGuid;
-                    item->type = L"Raw";
-                    item->is_folder = false;
-                    rawFolder->children.push_back(item);
-                    continue;
-                }
-
-                auto groupNode = std::make_shared<MetadataItem>();
-                groupNode->id = L"group_" + baseGuid;
-                groupNode->name = baseGuid;
-                groupNode->type = L"RawGroup";
-                groupNode->is_folder = true;
-                for (const auto& fullName : entries) {
-                    auto child = std::make_shared<MetadataItem>();
-                    child->id = fullName;
-                    child->name = fullName;
-                    child->type = L"Raw";
-                    child->is_folder = false;
-                    groupNode->children.push_back(child);
-                }
-                rawFolder->children.push_back(groupNode);
-            }
-
-            for (const auto& name : special) {
-                auto item = std::make_shared<MetadataItem>();
-                item->id = name;
-                item->name = name;
-                item->type = L"Raw";
-                item->is_folder = false;
-                rawFolder->children.push_back(item);
-            }
-            if (!rawFolder->children.empty()) root->children.push_back(rawFolder);
-            return root;
-            };
+    String V8Container::getMetadataSummaryText() const {
+        auto toLower = [](String v) {
+            std::transform(v.begin(), v.end(), v.begin(),
+                [](wchar_t c) { return static_cast<wchar_t>(std::towlower(c)); });
+            return v;
+        };
+        auto decodeUtf16 = [](const std::vector<uint8_t>& data) -> std::optional<String> {
+            if (data.empty() || (data.size() % 2) != 0) return std::nullopt;
+            String result(data.size() / 2, L'\0');
+            std::memcpy(result.data(), data.data(), data.size());
+            return result;
+        };
         auto inflateWith = [](const std::vector<uint8_t>& src, int windowBits) -> std::vector<uint8_t> {
+            if (src.empty()) return {};
             z_stream stream{};
             stream.next_in = const_cast<Bytef*>(src.data());
             stream.avail_in = static_cast<uInt>(src.size());
@@ -400,7 +418,989 @@ namespace v8::core {
             }
             (void)inflateEnd(&stream);
             return out;
+        };
+        std::unordered_map<String, const V8Element*> byNameLower;
+        for (const auto& e : elements_) byNameLower[toLower(e.getName())] = &e;
+
+        auto readText = [&](const String& name, bool requireBraces) -> std::optional<String> {
+            const auto* elem = findElement(name);
+            if (!elem) {
+                auto it = byNameLower.find(toLower(name));
+                if (it != byNameLower.end()) elem = it->second;
+            }
+            if (!elem) {
+                const String low = toLower(name);
+                for (const auto& [n, p] : byNameLower) {
+                    if (n.rfind(low + L".", 0) == 0) {
+                        elem = p;
+                        break;
+                    }
+                }
+            }
+            if (!elem) return std::nullopt;
+            std::vector<std::vector<uint8_t>> blobs;
+            const auto& raw = elem->getData();
+            if (raw.empty()) return std::nullopt;
+            blobs.push_back(raw);
+            auto z1 = inflateWith(raw, -MAX_WBITS);
+            if (!z1.empty()) blobs.push_back(std::move(z1));
+            auto z2 = inflateWith(raw, MAX_WBITS);
+            if (!z2.empty()) blobs.push_back(std::move(z2));
+            if (elem->isCompressed()) {
+                auto z3 = decompressZlib(raw);
+                if (!z3.empty()) blobs.push_back(std::move(z3));
+            }
+            for (const auto& b : blobs) {
+                auto utf = decodeUtf16(b);
+                if (utf && (!requireBraces || utf->find(L'{') != String::npos)) return utf;
+                String ansi;
+                ansi.reserve(b.size());
+                for (uint8_t c : b) ansi.push_back(static_cast<wchar_t>(c));
+                if (!ansi.empty() && (!requireBraces || ansi.find(L'{') != String::npos)) return ansi;
+            }
+            return std::nullopt;
+        };
+
+        auto extractRootMetadataGuidFromRaw = [&]() -> String {
+            const V8Element* rootElem = findElement(L"root");
+            if (!rootElem) {
+                auto it = byNameLower.find(L"root");
+                if (it != byNameLower.end()) rootElem = it->second;
+            }
+            if (!rootElem) return {};
+            auto raw = rootElem->getData();
+            if (raw.empty()) return {};
+            if (rootElem->isCompressed()) {
+                auto dec = decompressZlib(raw);
+                if (!dec.empty()) raw = std::move(dec);
+            }
+            std::string ascii;
+            ascii.reserve(raw.size());
+            for (uint8_t b : raw) {
+                if (b == 0) continue;
+                const char c = static_cast<char>(b);
+                if ((c >= '0' && c <= '9') ||
+                    (c >= 'a' && c <= 'f') ||
+                    (c >= 'A' && c <= 'F') ||
+                    c == '{' || c == '}' || c == '-' || c == ',' || c == ' ' ||
+                    c == '\n' || c == '\r' || c == '\t') {
+                    ascii.push_back(c);
+                }
+            }
+            static const std::regex rootRgx(
+                R"(\{\s*-?\d+\s*,\s*([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\s*,)");
+            static const std::regex guidRgx(
+                R"(([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}))");
+            std::smatch m;
+            if (std::regex_search(ascii, m, rootRgx) && m.size() >= 2) {
+                String g(m[1].str().begin(), m[1].str().end());
+                return toLower(g);
+            }
+            if (std::regex_search(ascii, m, guidRgx) && m.size() >= 2) {
+                String g(m[1].str().begin(), m[1].str().end());
+                return toLower(g);
+            }
+            return {};
+        };
+
+        String out;
+        auto rootText = readText(L"root", false);
+        String metadataGuid;
+        if (rootText) {
+            std::wregex rootGuidRgx(LR"(\{\s*-?\d+\s*,\s*([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\s*,)");
+            std::wregex guidRgxAny(LR"(([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}))");
+            std::wsmatch rm;
+            if (std::regex_search(*rootText, rm, rootGuidRgx) && rm.size() >= 2) {
+                metadataGuid = toLower(rm[1].str());
+                out += L"root: guid метаданных: " + metadataGuid + L"\n";
+            } else if (std::regex_search(*rootText, rm, guidRgxAny) && rm.size() >= 2) {
+                metadataGuid = toLower(rm[1].str());
+                out += L"root: guid метаданных: " + metadataGuid + L"\n";
+            } else {
+                metadataGuid = extractRootMetadataGuidFromRaw();
+                if (!metadataGuid.empty()) {
+                    out += L"root: metadata guid (raw): " + metadataGuid + L"\n";
+                } else {
+                    out += L"root: metadata guid not found\n";
+                }
+            }
+        } else {
+            metadataGuid = extractRootMetadataGuidFromRaw();
+            if (!metadataGuid.empty()) out += L"root: metadata guid (raw): " + metadataGuid + L"\n";
+            else out += L"root: not found\n";
+        }
+
+        auto metaText = metadataGuid.empty() ? std::optional<String>{} : readText(metadataGuid, true);
+
+        std::unordered_map<String, String> sectionTitle;
+        std::unordered_set<String> sectionSet;
+        for (const auto& s : kSections) {
+            const String g = toLower(s.guid);
+            sectionTitle[g] = s.title;
+            sectionSet.insert(g);
+        }
+        auto collectSectionCounts = [&](const String& text) {
+            std::unordered_map<String, size_t> sectionCounts;
+            auto tree = parse1CText(text);
+            if (tree) {
+                for (const auto& s : kSections) {
+                    const String g = toLower(s.guid);
+                    const int declared = getSectionDeclaredCount(tree.get(), g);
+                    if (declared > 0) {
+                        sectionCounts[g] = static_cast<size_t>(declared);
+                        continue;
+                    }
+                    auto guids = collectSectionObjectGuids(tree.get(), g);
+                    sectionCounts[g] = guids.size();
+                }
+                return sectionCounts;
+            }
+
+            // Fallback for non-standard / unparsable metadata text.
+            std::wregex guidRgx(LR"(([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}))");
+            String activeSection;
+            std::unordered_map<String, std::unordered_set<String>> sectionObjects;
+            auto it = std::wsregex_iterator(text.begin(), text.end(), guidRgx);
+            auto end = std::wsregex_iterator();
+            for (; it != end; ++it) {
+                String g = toLower((*it)[1].str());
+                if (sectionSet.find(g) != sectionSet.end()) {
+                    activeSection = g;
+                    continue;
+                }
+                if (!activeSection.empty()) sectionObjects[activeSection].insert(g);
+            }
+            for (const auto& [sg, set] : sectionObjects) sectionCounts[sg] = set.size();
+            return sectionCounts;
+        };
+
+        std::unordered_map<String, size_t> sectionCounts;
+        if (metaText) {
+            sectionCounts = collectSectionCounts(*metaText);
+        }
+
+        size_t total = 0;
+        for (const auto& s : kSections) total += sectionCounts[toLower(s.guid)];
+
+        if (total == 0) {
+            // Fallback: pick best metadata candidate by section/object coverage.
+            String bestGuid;
+            std::optional<String> bestText;
+            size_t bestSections = 0;
+            size_t bestObjects = 0;
+            for (const auto& e : elements_) {
+                String name = toLower(e.getName());
+                if (!isGuidLike(name)) continue;
+                auto t = readText(name, true);
+                if (!t) continue;
+                auto so = collectSectionCounts(*t);
+                size_t sCount = 0;
+                size_t oCount = 0;
+                for (const auto& s : kSections) {
+                    const auto cnt = so[toLower(s.guid)];
+                    if (cnt > 0) ++sCount;
+                    oCount += cnt;
+                }
+                if (sCount > bestSections || (sCount == bestSections && oCount > bestObjects)) {
+                    bestSections = sCount;
+                    bestObjects = oCount;
+                    bestGuid = name;
+                    bestText = t;
+                }
+            }
+            if (bestText && bestSections > 0) {
+                out += L"fallback metadata guid: " + bestGuid + L"\n";
+                sectionCounts = collectSectionCounts(*bestText);
+                total = 0;
+                for (const auto& s : kSections) total += sectionCounts[toLower(s.guid)];
+            }
+        }
+
+        for (const auto& s : kSections) {
+            const String g = toLower(s.guid);
+            const size_t cnt = sectionCounts[g];
+            String titleRu = sectionTitle[g];
+            if (titleRu == L"Catalogs") titleRu = L"\u0421\u043f\u0440\u0430\u0432\u043e\u0447\u043d\u0438\u043a\u0438";
+            else if (titleRu == L"Documents") titleRu = L"\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u044b";
+            else if (titleRu == L"Reports") titleRu = L"\u041e\u0442\u0447\u0435\u0442\u044b";
+            else if (titleRu == L"Processings") titleRu = L"\u041e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0438";
+            else if (titleRu == L"CommonModules") titleRu = L"\u041e\u0431\u0449\u0438\u0435\u041c\u043e\u0434\u0443\u043b\u0438";
+            else if (titleRu == L"Enums") titleRu = L"\u041f\u0435\u0440\u0435\u0447\u0438\u0441\u043b\u0435\u043d\u0438\u044f";
+            else if (titleRu == L"Constants") titleRu = L"\u041a\u043e\u043d\u0441\u0442\u0430\u043d\u0442\u044b";
+            else if (titleRu == L"InfoRegisters") titleRu = L"\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u044b\u0421\u0432\u0435\u0434\u0435\u043d\u0438\u0439";
+            else if (titleRu == L"AccumRegisters") titleRu = L"\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u044b\u041d\u0430\u043a\u043e\u043f\u043b\u0435\u043d\u0438\u044f";
+            else if (titleRu == L"AccountingRegisters") titleRu = L"\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u044b\u0411\u0443\u0445\u0433\u0430\u043b\u0442\u0435\u0440\u0438\u0438";
+            else if (titleRu == L"CalculationRegisters") titleRu = L"\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u044b\u0420\u0430\u0441\u0447\u0435\u0442\u0430";
+            else if (titleRu == L"ChartOfAccounts") titleRu = L"\u041f\u043b\u0430\u043d\u044b\u0421\u0447\u0435\u0442\u043e\u0432";
+            else if (titleRu == L"ChartOfCharacteristicTypes") titleRu = L"\u041f\u043b\u0430\u043d\u044b\u0412\u0438\u0434\u043e\u0432\u0425\u0430\u0440\u0430\u043a\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u043a";
+            else if (titleRu == L"ChartOfCalculationTypes") titleRu = L"\u041f\u043b\u0430\u043d\u044b\u0412\u0438\u0434\u043e\u0432\u0420\u0430\u0441\u0447\u0435\u0442\u0430";
+            else if (titleRu == L"ExchangePlans") titleRu = L"\u041f\u043b\u0430\u043d\u044b\u041e\u0431\u043c\u0435\u043d\u0430";
+            else if (titleRu == L"DocumentJournals") titleRu = L"\u0416\u0443\u0440\u043d\u0430\u043b\u044b\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u043e\u0432";
+            else if (titleRu == L"Numerators") titleRu = L"\u041d\u0443\u043c\u0435\u0440\u0430\u0442\u043e\u0440\u044b";
+            else if (titleRu == L"Tasks") titleRu = L"\u0417\u0430\u0434\u0430\u0447\u0438";
+            else if (titleRu == L"BusinessProcesses") titleRu = L"\u0411\u0438\u0437\u043d\u0435\u0441\u041f\u0440\u043e\u0446\u0435\u0441\u0441\u044b";
+            else if (titleRu == L"Subsystems") titleRu = L"\u041f\u043e\u0434\u0441\u0438\u0441\u0442\u0435\u043c\u044b";
+            out += titleRu + L" [" + g + L"]: " + std::to_wstring(cnt) + L"\n";
+        }
+        out += L"Total objects: " + std::to_wstring(total);
+        return out;
+    }
+
+    std::shared_ptr<MetadataItem> V8Container::buildMetadataTree() const {
+        auto root = std::make_shared<MetadataItem>();
+        root->name = L"Configuration";
+        root->type = L"Root";
+        root->is_folder = true;
+
+        auto new_toLower = [](String value) {
+            std::transform(value.begin(), value.end(), value.begin(),
+                [](wchar_t c) { return static_cast<wchar_t>(std::towlower(c)); });
+            return value;
+        };
+        auto new_isGuidLike = [](const String& value) {
+            static const std::wregex re(
+                LR"(^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$)");
+            return std::regex_match(value, re);
+        };
+        auto new_decodeText = [&](const V8Element& elem, bool requireBraces) -> std::optional<String> {
+            auto decodeUtf16 = [](const std::vector<uint8_t>& data) -> std::optional<String> {
+                if (data.empty() || (data.size() % 2) != 0) return std::nullopt;
+                String result(data.size() / 2, L'\0');
+                std::memcpy(result.data(), data.data(), data.size());
+                return result;
             };
+            auto inflateWith = [](const std::vector<uint8_t>& src, int windowBits) -> std::vector<uint8_t> {
+                if (src.empty()) return {};
+                z_stream stream{};
+                stream.next_in = const_cast<Bytef*>(src.data());
+                stream.avail_in = static_cast<uInt>(src.size());
+                if (inflateInit2(&stream, windowBits) != Z_OK) return {};
+                std::vector<uint8_t> out(1024 * 1024);
+                while (true) {
+                    stream.next_out = out.data() + stream.total_out;
+                    stream.avail_out = static_cast<uInt>(out.size() - stream.total_out);
+                    const int ret = inflate(&stream, Z_NO_FLUSH);
+                    if (ret == Z_STREAM_END) {
+                        out.resize(stream.total_out);
+                        break;
+                    }
+                    if (ret != Z_OK) {
+                        (void)inflateEnd(&stream);
+                        return {};
+                    }
+                    if (stream.avail_out == 0) out.resize(out.size() * 2);
+                }
+                (void)inflateEnd(&stream);
+                return out;
+            };
+
+            std::vector<std::vector<uint8_t>> candidates;
+            const auto& raw = elem.getData();
+            if (raw.empty()) return std::nullopt;
+            candidates.push_back(raw);
+            auto z1 = inflateWith(raw, -MAX_WBITS);
+            if (!z1.empty()) candidates.push_back(std::move(z1));
+            auto z2 = inflateWith(raw, MAX_WBITS);
+            if (!z2.empty()) candidates.push_back(std::move(z2));
+            if (elem.isCompressed()) {
+                auto z3 = decompressZlib(raw);
+                if (!z3.empty()) candidates.push_back(std::move(z3));
+            }
+
+            for (const auto& blob : candidates) {
+                auto utf = decodeUtf16(blob);
+                if (utf) {
+                    if (!requireBraces || utf->find(L'{') != String::npos) return utf;
+                }
+                String ansi;
+                ansi.reserve(blob.size());
+                for (uint8_t b : blob) ansi.push_back(static_cast<wchar_t>(b));
+                if (!ansi.empty()) {
+                    if (!requireBraces || ansi.find(L'{') != String::npos) return ansi;
+                }
+            }
+            return std::nullopt;
+        };
+        std::unordered_map<String, const V8Element*> new_byNameLower;
+        new_byNameLower.reserve(elements_.size());
+        for (const auto& e : elements_) {
+            new_byNameLower[new_toLower(e.getName())] = &e;
+        }
+        auto new_getTextByName = [&](const String& fileName) -> std::optional<String> {
+            const V8Element* elem = findElement(fileName);
+            if (!elem) {
+                auto it = new_byNameLower.find(new_toLower(fileName));
+                if (it != new_byNameLower.end()) elem = it->second;
+            }
+            if (!elem) {
+                // CF frequently stores object payload as GUID.0/GUID.1 even when metadata references bare GUID.
+                const String low = new_toLower(fileName);
+                for (const auto& [n, p] : new_byNameLower) {
+                    if (n.rfind(low + L".", 0) == 0) {
+                        elem = p;
+                        break;
+                    }
+                }
+            }
+            if (!elem) return std::nullopt;
+            const String low = new_toLower(fileName);
+            const bool requireBraces = !(low == L"version" || low == L"root");
+            return new_decodeText(*elem, requireBraces);
+        };
+        auto new_rawFallback = [&]() -> std::shared_ptr<MetadataItem> {
+            auto raw = std::make_shared<MetadataItem>();
+            raw->id = L"folder_raw";
+            raw->name = L"ContainerRaw";
+            raw->type = L"Folder";
+            raw->is_folder = true;
+            std::unordered_map<String, std::vector<String>> groups;
+            for (const auto& elem : elements_) {
+                String n = new_toLower(elem.getName());
+                if (n.empty() || n == L"root" || n == L"version" || n == L"versions") continue;
+                const auto dot = n.find(L'.');
+                if (dot != String::npos && new_isGuidLike(n.substr(0, dot))) groups[n.substr(0, dot)].push_back(n);
+                else if (new_isGuidLike(n)) groups[n].push_back(n);
+            }
+            for (const auto& [g, entries] : groups) {
+                auto folder = std::make_shared<MetadataItem>();
+                folder->id = L"group_" + g;
+                folder->name = g;
+                folder->type = L"RawGroup";
+                folder->is_folder = true;
+                for (const auto& e : entries) {
+                    auto leaf = std::make_shared<MetadataItem>();
+                    leaf->id = e;
+                    leaf->name = e;
+                    leaf->type = L"Raw";
+                    leaf->uuid = e;
+                    leaf->is_folder = false;
+                    folder->children.push_back(leaf);
+                }
+                raw->children.push_back(folder);
+            }
+            root->children.push_back(raw);
+            return root;
+        };
+
+        const auto new_boot = bootstrapMetadataTree(new_getTextByName);
+
+        static const std::vector<std::pair<String, String>> new_sections = {
+            {L"cf4abea6-37b2-11d4-940f-008048da11f9", L"Catalogs"},
+            {L"061d872a-5787-460e-95ac-ed74ea3a3e84", L"Documents"},
+            {L"631b75a0-29e2-11d6-a3c7-0050bae0a776", L"Reports"},
+            {L"bf845118-327b-4682-b5c6-285d2a0eb296", L"Processings"},
+            {L"0fe48980-252d-11d6-a3c7-0050bae0a776", L"CommonModules"},
+            {L"f6a80749-5ad7-400b-8519-39dc5dff2542", L"Enums"},
+            {L"0195e80c-b157-11d4-9435-004095e12fc7", L"Constants"},
+            {L"13134201-f60b-11d5-a3c7-0050bae0a776", L"InfoRegisters"},
+            {L"b64d9a40-1642-11d6-a3c7-0050bae0a776", L"AccumRegisters"},
+            {L"2deed9b8-0056-4ffe-a473-c20a6c32a0bc", L"AccountingRegisters"},
+            {L"f2de87a8-64e5-45eb-a22d-b3aedab050e7", L"CalculationRegisters"},
+            {L"238e7e88-3c5f-48b2-8a3b-81ebbecb20ed", L"ChartOfAccounts"},
+            {L"82a1b659-b220-4d94-a9bd-14d757b95a48", L"ChartOfCharacteristicTypes"},
+            {L"30b100d6-b29f-47ac-aec7-cb8ca8a54767", L"ChartOfCalculationTypes"},
+            {L"857c4a91-e5f4-4fac-86ec-787626f1c108", L"ExchangePlans"},
+            {L"4612bd75-71b7-4a5c-8cc5-2b0b65f9fa0d", L"DocumentJournals"},
+            {L"36a8e346-9aaa-4af9-bdbd-83be3c177977", L"Numerators"},
+            {L"3e63355c-1378-4953-be9b-1deb5fb6bec5", L"Tasks"},
+            {L"fcd3404e-1523-48ce-9bc0-ecdb822684a1", L"BusinessProcesses"},
+            {L"37f2fa9a-b276-11d4-9435-004095e12fc7", L"Subsystems"}
+        };
+        const std::unordered_map<String, std::vector<int>> new_namePaths = {
+            {L"cf4abea6-37b2-11d4-940f-008048da11f9", {0,1,9,1,2}},
+            {L"061d872a-5787-460e-95ac-ed74ea3a3e84", {0,1,9,1,2}},
+            {L"0195e80c-b157-11d4-9435-004095e12fc7", {0,1,1,1,1,2}},
+            {L"13134201-f60b-11d5-a3c7-0050bae0a776", {0,1,15,1,2}},
+            {L"f2de87a8-64e5-45eb-a22d-b3aedab050e7", {0,1,15,1,2}},
+            {L"857c4a91-e5f4-4fac-86ec-787626f1c108", {0,1,12,2}},
+            {L"37f2fa9a-b276-11d4-9435-004095e12fc7", {0,1,1,2}},
+            {L"fcd3404e-1523-48ce-9bc0-ecdb822684a1", {0,1,1,2}},
+            {L"631b75a0-29e2-11d6-a3c7-0050bae0a776", {0,1,3,1,2}},
+            {L"bf845118-327b-4682-b5c6-285d2a0eb296", {0,1,3,1,2}},
+            {L"2deed9b8-0056-4ffe-a473-c20a6c32a0bc", {0,1,16,1,2}},
+            {L"b64d9a40-1642-11d6-a3c7-0050bae0a776", {0,1,13,1,2}},
+            {L"238e7e88-3c5f-48b2-8a3b-81ebbecb20ed", {0,1,15,1,2}},
+            {L"82a1b659-b220-4d94-a9bd-14d757b95a48", {0,1,13,1,2}},
+            {L"30b100d6-b29f-47ac-aec7-cb8ca8a54767", {0,1,1,1,2}},
+            {L"0fe48980-252d-11d6-a3c7-0050bae0a776", {0,1,1,2}}
+        };
+        auto new_guessMetadataGuid = [&]() -> String {
+            struct CandidateScore {
+                String guid;
+                int sectionHits{0};
+                int objectHits{0};
+            };
+            CandidateScore best;
+            for (const auto& e : elements_) {
+                String name = new_toLower(e.getName());
+                if (!new_isGuidLike(name)) continue;
+                auto txt = new_decodeText(e, true);
+                if (!txt) continue;
+                auto t = parse1CText(*txt);
+                if (!t) continue;
+
+                int sectionHits = 0;
+                int objectHits = 0;
+                for (const auto& [sg, _title] : new_sections) {
+                    auto guids = collectSectionObjectGuids(t.get(), sg);
+                    if (!guids.empty()) {
+                        ++sectionHits;
+                        objectHits += static_cast<int>(guids.size());
+                    }
+                }
+
+                if (sectionHits == 0) {
+                    // Fallback text score for non-standard trees.
+                    String low = new_toLower(*txt);
+                    for (const auto& [sg, _title] : new_sections) {
+                        if (low.find(new_toLower(sg)) != String::npos) ++sectionHits;
+                    }
+                }
+
+                if (sectionHits > best.sectionHits ||
+                    (sectionHits == best.sectionHits && objectHits > best.objectHits)) {
+                    best = {name, sectionHits, objectHits};
+                }
+            }
+            return best.sectionHits > 0 ? best.guid : String{};
+        };
+        auto new_hasObjectStorage = [&](const String& guid) -> bool {
+            if (new_byNameLower.find(guid) != new_byNameLower.end()) return true;
+            for (const auto& [n, _p] : new_byNameLower) {
+                if (n.rfind(guid + L".", 0) == 0) return true;
+            }
+            return false;
+        };
+
+        String activeMetadataGuid;
+        std::unique_ptr<TreeNode> activeMetadataTree;
+        String activeMetadataText;
+        if (new_boot.ok && new_boot.metadata_tree) {
+            activeMetadataGuid = new_boot.metadata_guid;
+            auto txt = new_getTextByName(activeMetadataGuid);
+            if (txt) {
+                activeMetadataText = *txt;
+                activeMetadataTree = parse1CText(*txt);
+            }
+            std::wcerr << L"[md-bootstrap] ok, version=" << new_boot.version
+                       << L", metadata_guid=" << activeMetadataGuid << L"\n";
+        } else {
+            std::wcerr << L"[md-bootstrap] failed: " << new_boot.error << L"\n";
+            activeMetadataGuid = new_guessMetadataGuid();
+            if (!activeMetadataGuid.empty()) {
+                auto txt = new_getTextByName(activeMetadataGuid);
+                if (txt) {
+                    activeMetadataText = *txt;
+                    activeMetadataTree = parse1CText(*txt);
+                }
+                std::wcerr << L"[md-bootstrap] fallback metadata_guid=" << activeMetadataGuid << L"\n";
+            }
+        }
+        if (!activeMetadataTree) return new_rawFallback();
+
+        auto new_collectSectionGuidsRegex = [&](const String& sectionGuid) -> std::vector<String> {
+            std::vector<String> out;
+            if (activeMetadataText.empty()) return out;
+            static const std::wregex rgxGuid(LR"(([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}))");
+            std::unordered_set<String> sectionSet;
+            for (const auto& [sg, _] : new_sections) sectionSet.insert(new_toLower(sg));
+            std::unordered_set<String> uniq;
+            String activeSection;
+            auto begin = std::wsregex_iterator(activeMetadataText.begin(), activeMetadataText.end(), rgxGuid);
+            auto end = std::wsregex_iterator();
+            for (auto it = begin; it != end; ++it) {
+                String g = new_toLower((*it)[1].str());
+                if (!new_isGuidLike(g)) continue;
+                if (sectionSet.find(g) != sectionSet.end()) {
+                    activeSection = g;
+                    continue;
+                }
+                if (activeSection == new_toLower(sectionGuid) && new_hasObjectStorage(g) && uniq.insert(g).second) {
+                    out.push_back(g);
+                }
+            }
+            return out;
+        };
+
+        int totalSectionsBuilt = 0;
+        for (const auto& [guid, title] : new_sections) {
+            auto objectGuids = collectSectionObjectGuids(activeMetadataTree.get(), guid);
+            if (objectGuids.empty()) {
+                objectGuids = new_collectSectionGuidsRegex(guid);
+            }
+            if (objectGuids.empty()) continue;
+            ++totalSectionsBuilt;
+
+            auto folder = std::make_shared<MetadataItem>();
+            folder->id = L"folder_" + new_toLower(guid);
+            folder->name = title;
+            folder->type = L"Folder";
+            folder->is_folder = true;
+
+            for (const auto& objectGuid : objectGuids) {
+                String displayName = objectGuid;
+                auto text = new_getTextByName(objectGuid);
+                if (text) {
+                    auto tree = parse1CText(*text);
+                    auto itPath = new_namePaths.find(guid);
+                    if (tree && itPath != new_namePaths.end()) {
+                        TreeNode* nameNode = getNodeByPath(tree.get(), itPath->second);
+                        if (nameNode && !nameNode->value.empty()) displayName = nameNode->value;
+                    }
+                }
+
+                auto item = std::make_shared<MetadataItem>();
+                item->id = objectGuid;
+                item->uuid = objectGuid;
+                item->name = displayName.empty() ? objectGuid : displayName;
+                item->type = title;
+                item->is_folder = false;
+                folder->children.push_back(item);
+            }
+            if (!folder->children.empty()) root->children.push_back(folder);
+        }
+
+        if (totalSectionsBuilt == 0) {
+            const String altGuid = new_guessMetadataGuid();
+            if (!altGuid.empty() && altGuid != activeMetadataGuid) {
+                std::wcerr << L"[md-bootstrap] retry with better metadata_guid=" << altGuid << L"\n";
+                auto txt = new_getTextByName(altGuid);
+                if (txt) {
+                    activeMetadataText = *txt;
+                    activeMetadataTree = parse1CText(*txt);
+                    root->children.clear();
+                    for (const auto& [guid, title] : new_sections) {
+                        auto objectGuids = collectSectionObjectGuids(activeMetadataTree.get(), guid);
+                        if (objectGuids.empty()) objectGuids = new_collectSectionGuidsRegex(guid);
+                        if (objectGuids.empty()) continue;
+
+                        auto folder = std::make_shared<MetadataItem>();
+                        folder->id = L"folder_" + new_toLower(guid);
+                        folder->name = title;
+                        folder->type = L"Folder";
+                        folder->is_folder = true;
+
+                        for (const auto& objectGuid : objectGuids) {
+                            String displayName = objectGuid;
+                            auto text = new_getTextByName(objectGuid);
+                            if (text) {
+                                auto tree = parse1CText(*text);
+                                auto itPath = new_namePaths.find(guid);
+                                if (tree && itPath != new_namePaths.end()) {
+                                    TreeNode* nameNode = getNodeByPath(tree.get(), itPath->second);
+                                    if (nameNode && !nameNode->value.empty()) displayName = nameNode->value;
+                                }
+                            }
+                            auto item = std::make_shared<MetadataItem>();
+                            item->id = objectGuid;
+                            item->uuid = objectGuid;
+                            item->name = displayName.empty() ? objectGuid : displayName;
+                            item->type = title;
+                            item->is_folder = false;
+                            folder->children.push_back(item);
+                        }
+                        if (!folder->children.empty()) root->children.push_back(folder);
+                    }
+                }
+            }
+        }
+
+        if (root->children.empty()) {
+            return new_rawFallback();
+        }
+        return root;
+
+        auto ensureRawFallback = [&]() -> std::shared_ptr<MetadataItem> {
+            if (!root->children.empty()) return root;
+            std::unordered_map<String, std::vector<String>> groups;
+            std::vector<String> special;
+            for (const auto& elem : elements_) {
+                const String& name = elem.getName();
+                if (name.empty() || name[0] == L'.') continue;
+                if (name == L"root" || name == L"version" || name == L"versions") {
+                    special.push_back(name);
+                    continue;
+                }
+                const auto dotPos = name.find(L'.');
+                if (dotPos != String::npos && isGuidLike(name.substr(0, dotPos))) {
+                    groups[name.substr(0, dotPos)].push_back(name);
+                } else if (isGuidLike(name)) {
+                    groups[name].push_back(name);
+                }
+            }
+
+            std::unordered_map<String, std::shared_ptr<MetadataItem>> sectionNodes;
+            for (const auto& s : kSections) {
+                auto node = std::make_shared<MetadataItem>();
+                node->id = L"folder_" + toLowerCopy(s.guid);
+                node->name = s.title;
+                node->type = L"Folder";
+                node->is_folder = true;
+                sectionNodes[toLowerCopy(s.guid)] = node;
+            }
+
+            auto containerRaw = std::make_shared<MetadataItem>();
+            containerRaw->id = L"folder_raw";
+            containerRaw->name = L"ContainerRaw";
+            containerRaw->type = L"Folder";
+            containerRaw->is_folder = true;
+
+            std::unordered_map<String, const V8Element*> byNameLocal;
+            byNameLocal.reserve(elements_.size());
+            for (const auto& elem : elements_) {
+                byNameLocal[toLowerCopy(elem.getName())] = &elem;
+            }
+            std::unordered_map<String, String> sectionCache;
+
+            auto guessSectionGuid = [&](const String& baseGuid) -> String {
+                auto cacheIt = sectionCache.find(baseGuid);
+                if (cacheIt != sectionCache.end()) return cacheIt->second;
+                std::vector<String> probes{
+                    baseGuid,
+                    baseGuid + L".0",
+                    baseGuid + L".1",
+                    baseGuid + L".2",
+                    baseGuid + L".3",
+                    baseGuid + L".4",
+                    baseGuid + L".5"
+                };
+                for (const auto& probe : probes) {
+                    auto it = byNameLocal.find(toLowerCopy(probe));
+                    if (it == byNameLocal.end()) continue;
+                    const auto& raw = it->second->getData();
+                    if (raw.empty()) continue;
+                    const size_t scanLimit = std::min<size_t>(raw.size(), 64 * 1024);
+                    std::vector<uint8_t> head(raw.begin(), raw.begin() + scanLimit);
+                    std::string ascii = toAsciiFiltered(head, true);
+                    for (const auto& s : kSections) {
+                        std::string sg;
+                        String ws = toLowerCopy(s.guid);
+                        sg.assign(ws.begin(), ws.end());
+                        if (ascii.find(sg) != std::string::npos) {
+                            sectionCache[baseGuid] = ws;
+                            return ws;
+                        }
+                    }
+                }
+                sectionCache[baseGuid] = {};
+                return {};
+            };
+
+            for (const auto& [baseGuid, entries] : groups) {
+                if (entries.empty()) continue;
+                auto buildLeaf = [&](const String& id) {
+                    auto item = std::make_shared<MetadataItem>();
+                    item->id = id;
+                    item->name = id;
+                    item->type = L"Raw";
+                    item->is_folder = false;
+                    return item;
+                };
+
+                String sectionGuid = guessSectionGuid(baseGuid);
+                std::shared_ptr<MetadataItem> parentSection = nullptr;
+                if (!sectionGuid.empty()) {
+                    auto sit = sectionNodes.find(sectionGuid);
+                    if (sit != sectionNodes.end()) parentSection = sit->second;
+                }
+                auto& parentVec = parentSection ? parentSection->children : containerRaw->children;
+
+                if (entries.size() == 1 && entries.front() == baseGuid) {
+                    auto leaf = buildLeaf(baseGuid);
+                    parentVec.push_back(leaf);
+                    continue;
+                }
+
+                auto groupNode = std::make_shared<MetadataItem>();
+                groupNode->id = L"group_" + baseGuid;
+                groupNode->name = baseGuid;
+                groupNode->type = L"RawGroup";
+                groupNode->is_folder = true;
+                for (const auto& fullName : entries) {
+                    groupNode->children.push_back(buildLeaf(fullName));
+                }
+                parentVec.push_back(groupNode);
+            }
+
+            for (const auto& name : special) {
+                auto item = std::make_shared<MetadataItem>();
+                item->id = name;
+                item->name = name;
+                item->type = L"Raw";
+                item->is_folder = false;
+                containerRaw->children.push_back(item);
+            }
+
+            for (const auto& s : kSections) {
+                const auto& node = sectionNodes[toLowerCopy(s.guid)];
+                if (!node->children.empty()) root->children.push_back(node);
+            }
+            if (!containerRaw->children.empty()) root->children.push_back(containerRaw);
+            return root;
+        };
+        auto inflateWith = [](const std::vector<uint8_t>& src, int windowBits) -> std::vector<uint8_t> {
+            if (src.empty()) return {};
+            z_stream stream{};
+            stream.next_in = const_cast<Bytef*>(src.data());
+            stream.avail_in = static_cast<uInt>(src.size());
+            if (inflateInit2(&stream, windowBits) != Z_OK) return {};
+            std::vector<uint8_t> out(1024 * 1024);
+            while (true) {
+                stream.next_out = out.data() + stream.total_out;
+                stream.avail_out = static_cast<uInt>(out.size() - stream.total_out);
+                const int ret = inflate(&stream, Z_NO_FLUSH);
+                if (ret == Z_STREAM_END) {
+                    out.resize(stream.total_out);
+                    break;
+                }
+                if (ret != Z_OK) {
+                    (void)inflateEnd(&stream);
+                    return {};
+                }
+                if (stream.avail_out == 0) out.resize(out.size() * 2);
+            }
+            (void)inflateEnd(&stream);
+            return out;
+        };
+
+        struct ParseNode {
+            String value;
+            bool is_list = false;
+            std::vector<std::unique_ptr<ParseNode>> children;
+        };
+        auto classifyValue = [&](const String& value) -> String {
+            if (isGuidLike(value)) return L"guid";
+            bool number = !value.empty();
+            for (wchar_t ch : value) {
+                if (!(ch >= L'0' && ch <= L'9') && ch != L'-') {
+                    number = false;
+                    break;
+                }
+            }
+            if (number) return L"number";
+            return L"string";
+        };
+        auto parseQuoted = [&](const String& src, size_t& i) -> String {
+            String out;
+            ++i; // opening quote
+            while (i < src.size()) {
+                wchar_t ch = src[i++];
+                if (ch == L'"') {
+                    if (i < src.size() && src[i] == L'"') { // escaped quote
+                        out.push_back(L'"');
+                        ++i;
+                        continue;
+                    }
+                    break;
+                }
+                out.push_back(ch);
+            }
+            return out;
+        };
+        auto skipWs = [&](const String& src, size_t& i) {
+            while (i < src.size()) {
+                wchar_t ch = src[i];
+                if (ch == L' ' || ch == L'\t' || ch == L'\r' || ch == L'\n') ++i;
+                else break;
+            }
+        };
+        std::function<std::unique_ptr<ParseNode>(const String&, size_t&)> parseValue;
+        parseValue = [&](const String& src, size_t& i) -> std::unique_ptr<ParseNode> {
+            skipWs(src, i);
+            if (i >= src.size()) return nullptr;
+
+            if (src[i] == L'{') {
+                ++i;
+                auto list = std::make_unique<ParseNode>();
+                list->is_list = true;
+                skipWs(src, i);
+                while (i < src.size() && src[i] != L'}') {
+                    auto child = parseValue(src, i);
+                    if (child) list->children.push_back(std::move(child));
+                    skipWs(src, i);
+                    if (i < src.size() && src[i] == L',') {
+                        ++i;
+                        skipWs(src, i);
+                    }
+                }
+                if (i < src.size() && src[i] == L'}') ++i;
+                return list;
+            }
+
+            auto node = std::make_unique<ParseNode>();
+            if (src[i] == L'"') {
+                node->value = parseQuoted(src, i);
+                return node;
+            }
+
+            size_t start = i;
+            while (i < src.size()) {
+                wchar_t ch = src[i];
+                if (ch == L',' || ch == L'}' || ch == L'{' || ch == L'\r' || ch == L'\n' || ch == L'\t') break;
+                ++i;
+            }
+            while (i > start && src[i - 1] == L' ') --i;
+            node->value = src.substr(start, i - start);
+            return node;
+        };
+        auto parseTreeText = [&](const String& text) -> std::unique_ptr<ParseNode> {
+            size_t pos = 0;
+            skipWs(text, pos);
+            return parseValue(text, pos);
+        };
+        auto getNodeByPath = [&](ParseNode* node, const std::vector<int>& path) -> ParseNode* {
+            ParseNode* cur = node;
+            for (int idx : path) {
+                if (!cur || !cur->is_list) return nullptr;
+                if (idx < 0 || static_cast<size_t>(idx) >= cur->children.size()) return nullptr;
+                cur = cur->children[static_cast<size_t>(idx)].get();
+            }
+            return cur;
+        };
+        auto collectSectionGuids = [&](ParseNode* node, const String& sectionGuid, std::vector<String>& out) {
+            std::function<void(ParseNode*)> walk = [&](ParseNode* n) {
+                if (!n) return;
+                if (n->is_list && n->children.size() >= 2) {
+                    auto* g = n->children[0].get();
+                    auto* c = n->children[1].get();
+                    if (g && c && !g->is_list && !c->is_list &&
+                        toLowerCopy(g->value) == sectionGuid && classifyValue(c->value) == L"number") {
+                        int count = 0;
+                        try { count = std::stoi(c->value); } catch (...) { count = 0; }
+                        for (int i = 0; i < count; ++i) {
+                            size_t pos = static_cast<size_t>(i + 2);
+                            if (pos >= n->children.size()) break;
+                            auto* item = n->children[pos].get();
+                            if (item && !item->is_list && isGuidLike(item->value)) out.push_back(toLowerCopy(item->value));
+                        }
+                    }
+                }
+                if (n->is_list) {
+                    for (auto& ch : n->children) walk(ch.get());
+                }
+            };
+            walk(node);
+        };
+        auto extractTextFromElement = [&](const String& name) -> std::optional<String> {
+            const auto* elem = findElement(name);
+            if (!elem) return std::nullopt;
+
+            std::vector<std::vector<uint8_t>> blobs;
+            const auto& raw = elem->getData();
+            if (raw.empty()) return std::nullopt;
+            blobs.push_back(raw);
+
+            auto byRawDeflate = inflateWith(raw, -MAX_WBITS);
+            if (!byRawDeflate.empty()) blobs.push_back(std::move(byRawDeflate));
+            auto byZlib = inflateWith(raw, MAX_WBITS);
+            if (!byZlib.empty()) blobs.push_back(std::move(byZlib));
+            if (elem->isCompressed()) {
+                auto byFlag = decompressZlib(raw);
+                if (!byFlag.empty()) blobs.push_back(std::move(byFlag));
+            }
+
+            for (const auto& blob : blobs) {
+                auto utf16 = decodeUtf16LE(blob);
+                if (utf16 && utf16->find(L'{') != String::npos && utf16->find(L'}') != String::npos) {
+                    return utf16;
+                }
+
+                String ansi;
+                ansi.reserve(blob.size());
+                for (uint8_t b : blob) ansi.push_back(static_cast<wchar_t>(b));
+                if (ansi.find(L'{') != String::npos && ansi.find(L'}') != String::npos) {
+                    return ansi;
+                }
+            }
+            return std::nullopt;
+        };
+        auto extractGuidFromElement = [&](const String& name) -> String {
+            const auto* elem = findElement(name);
+            if (!elem) return {};
+            std::vector<std::vector<uint8_t>> blobs;
+            const auto& raw = elem->getData();
+            if (raw.empty()) return {};
+            blobs.push_back(raw);
+            auto byRawDeflate = inflateWith(raw, -MAX_WBITS);
+            if (!byRawDeflate.empty()) blobs.push_back(std::move(byRawDeflate));
+            auto byZlib = inflateWith(raw, MAX_WBITS);
+            if (!byZlib.empty()) blobs.push_back(std::move(byZlib));
+            if (elem->isCompressed()) {
+                auto byFlag = decompressZlib(raw);
+                if (!byFlag.empty()) blobs.push_back(std::move(byFlag));
+            }
+            std::regex rgxRootGuid(R"(\{([0-9a-fA-F-]{36})\})");
+            for (const auto& blob : blobs) {
+                for (const bool stripZero : { false, true }) {
+                    const std::string ascii = toAsciiFiltered(blob, stripZero);
+                    std::smatch match;
+                    if (std::regex_search(ascii, match, rgxRootGuid) && match.size() >= 2) {
+                        String guid(match[1].str().begin(), match[1].str().end());
+                        return toLowerCopy(guid);
+                    }
+                }
+            }
+            return {};
+        };
+        auto extractGuidFromText = [&](const String& text) -> String {
+            if (text.empty()) return {};
+            static const std::wregex rgxGuid(LR"(\{([0-9a-fA-F-]{36})\})");
+            std::wsmatch m;
+            if (std::regex_search(text, m, rgxGuid) && m.size() >= 2) {
+                String guid = toLowerCopy(m[1].str());
+                if (isGuidLike(guid)) return guid;
+            }
+            return {};
+        };
+        auto extractAsciiFromElement = [&](const String& name) -> std::string {
+            const auto* elem = findElement(name);
+            if (!elem) return {};
+            std::vector<std::vector<uint8_t>> blobs;
+            const auto& raw = elem->getData();
+            if (raw.empty()) return {};
+            blobs.push_back(raw);
+            auto byRawDeflate = inflateWith(raw, -MAX_WBITS);
+            if (!byRawDeflate.empty()) blobs.push_back(std::move(byRawDeflate));
+            auto byZlib = inflateWith(raw, MAX_WBITS);
+            if (!byZlib.empty()) blobs.push_back(std::move(byZlib));
+            if (elem->isCompressed()) {
+                auto byFlag = decompressZlib(raw);
+                if (!byFlag.empty()) blobs.push_back(std::move(byFlag));
+            }
+            for (const auto& blob : blobs) {
+                const std::string ascii = toAsciiFiltered(blob, true);
+                if (ascii.find('{') != std::string::npos && ascii.find('}') != std::string::npos) {
+                    return ascii;
+                }
+            }
+            return {};
+        };
+        auto guessMetadataGuidBySections = [&]() -> String {
+            for (const auto& elem : elements_) {
+                String n = toLowerCopy(elem.getName());
+                if (!isGuidLike(n)) continue;
+                auto txt = extractTextFromElement(n);
+                if (!txt) continue;
+                String low = toLowerCopy(*txt);
+                bool hasCatalogs = low.find(L"cf4abea6-37b2-11d4-940f-008048da11f9") != String::npos;
+                bool hasDocuments = low.find(L"061d872a-5787-460e-95ac-ed74ea3a3e84") != String::npos;
+                bool hasConstants = low.find(L"0195e80c-b157-11d4-9435-004095e12fc7") != String::npos;
+                if (hasCatalogs && (hasDocuments || hasConstants)) {
+                    return n;
+                }
+            }
+            return {};
+        };
+        auto metadataSectionScore = [&](const String& guid) -> int {
+            auto txt = extractTextFromElement(guid);
+            if (!txt) return -1;
+            String low = toLowerCopy(*txt);
+            int score = 0;
+            for (const auto& s : kSections) {
+                if (low.find(toLowerCopy(s.guid)) != String::npos) ++score;
+            }
+            return score;
+        };
 
         std::unordered_map<String, const V8Element*> byName;
         byName.reserve(elements_.size());
@@ -411,73 +1411,112 @@ namespace v8::core {
         const auto rootIt = byName.find(L"root");
         if (rootIt == byName.end()) return ensureRawFallback();
 
-        const auto& rootRawData = rootIt->second->getData();
-        std::vector<std::vector<uint8_t>> rootCandidates;
-        rootCandidates.push_back(rootRawData);
-        auto rootInflatedRaw = inflateWith(rootRawData, -MAX_WBITS);
-        if (!rootInflatedRaw.empty() && rootInflatedRaw != rootRawData) rootCandidates.push_back(std::move(rootInflatedRaw));
-        auto rootInflatedZlib = inflateWith(rootRawData, MAX_WBITS);
-        if (!rootInflatedZlib.empty() && rootInflatedZlib != rootRawData) rootCandidates.push_back(std::move(rootInflatedZlib));
-
-        String configGuid;
-        std::wregex rgxRootGuid(LR"(\{([0-9a-fA-F-]{36})\})");
-        for (const auto& blob : rootCandidates) {
-            auto maybeText = decodeUtf16LE(blob);
-            if (!maybeText) maybeText = decodeAnsi(blob);
-            if (!maybeText) continue;
-            std::wsmatch match;
-            if (std::regex_search(*maybeText, match, rgxRootGuid) && match.size() >= 2) {
-                configGuid = toLowerCopy(match[1].str());
-                break;
+        auto rootTextOpt = extractTextFromElement(L"root");
+        if (!rootTextOpt) {
+            std::wcerr << L"[md-debug] root text: not extracted\n";
+            return ensureRawFallback();
+        }
+        auto rootTree = parseTreeText(*rootTextOpt);
+        if (!rootTree) {
+            std::wcerr << L"[md-debug] root text: parse failed\n";
+            return ensureRawFallback();
+        }
+        ParseNode* guidNode = getNodeByPath(rootTree.get(), {0, 1});
+        String configGuid = guidNode ? toLowerCopy(guidNode->value) : L"";
+        if ((configGuid.empty() || !isGuidLike(configGuid)) && rootTextOpt) {
+            configGuid = extractGuidFromText(*rootTextOpt);
+        }
+        if (configGuid.empty() || !isGuidLike(configGuid)) {
+            configGuid = extractGuidFromElement(L"root");
+        }
+        String guessedGuid = guessMetadataGuidBySections();
+        if (configGuid.empty() || !isGuidLike(configGuid)) {
+            configGuid = guessedGuid;
+        } else {
+            const int rootScore = metadataSectionScore(configGuid);
+            const int guessScore = guessedGuid.empty() ? -1 : metadataSectionScore(guessedGuid);
+            std::wcerr << L"[md-debug] rootGuidScore=" << rootScore << L", guessedGuidScore=" << guessScore << L"\n";
+            if (guessScore > rootScore) {
+                configGuid = guessedGuid;
+                std::wcerr << L"[md-debug] switched metadata guid to guessed candidate\n";
             }
         }
+        std::wcerr << L"[md-debug] configGuid=" << (configGuid.empty() ? L"<empty>" : configGuid) << L"\n";
         if (configGuid.empty()) return ensureRawFallback();
 
-        const auto cfgIt = byName.find(configGuid);
-        if (cfgIt == byName.end()) return ensureRawFallback();
+        auto cfgTextOpt = extractTextFromElement(configGuid);
+        std::unique_ptr<ParseNode> cfgTree;
+        if (cfgTextOpt) cfgTree = parseTreeText(*cfgTextOpt);
+        std::wcerr << L"[md-debug] metadata text extracted=" << (cfgTextOpt ? L"yes" : L"no")
+                   << L", parsed=" << (cfgTree ? L"yes" : L"no") << L"\n";
 
-        const auto& cfgRawData = cfgIt->second->getData();
-        std::vector<std::vector<uint8_t>> cfgCandidates;
-        cfgCandidates.push_back(cfgRawData);
-        auto cfgInflatedRaw = inflateWith(cfgRawData, -MAX_WBITS);
-        if (!cfgInflatedRaw.empty() && cfgInflatedRaw != cfgRawData) cfgCandidates.push_back(std::move(cfgInflatedRaw));
-        auto cfgInflatedZlib = inflateWith(cfgRawData, MAX_WBITS);
-        if (!cfgInflatedZlib.empty() && cfgInflatedZlib != cfgRawData) cfgCandidates.push_back(std::move(cfgInflatedZlib));
+        const std::unordered_map<String, std::vector<int>> namePaths = {
+            {L"cf4abea6-37b2-11d4-940f-008048da11f9", {0,1,9,1,2}},
+            {L"061d872a-5787-460e-95ac-ed74ea3a3e84", {0,1,9,1,2}},
+            {L"0195e80c-b157-11d4-9435-004095e12fc7", {0,1,1,1,1,2}},
+            {L"13134201-f60b-11d5-a3c7-0050bae0a776", {0,1,15,1,2}},
+            {L"f2de87a8-64e5-45eb-a22d-b3aedab050e7", {0,1,15,1,2}},
+            {L"857c4a91-e5f4-4fac-86ec-787626f1c108", {0,1,12,2}},
+            {L"37f2fa9a-b276-11d4-9435-004095e12fc7", {0,1,1,2}}
+        };
 
-        std::optional<String> cfgText;
-        for (const auto& blob : cfgCandidates) {
-            auto maybeText = decodeUtf16LE(blob);
-            if (!maybeText) maybeText = decodeAnsi(blob);
-            if (maybeText) {
-                cfgText = std::move(maybeText);
-                break;
+        auto collectSectionGuidsRegex = [&](const String& targetSectionGuid) -> std::vector<String> {
+            std::vector<String> result;
+            String activeSection;
+            std::unordered_set<String> knownSections;
+            for (const auto& s2 : kSections) knownSections.insert(toLowerCopy(s2.guid));
+            std::unordered_set<String> uniq;
+
+            if (cfgTextOpt) {
+                static const std::wregex rgxGuidW(LR"(([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}))");
+                auto beginW = std::wsregex_iterator(cfgTextOpt->begin(), cfgTextOpt->end(), rgxGuidW);
+                auto endW = std::wsregex_iterator();
+                for (auto it = beginW; it != endW; ++it) {
+                    String guid = toLowerCopy((*it)[1].str());
+                    if (!isGuidLike(guid)) continue;
+                    if (knownSections.find(guid) != knownSections.end()) {
+                        activeSection = guid;
+                        continue;
+                    }
+                    if (activeSection == targetSectionGuid && byName.find(guid) != byName.end() && uniq.insert(guid).second) {
+                        result.push_back(guid);
+                    }
+                }
+                return result;
             }
-        }
-        if (!cfgText) return ensureRawFallback();
 
-        std::unordered_map<String, std::vector<String>> groups;
-        for (const auto& s : kSections) groups[toLowerCopy(s.guid)] = {};
-
-        std::wregex rgxPair(LR"(\{([0-9a-fA-F-]{36}),\s*0\})");
-        auto begin = std::wsregex_iterator(cfgText->begin(), cfgText->end(), rgxPair);
-        auto end = std::wsregex_iterator();
-        String activeSection;
-        for (auto it = begin; it != end; ++it) {
-            const String guid = toLowerCopy((*it)[1].str());
-            if (groups.find(guid) != groups.end()) {
-                activeSection = guid;
-                continue;
+            const std::string cfgAscii = extractAsciiFromElement(configGuid);
+            if (cfgAscii.empty()) return result;
+            static const std::regex rgxGuidA(R"(([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}))");
+            auto beginA = std::sregex_iterator(cfgAscii.begin(), cfgAscii.end(), rgxGuidA);
+            auto endA = std::sregex_iterator();
+            for (auto it = beginA; it != endA; ++it) {
+                const std::string guidRaw = (*it)[1].str();
+                String guid(guidRaw.begin(), guidRaw.end());
+                guid = toLowerCopy(guid);
+                if (!isGuidLike(guid)) continue;
+                if (knownSections.find(guid) != knownSections.end()) {
+                    activeSection = guid;
+                    continue;
+                }
+                if (activeSection == targetSectionGuid && byName.find(guid) != byName.end() && uniq.insert(guid).second) {
+                    result.push_back(guid);
+                }
             }
-            if (!activeSection.empty() && byName.find(guid) != byName.end()) {
-                groups[activeSection].push_back(guid);
-            }
-        }
+            return result;
+        };
 
-        std::wregex rgxQuoted(LR"re("([^"]+)")re");
         for (const auto& section : kSections) {
             const String sectionGuid = toLowerCopy(section.guid);
-            auto grpIt = groups.find(sectionGuid);
-            if (grpIt == groups.end() || grpIt->second.empty()) continue;
+            std::vector<String> objectGuids;
+            if (cfgTree) {
+                collectSectionGuids(cfgTree.get(), sectionGuid, objectGuids);
+            }
+            if (objectGuids.empty()) {
+                objectGuids = collectSectionGuidsRegex(sectionGuid);
+            }
+            if (objectGuids.empty()) continue;
+            std::wcerr << L"[md-debug] section " << section.title << L" items=" << objectGuids.size() << L"\n";
 
             auto folder = std::make_shared<MetadataItem>();
             folder->id = L"folder_" + sectionGuid;
@@ -486,26 +1525,27 @@ namespace v8::core {
             folder->is_folder = true;
 
             std::unordered_set<String> uniq;
-            for (const auto& objGuid : grpIt->second) {
+            for (const auto& objGuid : objectGuids) {
                 if (!uniq.insert(objGuid).second) continue;
-                const auto fileIt = byName.find(objGuid);
-                if (fileIt == byName.end()) continue;
-
-                auto objData = fileIt->second->isCompressed() ? decompressZlib(fileIt->second->getData()) : fileIt->second->getData();
-                auto objText = decodeUtf16LE(objData);
-
+                if (!isGuidLike(objGuid)) continue;
                 String displayName = objGuid;
-                if (objText) {
-                    std::wsmatch qMatch;
-                    if (std::regex_search(*objText, qMatch, rgxQuoted) && qMatch.size() >= 2) {
-                        const String candidate = qMatch[1].str();
-                        if (!candidate.empty() && !isGuidLike(candidate)) displayName = candidate;
+                auto objTextOpt = extractTextFromElement(objGuid);
+                if (objTextOpt) {
+                    auto objTree = parseTreeText(*objTextOpt);
+                    if (objTree) {
+                        auto itPath = namePaths.find(sectionGuid);
+                        if (itPath != namePaths.end()) {
+                            ParseNode* nameNode = getNodeByPath(objTree.get(), itPath->second);
+                            if (nameNode && !nameNode->is_list && !nameNode->value.empty()) {
+                                displayName = nameNode->value;
+                            }
+                        }
                     }
                 }
 
                 auto item = std::make_shared<MetadataItem>();
                 item->id = objGuid;
-                item->name = displayName;
+                item->name = (!displayName.empty() && isLikelyHumanNameStrict(displayName)) ? displayName : objGuid;
                 item->type = section.title;
                 item->uuid = objGuid;
                 item->is_folder = false;
@@ -515,6 +1555,7 @@ namespace v8::core {
             if (!folder->children.empty()) root->children.push_back(folder);
         }
 
+        std::wcerr << L"[md-debug] root children after parse=" << root->children.size() << L"\n";
         return ensureRawFallback();
     }
     // рџ”‘ РЇРІРЅР°СЏ РёРЅСЃС‚Р°РЅС†РёР°С†РёСЏ С€Р°Р±Р»РѕРЅРѕРІ (РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РґР»СЏ РєРѕРјРїРёР»СЏС†РёРё)

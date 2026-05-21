@@ -8,7 +8,7 @@ namespace v8::ui { class MetadataTree; class ContentPane; }
 
 
 QT_BEGIN_NAMESPACE
-class QSplitter; class QAction; class QLabel;
+class QSplitter; class QAction; class QLabel; class QPlainTextEdit;
 QT_END_NAMESPACE
 
 namespace v8::core { class IV8Repository; }
@@ -35,6 +35,7 @@ namespace v8::ui {
         ContentPane* contentPane_{};
         QSplitter* splitter_{};
         QLabel* statusLabel_{};
+        QPlainTextEdit* memo_{};
         std::unique_ptr<v8::core::IV8Repository> repository_;
         // 🔑 НОВОЕ: Храним путь к текущему файлу
         QString currentFilePath_;

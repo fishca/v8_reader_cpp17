@@ -21,6 +21,7 @@ namespace v8::core {
         [[nodiscard]] const std::vector<V8Element>& getElements() const { return elements_; }
         [[nodiscard]] const V8Element* findElement(const String& name) const;
         [[nodiscard]] std::shared_ptr<MetadataItem> buildMetadataTree() const;
+        [[nodiscard]] String getMetadataSummaryText() const;
         [[nodiscard]] std::optional<std::vector<uint8_t>> extractData(const String& name) const;
         [[nodiscard]] std::optional<String> getModuleText(const String& name) const;
 

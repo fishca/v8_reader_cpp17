@@ -12,6 +12,7 @@ add_library(v8reader::core ALIAS v8reader_core)
 target_sources(v8reader_core PRIVATE
     src/V8Unpacker.cpp
     src/V8Container.cpp
+    src/TreeReader.cpp
     src/V8Element.cpp
     src/V8Format.cpp
     src/Guid.cpp
