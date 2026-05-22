@@ -3,9 +3,11 @@
 
 namespace v8reader::core::metadata {
 
-void TComand::Load(QIODevice& stream, int version) {
+bool TComand::Load(QIODevice& stream, int version) {
     // 1. Загружаем базовые свойства TMDO (Имя, Синоним, Комментарий и т.д.)
-    TMDO::Load(stream, version);
+    if (!TMDO::Load(stream, version)) {
+        return false;
+    }
 
     // 2. Читаем специфичные свойства команды
     // Структура может отличаться в зависимости от версии формата, 
@@ -30,6 +32,8 @@ void TComand::Load(QIODevice& stream, int version) {
     
     // Примечание: Реальный порядок и наличие полей нужно сверять с исходным C++ Builder кодом
     // и тестировать на реальных файлах .cf/.1CD
+    
+    return true;
 }
 
 } // namespace v8reader::core::metadata

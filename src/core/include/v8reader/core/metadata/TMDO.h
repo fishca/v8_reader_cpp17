@@ -1,6 +1,6 @@
 #pragma once
 
-#include "v8_types.h"
+#include "v8reader/types/v8_types.h"
 #include <vector>
 #include <memory>
 #include <string>
@@ -43,6 +43,9 @@ public:
     void addRequisite(std::shared_ptr<TRequisite> req);
     void clearRequisites();
     size_t requisitesCount() const { return m_requisites.size(); }
+    
+    // Алиас для тестов
+    const std::vector<std::shared_ptr<TRequisite>>& requisites() const { return m_requisites; }
 
     /**
      * @brief Чтение данных объекта из потока.
@@ -51,13 +54,15 @@ public:
      * @param version Версия формата файла (15 или 16)
      * @return true если чтение прошло успешно
      */
-    virtual bool readFromStream(QIODevice& stream, int version);
+    virtual bool Load(QIODevice& stream, int version);
 
 protected:
     /**
-     * @brief Чтение строки из потока с учетом версии формата.
+     * @brief Чтение строки из потока.
      * 
-     * В версии 15 строки хранятся как ANSI, в версии 16 - как UTF-16LE.
+     * Строки в файлах .1CD хранятся в кодировке UTF-16LE независимо от версии формата.
+     * Версия формата влияет только на размер адресов (4 байта для v15, 8 байт для v16),
+     * но не на кодировку строк.
      */
     QString readString(QIODevice& stream, int version);
 

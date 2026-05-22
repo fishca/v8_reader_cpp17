@@ -7,7 +7,7 @@ TRequisite::TRequisite() = default;
 
 TRequisite::~TRequisite() = default;
 
-bool TRequisite::readFromStream(QIODevice& stream, int version) {
+bool TRequisite::Load(QIODevice& stream, int version) {
     if (!stream.isOpen()) {
         return false;
     }

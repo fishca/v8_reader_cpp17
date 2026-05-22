@@ -1,6 +1,7 @@
 #pragma once
 #include "v8_constants.h"
 #include <cstdint>
+#include <cstddef>
 #include <array>
 
 namespace v8::core {

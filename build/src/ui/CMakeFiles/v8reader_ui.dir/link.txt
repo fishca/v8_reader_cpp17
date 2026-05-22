@@ -1,0 +1,2 @@
+/usr/bin/ar qc libv8reader_ui.a CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.o CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.o CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.o
+/usr/bin/ranlib libv8reader_ui.a

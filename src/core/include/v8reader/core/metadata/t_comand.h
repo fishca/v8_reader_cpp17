@@ -1,6 +1,6 @@
 #pragma once
 
-#include "t_mdo.h"
+#include "TMDO.h"
 #include <memory>
 #include <vector>
 #include <QString>
@@ -28,8 +28,9 @@ public:
      * @brief Парсинг свойств команды из потока.
      * @param stream Входной поток с данными.
      * @param version Версия формата файла.
+     * @return true если парсинг успешен
      */
-    void Load(QIODevice& stream, int version) override;
+    bool Load(QIODevice& stream, int version) override;
 
     /**
      * @brief Получение имени действия (Action).

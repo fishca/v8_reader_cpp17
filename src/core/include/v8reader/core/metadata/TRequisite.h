@@ -1,6 +1,6 @@
 #pragma once
 
-#include "v8_types.h"
+#include "v8reader/types/v8_types.h"
 #include <QString>
 #include <QByteArray>
 #include <QIODevice>
@@ -38,11 +38,15 @@ public:
 
     bool isAllowNull() const { return m_allowNull; }
     void setAllowNull(bool allow) { m_allowNull = allow; }
+    
+    // Для тестов
+    int typeId() const { return m_index; }
+    bool allowNull() const { return m_allowNull; }
 
     /**
      * @brief Чтение данных реквизита из потока.
      */
-    virtual bool readFromStream(QIODevice& stream, int version);
+    virtual bool Load(QIODevice& stream, int version);
 
 protected:
     QString readString(QIODevice& stream, int version);

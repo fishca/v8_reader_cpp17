@@ -3,9 +3,11 @@
 
 namespace v8reader::core::metadata {
 
-void TTabular::Load(QIODevice& stream, int version) {
+bool TTabular::Load(QIODevice& stream, int version) {
     // 1. Загружаем базовые свойства TMDO
-    TMDO::Load(stream, version);
+    if (!TMDO::Load(stream, version)) {
+        return false;
+    }
 
     parser::V8StreamReader reader(stream, version);
 
@@ -31,6 +33,8 @@ void TTabular::Load(QIODevice& stream, int version) {
     // Примечание: Точная структура хранения списка реквизитов в бинарном файле
     // может отличаться (например, использование индексов или вложенных потоков).
     // Требуется верификация на реальных данных.
+    
+    return true;
 }
 
 void TTabular::AddRequisite(std::unique_ptr<TRequisite> req) {

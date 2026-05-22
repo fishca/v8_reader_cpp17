@@ -1,7 +1,6 @@
 #include "TMDO.h"
 #include "TRequisite.h"
 #include <QDataStream>
-#include <QTextCodec>
 
 namespace v8reader::core {
 
@@ -19,7 +18,7 @@ void TMDO::clearRequisites() {
     m_requisites.clear();
 }
 
-bool TMDO::readFromStream(QIODevice& stream, int version) {
+bool TMDO::Load(QIODevice& stream, int version) {
     if (!stream.isOpen()) {
         return false;
     }
@@ -50,7 +49,7 @@ bool TMDO::readFromStream(QIODevice& stream, int version) {
     // Чтение реквизитов
     for (qint32 i = 0; i < reqCount; ++i) {
         auto req = std::make_shared<TRequisite>();
-        if (req->readFromStream(stream, version)) {
+        if (req->Load(stream, version)) {
             addRequisite(req);
         }
     }
@@ -58,32 +57,19 @@ bool TMDO::readFromStream(QIODevice& stream, int version) {
     return true;
 }
 
-QString TMDO::readString(QIODevice& stream, int version) {
-    if (version == 16) {
-        // UTF-16LE строки
-        qint32 length = 0;
-        stream.read(reinterpret_cast<char*>(&length), sizeof(length));
-        
-        if (length <= 0) {
-            return QString();
-        }
-        
-        QByteArray data = stream.read(length * 2); // 2 байта на символ
-        return QString::fromUtf16(reinterpret_cast<const char16_t*>(data.constData()), length);
-    } else {
-        // ANSI строки (версия 15)
-        qint32 length = 0;
-        stream.read(reinterpret_cast<char*>(&length), sizeof(length));
-        
-        if (length <= 0) {
-            return QString();
-        }
-        
-        QByteArray data = stream.read(length);
-        // Предполагаем кодировку CP1251 для русских версий 1С
-        QTextCodec* codec = QTextCodec::codecForName("CP1251");
-        return codec ? codec->toUnicode(data) : QString::fromLocal8Bit(data);
+QString TMDO::readString(QIODevice& stream, int /* version */) {
+    // Строки в файлах .1CD хранятся в кодировке UTF-16LE независимо от версии формата.
+    // Версия формата влияет только на размер адресов, но не на кодировку строк.
+    
+    qint32 length = 0;
+    stream.read(reinterpret_cast<char*>(&length), sizeof(length));
+    
+    if (length <= 0) {
+        return QString();
     }
+    
+    QByteArray data = stream.read(length * 2); // 2 байта на символ (UTF-16LE)
+    return QString::fromUtf16(reinterpret_cast<const char16_t*>(data.constData()), length);
 }
 
 QByteArray TMDO::readByteArray(QIODevice& stream, int size) {

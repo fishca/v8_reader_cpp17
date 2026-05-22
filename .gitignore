@@ -1,38 +1,74 @@
-﻿# Build directories
+```
+# CMake build directory
 build/
-out/
-bin/
-lib/
 
-# CMake
-CMakeFiles/
+# CMake temporary files
 CMakeCache.txt
+CMakeFiles/
 cmake_install.cmake
 Makefile
-*.cmake
-*.user
-*.sln
-*.vcxproj*
-*.suo
-*.opensdf
-*.sdf
-*.VC.db
-ipch/
+CTestTestfile.cmake
 
-# Qt
-*.moc
-*.qrc.depends
-*.ui
-rcc_*.cpp
-qrc_*.cpp
+# Qt/MOC autogen files
+*_autogen/
 
-# IDE
-.vs/
+# Object files
+*.o
+*.obj
+*.d
+
+# IDE files
+.vscode/
 .idea/
-*.code-workspace
 
-# OS
-.DS_Store
-Thumbs.db
+# Logs
 *.log
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Temporary files
 *.tmp
+*.swp
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+target/
+.gradle/
+
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
+```

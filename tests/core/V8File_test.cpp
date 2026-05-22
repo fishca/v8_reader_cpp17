@@ -1,15 +1,8 @@
-#include <QtTest>
+#include <gtest/gtest.h>
 #include "v8reader/core/IV8Repository.h"
 
-class V8CoreTest : public QObject {
-    Q_OBJECT
-private slots:
-    void testRepositoryCreation() {
-        auto repo = v8::core::createV8Repository();
-        QVERIFY(repo != nullptr);
-        QCOMPARE(repo->getRoot(), nullptr);
-    }
-};
-
-QTEST_MAIN(V8CoreTest)
-#include "V8File_test.moc"
+TEST(V8CoreTest, RepositoryCreation) {
+    auto repo = v8::core::createV8Repository();
+    EXPECT_NE(repo, nullptr);
+    EXPECT_EQ(repo->getRoot(), nullptr);
+}
