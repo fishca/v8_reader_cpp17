@@ -1,0 +1,28 @@
+{
+	"BUILD_DIR" : "/workspace/build/src/ui/v8reader_ui_autogen",
+	"CMAKE_BINARY_DIR" : "/workspace/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/workspace/build/src/ui",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/workspace/src/ui",
+	"CMAKE_SOURCE_DIR" : "/workspace",
+	"INCLUDE_DIR" : "/workspace/build/src/ui/v8reader_ui_autogen/include",
+	"INPUTS" : 
+	[
+		"/workspace/src/ui/icons/folder.png",
+		"/workspace/src/ui/icons/module.png",
+		"/workspace/src/ui/icons/report.png",
+		"/workspace/src/ui/icons/processing.png",
+		"/workspace/src/ui/icons/file.png",
+		"/workspace/src/ui/icons/catalog.png",
+		"/workspace/src/ui/icons/document.png"
+	],
+	"LOCK_FILE" : "/workspace/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/AutoRcc_resources_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resources" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_resources.cpp",
+	"RCC_EXECUTABLE" : "/usr/lib/qt6/libexec/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/workspace/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/AutoRcc_resources_EWIEGA46WW_Used.txt",
+	"SOURCE" : "/workspace/src/ui/resources.qrc",
+	"VERBOSITY" : 0
+}

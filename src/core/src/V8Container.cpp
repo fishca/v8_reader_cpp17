@@ -8,6 +8,8 @@
 #include <string>
 #include <functional>
 #include <iostream>
+#include <codecvt>
+#include <cstring>
 
 namespace v8::core {
     namespace {
@@ -187,7 +189,16 @@ namespace v8::core {
     }
 
     int V8Container::load() {
-        std::ifstream file(filepath_, std::ios::binary);
+        std::string path_utf8;
+        std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+        try {
+            path_utf8 = converter.to_bytes(filepath_);
+        } catch (...) {
+            last_error_ = L"Failed to convert filepath to UTF-8";
+            return V8_FILE_NOT_FOUND;
+        }
+        
+        std::ifstream file(path_utf8, std::ios::binary);
         if (!file) {
             last_error_ = L"Failed to open file: " + filepath_;
             return V8_FILE_NOT_FOUND;
@@ -199,7 +210,15 @@ namespace v8::core {
 
     template<typename Format>
     int V8Container::loadImpl() {
-        std::ifstream file(filepath_, std::ios::binary);
+        std::string path_utf8;
+        std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+        try {
+            path_utf8 = converter.to_bytes(filepath_);
+        } catch (...) {
+            return V8_FILE_NOT_FOUND;
+        }
+        
+        std::ifstream file(path_utf8, std::ios::binary);
         if (!file) return V8_FILE_NOT_FOUND;
 
         using FileHdr = typename Format::file_header_t;

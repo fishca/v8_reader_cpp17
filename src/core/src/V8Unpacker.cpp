@@ -2,6 +2,7 @@
 #include "v8reader/core/V8Unpacker.h"
 #include "v8reader/core/V8Container.h"
 #include <filesystem>
+#include <cstring>
 
 namespace v8::core {
 
