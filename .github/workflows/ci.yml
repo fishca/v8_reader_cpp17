@@ -38,6 +38,7 @@ jobs:
           -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake
           # 👇 CMake будет искать Qt в папке vcpkg/installed/x64-windows
           -DCMAKE_PREFIX_PATH=${{ env.VCPKG_ROOT }}/installed/x64-windows
+          -DV8READER_BUILD_TESTS=ON
 
       - name: Build
         run: cmake --build build --config ${{env.BUILD_TYPE}} --parallel
