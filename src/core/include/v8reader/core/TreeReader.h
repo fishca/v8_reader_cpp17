@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Types.h"
+#include "v8reader/core/Types.h"
+#include "v8reader/core/metadata/TMDO.h"
 #include <functional>
 #include <memory>
 #include <optional>
@@ -44,5 +45,37 @@ int getSectionDeclaredCount(TreeNode* metadata_tree, const String& section_guid)
 
 MetadataBootstrapResult bootstrapMetadataTree(
     const std::function<std::optional<String>(const String&)>& getTextByName);
+
+/**
+ * @brief Улучшенный парсер дерева метаданных с поддержкой умных указателей
+ */
+class TreeReader {
+public:
+    explicit TreeReader(std::unique_ptr<TreeNode> root);
+    
+    /**
+     * @brief Построить иерархию объектов метаданных
+     * @return Корневой объект метаданных
+     */
+    std::unique_ptr<v8reader::core::TMDO> buildMetadataTree();
+    
+    /**
+     * @brief Найти узел по GUID
+     */
+    TreeNode* findNodeByGuid(const String& guid);
+    
+    /**
+     * @brief Получить все дочерние узлы
+     */
+    std::vector<TreeNode*> getChildNodes(TreeNode* parent);
+    
+private:
+    std::unique_ptr<TreeNode> m_root;
+    
+    /**
+     * @brief Рекурсивное построение объекта из узла
+     */
+    std::unique_ptr<v8reader::core::TMDO> buildObjectFromNode(TreeNode* node);
+};
 
 } // namespace v8::core
