@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.20)
 
 # 1. Сначала находим зависимости
 find_package(ZLIB REQUIRED)
+find_package(Qt6 REQUIRED COMPONENTS Core)
 
 # 2. Создаём таргет
 add_library(v8reader_core STATIC)
@@ -17,6 +18,16 @@ target_sources(v8reader_core PRIVATE
     src/V8Format.cpp
     src/Guid.cpp
     src/Types.cpp
+    src/V8File.cpp
+    src/V8Catalog.cpp
+    src/metadata/TMDO.cpp
+    src/metadata/TRequisite.cpp
+    src/metadata/t_comand.cpp
+    src/metadata/t_metadata_object_with_sections.cpp
+    src/metadata/t_tabular.cpp
+    src/metadata/t_catalog.cpp
+    src/metadata/sections/section_requisites.cpp
+    src/metadata/sections/section_commands.cpp
 )
 
 # 4. Настраиваем include-пути
@@ -30,6 +41,8 @@ target_include_directories(v8reader_core
 
 # 5. Линкуем зависимости
 target_link_libraries(v8reader_core
+    PUBLIC
+        Qt6::Core
     PRIVATE
         ZLIB::ZLIB
 )

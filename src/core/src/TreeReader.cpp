@@ -1,4 +1,5 @@
 #include "v8reader/core/TreeReader.h"
+#include "v8reader/core/metadata/MetadataFactory.h"
 #include <algorithm>
 #include <cwctype>
 #include <regex>
@@ -53,6 +54,59 @@ TreeNode* TreeNode::next() const {
     const size_t next_idx = sibling_index + 1;
     if (next_idx >= parent->children.size()) return nullptr;
     return parent->children[next_idx].get();
+}
+
+// Реализация методов TreeReader
+TreeReader::TreeReader(std::unique_ptr<TreeNode> root) : m_root(std::move(root)) {}
+
+TreeNode* TreeReader::findNodeByGuid(const String& guid) {
+    return findMetadataNodeByGuid(m_root.get(), guid);
+}
+
+std::vector<TreeNode*> TreeReader::getChildNodes(TreeNode* parent) {
+    std::vector<TreeNode*> result;
+    if (!parent) return result;
+    
+    for (const auto& child : parent->children) {
+        result.push_back(child.get());
+    }
+    return result;
+}
+
+std::unique_ptr<v8reader::core::TMDO> TreeReader::buildObjectFromNode(TreeNode* node) {
+    if (!node || node->type != TreeNodeType::List || node->subnodeCount() < 2) {
+        return nullptr;
+    }
+    
+    // Первый элемент - GUID типа
+    TreeNode* typeNode = node->subnode(0);
+    if (!typeNode || typeNode->type != TreeNodeType::Guid) {
+        return nullptr;
+    }
+    
+    // Второй элемент - имя объекта
+    TreeNode* nameNode = node->subnode(1);
+    if (!nameNode) {
+        return nullptr;
+    }
+    
+    // Создаем объект через фабрику
+    // В реальной реализации здесь будет маппинг GUID на тип
+    auto obj = v8reader::core::MetadataFactory::createObject(typeNode->value);
+    if (obj) {
+        obj->setName(nameNode->value);
+        obj->setGuid(typeNode->value);
+    }
+    
+    return obj;
+}
+
+std::unique_ptr<v8reader::core::TMDO> TreeReader::buildMetadataTree() {
+    if (!m_root) {
+        return nullptr;
+    }
+    
+    return buildObjectFromNode(m_root.get());
 }
 
 std::unique_ptr<TreeNode> parse1CText(const String& text) {

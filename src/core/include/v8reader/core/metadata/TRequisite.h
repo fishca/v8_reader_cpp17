@@ -3,13 +3,13 @@
 #include "v8reader/types/v8_types.h"
 #include <QString>
 #include <QByteArray>
-#include <QIODevice>
+#include <QDataStream>
 
 namespace v8reader::core {
 
 /**
  * @brief Класс реквизита объекта метаданных 1С.
- * 
+ *
  * Реквизит - это поле данных объекта (например, поле справочника или документа).
  */
 class TRequisite {
@@ -38,7 +38,7 @@ public:
 
     bool isAllowNull() const { return m_allowNull; }
     void setAllowNull(bool allow) { m_allowNull = allow; }
-    
+
     // Для тестов
     int typeId() const { return m_index; }
     bool allowNull() const { return m_allowNull; }
@@ -46,10 +46,10 @@ public:
     /**
      * @brief Чтение данных реквизита из потока.
      */
-    virtual bool Load(QIODevice& stream, int version);
+    virtual bool Load(QDataStream& stream, int version);
 
 protected:
-    QString readString(QIODevice& stream, int version);
+    QString readString(QDataStream& stream, int version);
 
 private:
     QString m_name;

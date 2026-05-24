@@ -140,6 +140,19 @@ v8reader_core/fast:
 .PHONY : v8reader_core/fast
 
 #=============================================================================
+# Target rules for targets named v8reader_core_autogen
+
+# Build rule for target.
+v8reader_core_autogen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 v8reader_core_autogen
+.PHONY : v8reader_core_autogen
+
+# fast build rule for target.
+v8reader_core_autogen/fast:
+	$(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core_autogen.dir/build.make src/core/CMakeFiles/v8reader_core_autogen.dir/build
+.PHONY : v8reader_core_autogen/fast
+
+#=============================================================================
 # Target rules for targets named v8reader_ui
 
 # Build rule for target.
@@ -227,6 +240,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... test"
 	@echo "... v8_reader_autogen"
+	@echo "... v8reader_core_autogen"
 	@echo "... v8reader_tests_autogen"
 	@echo "... v8reader_ui_autogen"
 	@echo "... v8_reader"

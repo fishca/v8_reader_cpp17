@@ -69,10 +69,24 @@ include src/core/CMakeFiles/v8reader_core.dir/progress.make
 # Include the compile flags for this target's objects.
 include src/core/CMakeFiles/v8reader_core.dir/flags.make
 
+src/core/CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
+src/core/CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.o: src/core/v8reader_core_autogen/mocs_compilation.cpp
+src/core/CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.o"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.o -MF CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.o -c /workspace/build/src/core/v8reader_core_autogen/mocs_compilation.cpp
+
+src/core/CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.i"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/build/src/core/v8reader_core_autogen/mocs_compilation.cpp > CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.i
+
+src/core/CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.s"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/build/src/core/v8reader_core_autogen/mocs_compilation.cpp -o CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.s
+
 src/core/CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
 src/core/CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.o: /workspace/src/core/src/V8Unpacker.cpp
 src/core/CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.o"
 	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.o -MF CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.o -c /workspace/src/core/src/V8Unpacker.cpp
 
 src/core/CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.i: cmake_force
@@ -86,7 +100,7 @@ src/core/CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.s: cmake_force
 src/core/CMakeFiles/v8reader_core.dir/src/V8Container.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
 src/core/CMakeFiles/v8reader_core.dir/src/V8Container.cpp.o: /workspace/src/core/src/V8Container.cpp
 src/core/CMakeFiles/v8reader_core.dir/src/V8Container.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/V8Container.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/V8Container.cpp.o"
 	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/V8Container.cpp.o -MF CMakeFiles/v8reader_core.dir/src/V8Container.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/V8Container.cpp.o -c /workspace/src/core/src/V8Container.cpp
 
 src/core/CMakeFiles/v8reader_core.dir/src/V8Container.cpp.i: cmake_force
@@ -100,7 +114,7 @@ src/core/CMakeFiles/v8reader_core.dir/src/V8Container.cpp.s: cmake_force
 src/core/CMakeFiles/v8reader_core.dir/src/TreeReader.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
 src/core/CMakeFiles/v8reader_core.dir/src/TreeReader.cpp.o: /workspace/src/core/src/TreeReader.cpp
 src/core/CMakeFiles/v8reader_core.dir/src/TreeReader.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/TreeReader.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/TreeReader.cpp.o"
 	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/TreeReader.cpp.o -MF CMakeFiles/v8reader_core.dir/src/TreeReader.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/TreeReader.cpp.o -c /workspace/src/core/src/TreeReader.cpp
 
 src/core/CMakeFiles/v8reader_core.dir/src/TreeReader.cpp.i: cmake_force
@@ -114,7 +128,7 @@ src/core/CMakeFiles/v8reader_core.dir/src/TreeReader.cpp.s: cmake_force
 src/core/CMakeFiles/v8reader_core.dir/src/V8Element.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
 src/core/CMakeFiles/v8reader_core.dir/src/V8Element.cpp.o: /workspace/src/core/src/V8Element.cpp
 src/core/CMakeFiles/v8reader_core.dir/src/V8Element.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/V8Element.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/V8Element.cpp.o"
 	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/V8Element.cpp.o -MF CMakeFiles/v8reader_core.dir/src/V8Element.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/V8Element.cpp.o -c /workspace/src/core/src/V8Element.cpp
 
 src/core/CMakeFiles/v8reader_core.dir/src/V8Element.cpp.i: cmake_force
@@ -128,7 +142,7 @@ src/core/CMakeFiles/v8reader_core.dir/src/V8Element.cpp.s: cmake_force
 src/core/CMakeFiles/v8reader_core.dir/src/V8Format.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
 src/core/CMakeFiles/v8reader_core.dir/src/V8Format.cpp.o: /workspace/src/core/src/V8Format.cpp
 src/core/CMakeFiles/v8reader_core.dir/src/V8Format.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/V8Format.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/V8Format.cpp.o"
 	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/V8Format.cpp.o -MF CMakeFiles/v8reader_core.dir/src/V8Format.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/V8Format.cpp.o -c /workspace/src/core/src/V8Format.cpp
 
 src/core/CMakeFiles/v8reader_core.dir/src/V8Format.cpp.i: cmake_force
@@ -142,7 +156,7 @@ src/core/CMakeFiles/v8reader_core.dir/src/V8Format.cpp.s: cmake_force
 src/core/CMakeFiles/v8reader_core.dir/src/Guid.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
 src/core/CMakeFiles/v8reader_core.dir/src/Guid.cpp.o: /workspace/src/core/src/Guid.cpp
 src/core/CMakeFiles/v8reader_core.dir/src/Guid.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/Guid.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/Guid.cpp.o"
 	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/Guid.cpp.o -MF CMakeFiles/v8reader_core.dir/src/Guid.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/Guid.cpp.o -c /workspace/src/core/src/Guid.cpp
 
 src/core/CMakeFiles/v8reader_core.dir/src/Guid.cpp.i: cmake_force
@@ -156,7 +170,7 @@ src/core/CMakeFiles/v8reader_core.dir/src/Guid.cpp.s: cmake_force
 src/core/CMakeFiles/v8reader_core.dir/src/Types.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
 src/core/CMakeFiles/v8reader_core.dir/src/Types.cpp.o: /workspace/src/core/src/Types.cpp
 src/core/CMakeFiles/v8reader_core.dir/src/Types.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/Types.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/Types.cpp.o"
 	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/Types.cpp.o -MF CMakeFiles/v8reader_core.dir/src/Types.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/Types.cpp.o -c /workspace/src/core/src/Types.cpp
 
 src/core/CMakeFiles/v8reader_core.dir/src/Types.cpp.i: cmake_force
@@ -167,19 +181,126 @@ src/core/CMakeFiles/v8reader_core.dir/src/Types.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_core.dir/src/Types.cpp.s"
 	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/src/Types.cpp -o CMakeFiles/v8reader_core.dir/src/Types.cpp.s
 
+src/core/CMakeFiles/v8reader_core.dir/src/V8File.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
+src/core/CMakeFiles/v8reader_core.dir/src/V8File.cpp.o: /workspace/src/core/src/V8File.cpp
+src/core/CMakeFiles/v8reader_core.dir/src/V8File.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/V8File.cpp.o"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/V8File.cpp.o -MF CMakeFiles/v8reader_core.dir/src/V8File.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/V8File.cpp.o -c /workspace/src/core/src/V8File.cpp
+
+src/core/CMakeFiles/v8reader_core.dir/src/V8File.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/v8reader_core.dir/src/V8File.cpp.i"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/core/src/V8File.cpp > CMakeFiles/v8reader_core.dir/src/V8File.cpp.i
+
+src/core/CMakeFiles/v8reader_core.dir/src/V8File.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_core.dir/src/V8File.cpp.s"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/src/V8File.cpp -o CMakeFiles/v8reader_core.dir/src/V8File.cpp.s
+
+src/core/CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
+src/core/CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.o: /workspace/src/core/src/V8Catalog.cpp
+src/core/CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.o"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.o -MF CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.o -c /workspace/src/core/src/V8Catalog.cpp
+
+src/core/CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.i"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/core/src/V8Catalog.cpp > CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.i
+
+src/core/CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.s"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/src/V8Catalog.cpp -o CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.s
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.o: /workspace/src/core/src/metadata/TMDO.cpp
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.o"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.o -MF CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.o -c /workspace/src/core/src/metadata/TMDO.cpp
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.i"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/core/src/metadata/TMDO.cpp > CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.i
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.s"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/src/metadata/TMDO.cpp -o CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.s
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.o: /workspace/src/core/src/metadata/TRequisite.cpp
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.o"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.o -MF CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.o -c /workspace/src/core/src/metadata/TRequisite.cpp
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.i"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/core/src/metadata/TRequisite.cpp > CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.i
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.s"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/src/metadata/TRequisite.cpp -o CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.s
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.o: /workspace/src/core/src/metadata/t_comand.cpp
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.o"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.o -MF CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.o -c /workspace/src/core/src/metadata/t_comand.cpp
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.i"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/core/src/metadata/t_comand.cpp > CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.i
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.s"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/src/metadata/t_comand.cpp -o CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.s
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.o: /workspace/src/core/src/metadata/t_metadata_object_with_sections.cpp
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.o"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.o -MF CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.o -c /workspace/src/core/src/metadata/t_metadata_object_with_sections.cpp
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.i"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/core/src/metadata/t_metadata_object_with_sections.cpp > CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.i
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.s"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/src/metadata/t_metadata_object_with_sections.cpp -o CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.s
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.o: src/core/CMakeFiles/v8reader_core.dir/flags.make
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.o: /workspace/src/core/src/metadata/t_tabular.cpp
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.o: src/core/CMakeFiles/v8reader_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.o"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.o -MF CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.o.d -o CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.o -c /workspace/src/core/src/metadata/t_tabular.cpp
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.i"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/core/src/metadata/t_tabular.cpp > CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.i
+
+src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.s"
+	cd /workspace/build/src/core && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/core/src/metadata/t_tabular.cpp -o CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.s
+
 # Object files for target v8reader_core
 v8reader_core_OBJECTS = \
+"CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.o" \
 "CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.o" \
 "CMakeFiles/v8reader_core.dir/src/V8Container.cpp.o" \
 "CMakeFiles/v8reader_core.dir/src/TreeReader.cpp.o" \
 "CMakeFiles/v8reader_core.dir/src/V8Element.cpp.o" \
 "CMakeFiles/v8reader_core.dir/src/V8Format.cpp.o" \
 "CMakeFiles/v8reader_core.dir/src/Guid.cpp.o" \
-"CMakeFiles/v8reader_core.dir/src/Types.cpp.o"
+"CMakeFiles/v8reader_core.dir/src/Types.cpp.o" \
+"CMakeFiles/v8reader_core.dir/src/V8File.cpp.o" \
+"CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.o" \
+"CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.o" \
+"CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.o" \
+"CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.o" \
+"CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.o" \
+"CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.o"
 
 # External object files for target v8reader_core
 v8reader_core_EXTERNAL_OBJECTS =
 
+src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.o
 src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.o
 src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/V8Container.cpp.o
 src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/TreeReader.cpp.o
@@ -187,9 +308,16 @@ src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/V8Element
 src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/V8Format.cpp.o
 src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/Guid.cpp.o
 src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/Types.cpp.o
+src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/V8File.cpp.o
+src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.o
+src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.o
+src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.o
+src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.o
+src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.o
+src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.o
 src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/build.make
 src/core/libv8reader_core.a: src/core/CMakeFiles/v8reader_core.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX static library libv8reader_core.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX static library libv8reader_core.a"
 	cd /workspace/build/src/core && $(CMAKE_COMMAND) -P CMakeFiles/v8reader_core.dir/cmake_clean_target.cmake
 	cd /workspace/build/src/core && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/v8reader_core.dir/link.txt --verbose=$(VERBOSE)
 

@@ -140,6 +140,20 @@ v8reader_core/fast:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/build
 .PHONY : v8reader_core/fast
 
+# Convenience name for target.
+src/core/CMakeFiles/v8reader_core_autogen.dir/rule:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/core/CMakeFiles/v8reader_core_autogen.dir/rule
+.PHONY : src/core/CMakeFiles/v8reader_core_autogen.dir/rule
+
+# Convenience name for target.
+v8reader_core_autogen: src/core/CMakeFiles/v8reader_core_autogen.dir/rule
+.PHONY : v8reader_core_autogen
+
+# fast build rule for target.
+v8reader_core_autogen/fast:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core_autogen.dir/build.make src/core/CMakeFiles/v8reader_core_autogen.dir/build
+.PHONY : v8reader_core_autogen/fast
+
 src/Guid.o: src/Guid.cpp.o
 .PHONY : src/Guid.o
 
@@ -212,6 +226,30 @@ src/Types.cpp.s:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/Types.cpp.s
 .PHONY : src/Types.cpp.s
 
+src/V8Catalog.o: src/V8Catalog.cpp.o
+.PHONY : src/V8Catalog.o
+
+# target to build an object file
+src/V8Catalog.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.o
+.PHONY : src/V8Catalog.cpp.o
+
+src/V8Catalog.i: src/V8Catalog.cpp.i
+.PHONY : src/V8Catalog.i
+
+# target to preprocess a source file
+src/V8Catalog.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.i
+.PHONY : src/V8Catalog.cpp.i
+
+src/V8Catalog.s: src/V8Catalog.cpp.s
+.PHONY : src/V8Catalog.s
+
+# target to generate assembly for a file
+src/V8Catalog.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/V8Catalog.cpp.s
+.PHONY : src/V8Catalog.cpp.s
+
 src/V8Container.o: src/V8Container.cpp.o
 .PHONY : src/V8Container.o
 
@@ -259,6 +297,30 @@ src/V8Element.s: src/V8Element.cpp.s
 src/V8Element.cpp.s:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/V8Element.cpp.s
 .PHONY : src/V8Element.cpp.s
+
+src/V8File.o: src/V8File.cpp.o
+.PHONY : src/V8File.o
+
+# target to build an object file
+src/V8File.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/V8File.cpp.o
+.PHONY : src/V8File.cpp.o
+
+src/V8File.i: src/V8File.cpp.i
+.PHONY : src/V8File.i
+
+# target to preprocess a source file
+src/V8File.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/V8File.cpp.i
+.PHONY : src/V8File.cpp.i
+
+src/V8File.s: src/V8File.cpp.s
+.PHONY : src/V8File.s
+
+# target to generate assembly for a file
+src/V8File.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/V8File.cpp.s
+.PHONY : src/V8File.cpp.s
 
 src/V8Format.o: src/V8Format.cpp.o
 .PHONY : src/V8Format.o
@@ -308,6 +370,150 @@ src/V8Unpacker.cpp.s:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.s
 .PHONY : src/V8Unpacker.cpp.s
 
+src/metadata/TMDO.o: src/metadata/TMDO.cpp.o
+.PHONY : src/metadata/TMDO.o
+
+# target to build an object file
+src/metadata/TMDO.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.o
+.PHONY : src/metadata/TMDO.cpp.o
+
+src/metadata/TMDO.i: src/metadata/TMDO.cpp.i
+.PHONY : src/metadata/TMDO.i
+
+# target to preprocess a source file
+src/metadata/TMDO.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.i
+.PHONY : src/metadata/TMDO.cpp.i
+
+src/metadata/TMDO.s: src/metadata/TMDO.cpp.s
+.PHONY : src/metadata/TMDO.s
+
+# target to generate assembly for a file
+src/metadata/TMDO.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/TMDO.cpp.s
+.PHONY : src/metadata/TMDO.cpp.s
+
+src/metadata/TRequisite.o: src/metadata/TRequisite.cpp.o
+.PHONY : src/metadata/TRequisite.o
+
+# target to build an object file
+src/metadata/TRequisite.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.o
+.PHONY : src/metadata/TRequisite.cpp.o
+
+src/metadata/TRequisite.i: src/metadata/TRequisite.cpp.i
+.PHONY : src/metadata/TRequisite.i
+
+# target to preprocess a source file
+src/metadata/TRequisite.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.i
+.PHONY : src/metadata/TRequisite.cpp.i
+
+src/metadata/TRequisite.s: src/metadata/TRequisite.cpp.s
+.PHONY : src/metadata/TRequisite.s
+
+# target to generate assembly for a file
+src/metadata/TRequisite.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.s
+.PHONY : src/metadata/TRequisite.cpp.s
+
+src/metadata/t_comand.o: src/metadata/t_comand.cpp.o
+.PHONY : src/metadata/t_comand.o
+
+# target to build an object file
+src/metadata/t_comand.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.o
+.PHONY : src/metadata/t_comand.cpp.o
+
+src/metadata/t_comand.i: src/metadata/t_comand.cpp.i
+.PHONY : src/metadata/t_comand.i
+
+# target to preprocess a source file
+src/metadata/t_comand.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.i
+.PHONY : src/metadata/t_comand.cpp.i
+
+src/metadata/t_comand.s: src/metadata/t_comand.cpp.s
+.PHONY : src/metadata/t_comand.s
+
+# target to generate assembly for a file
+src/metadata/t_comand.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.s
+.PHONY : src/metadata/t_comand.cpp.s
+
+src/metadata/t_metadata_object_with_sections.o: src/metadata/t_metadata_object_with_sections.cpp.o
+.PHONY : src/metadata/t_metadata_object_with_sections.o
+
+# target to build an object file
+src/metadata/t_metadata_object_with_sections.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.o
+.PHONY : src/metadata/t_metadata_object_with_sections.cpp.o
+
+src/metadata/t_metadata_object_with_sections.i: src/metadata/t_metadata_object_with_sections.cpp.i
+.PHONY : src/metadata/t_metadata_object_with_sections.i
+
+# target to preprocess a source file
+src/metadata/t_metadata_object_with_sections.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.i
+.PHONY : src/metadata/t_metadata_object_with_sections.cpp.i
+
+src/metadata/t_metadata_object_with_sections.s: src/metadata/t_metadata_object_with_sections.cpp.s
+.PHONY : src/metadata/t_metadata_object_with_sections.s
+
+# target to generate assembly for a file
+src/metadata/t_metadata_object_with_sections.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.s
+.PHONY : src/metadata/t_metadata_object_with_sections.cpp.s
+
+src/metadata/t_tabular.o: src/metadata/t_tabular.cpp.o
+.PHONY : src/metadata/t_tabular.o
+
+# target to build an object file
+src/metadata/t_tabular.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.o
+.PHONY : src/metadata/t_tabular.cpp.o
+
+src/metadata/t_tabular.i: src/metadata/t_tabular.cpp.i
+.PHONY : src/metadata/t_tabular.i
+
+# target to preprocess a source file
+src/metadata/t_tabular.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.i
+.PHONY : src/metadata/t_tabular.cpp.i
+
+src/metadata/t_tabular.s: src/metadata/t_tabular.cpp.s
+.PHONY : src/metadata/t_tabular.s
+
+# target to generate assembly for a file
+src/metadata/t_tabular.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_tabular.cpp.s
+.PHONY : src/metadata/t_tabular.cpp.s
+
+v8reader_core_autogen/mocs_compilation.o: v8reader_core_autogen/mocs_compilation.cpp.o
+.PHONY : v8reader_core_autogen/mocs_compilation.o
+
+# target to build an object file
+v8reader_core_autogen/mocs_compilation.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.o
+.PHONY : v8reader_core_autogen/mocs_compilation.cpp.o
+
+v8reader_core_autogen/mocs_compilation.i: v8reader_core_autogen/mocs_compilation.cpp.i
+.PHONY : v8reader_core_autogen/mocs_compilation.i
+
+# target to preprocess a source file
+v8reader_core_autogen/mocs_compilation.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.i
+.PHONY : v8reader_core_autogen/mocs_compilation.cpp.i
+
+v8reader_core_autogen/mocs_compilation.s: v8reader_core_autogen/mocs_compilation.cpp.s
+.PHONY : v8reader_core_autogen/mocs_compilation.s
+
+# target to generate assembly for a file
+v8reader_core_autogen/mocs_compilation.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/v8reader_core_autogen/mocs_compilation.cpp.s
+.PHONY : v8reader_core_autogen/mocs_compilation.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -317,6 +523,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... test"
+	@echo "... v8reader_core_autogen"
 	@echo "... v8reader_core"
 	@echo "... src/Guid.o"
 	@echo "... src/Guid.i"
@@ -327,18 +534,42 @@ help:
 	@echo "... src/Types.o"
 	@echo "... src/Types.i"
 	@echo "... src/Types.s"
+	@echo "... src/V8Catalog.o"
+	@echo "... src/V8Catalog.i"
+	@echo "... src/V8Catalog.s"
 	@echo "... src/V8Container.o"
 	@echo "... src/V8Container.i"
 	@echo "... src/V8Container.s"
 	@echo "... src/V8Element.o"
 	@echo "... src/V8Element.i"
 	@echo "... src/V8Element.s"
+	@echo "... src/V8File.o"
+	@echo "... src/V8File.i"
+	@echo "... src/V8File.s"
 	@echo "... src/V8Format.o"
 	@echo "... src/V8Format.i"
 	@echo "... src/V8Format.s"
 	@echo "... src/V8Unpacker.o"
 	@echo "... src/V8Unpacker.i"
 	@echo "... src/V8Unpacker.s"
+	@echo "... src/metadata/TMDO.o"
+	@echo "... src/metadata/TMDO.i"
+	@echo "... src/metadata/TMDO.s"
+	@echo "... src/metadata/TRequisite.o"
+	@echo "... src/metadata/TRequisite.i"
+	@echo "... src/metadata/TRequisite.s"
+	@echo "... src/metadata/t_comand.o"
+	@echo "... src/metadata/t_comand.i"
+	@echo "... src/metadata/t_comand.s"
+	@echo "... src/metadata/t_metadata_object_with_sections.o"
+	@echo "... src/metadata/t_metadata_object_with_sections.i"
+	@echo "... src/metadata/t_metadata_object_with_sections.s"
+	@echo "... src/metadata/t_tabular.o"
+	@echo "... src/metadata/t_tabular.i"
+	@echo "... src/metadata/t_tabular.s"
+	@echo "... v8reader_core_autogen/mocs_compilation.o"
+	@echo "... v8reader_core_autogen/mocs_compilation.i"
+	@echo "... v8reader_core_autogen/mocs_compilation.s"
 .PHONY : help
 
 
