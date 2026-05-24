@@ -112,6 +112,7 @@ src/app/v8_reader: src/core/libv8reader_core.a
 src/app/v8_reader: src/ui/libv8reader_ui.a
 src/app/v8_reader: /usr/lib/x86_64-linux-gnu/libQt6Widgets.so.6.4.2
 src/app/v8_reader: src/core/libv8reader_core.a
+src/app/v8_reader: /usr/lib/x86_64-linux-gnu/libQt6Core.so.6.4.2
 src/app/v8_reader: /usr/lib/x86_64-linux-gnu/libz.so
 src/app/v8_reader: /usr/lib/x86_64-linux-gnu/libQt6Widgets.so.6.4.2
 src/app/v8_reader: /usr/lib/x86_64-linux-gnu/libQt6Gui.so.6.4.2

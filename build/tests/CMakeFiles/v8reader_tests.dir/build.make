@@ -127,6 +127,7 @@ tests/v8reader_tests: tests/CMakeFiles/v8reader_tests.dir/build.make
 tests/v8reader_tests: src/core/libv8reader_core.a
 tests/v8reader_tests: /usr/lib/x86_64-linux-gnu/libQt6Test.so.6.4.2
 tests/v8reader_tests: /usr/lib/x86_64-linux-gnu/libgtest_main.a
+tests/v8reader_tests: /usr/lib/x86_64-linux-gnu/libQt6Core.so.6.4.2
 tests/v8reader_tests: /usr/lib/x86_64-linux-gnu/libz.so
 tests/v8reader_tests: /usr/lib/x86_64-linux-gnu/libQt6Core.so.6.4.2
 tests/v8reader_tests: /usr/lib/x86_64-linux-gnu/libgtest.a

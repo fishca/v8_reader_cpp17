@@ -5,6 +5,7 @@
 /workspace/build/src/core/CMakeFiles/test.dir
 /workspace/build/src/core/CMakeFiles/edit_cache.dir
 /workspace/build/src/core/CMakeFiles/rebuild_cache.dir
+/workspace/build/src/core/CMakeFiles/v8reader_core_autogen.dir
 /workspace/build/src/ui/CMakeFiles/v8reader_ui.dir
 /workspace/build/src/ui/CMakeFiles/test.dir
 /workspace/build/src/ui/CMakeFiles/edit_cache.dir
