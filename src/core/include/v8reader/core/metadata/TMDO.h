@@ -54,7 +54,7 @@ public:
      * @param version Версия формата файла (15 или 16)
      * @return true если чтение прошло успешно
      */
-    virtual bool Load(QIODevice& stream, int version);
+    virtual bool Load(QDataStream& stream, int version);
 
 protected:
     /**
