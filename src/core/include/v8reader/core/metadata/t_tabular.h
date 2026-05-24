@@ -6,7 +6,7 @@
 #include <QString>
 #include <QDataStream>
 
-namespace v8reader::core::metadata {
+namespace v8reader::core {
 
 /**
  * @brief Класс, представляющий табличную часть объекта метаданных (TabularSection).
@@ -54,4 +54,4 @@ private:
     int m_default_row_count = 0; // Количество строк по умолчанию
 };
 
-} // namespace v8reader::core::metadata
+} // namespace v8reader::core

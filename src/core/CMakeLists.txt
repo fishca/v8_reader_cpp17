@@ -25,6 +25,8 @@ target_sources(v8reader_core PRIVATE
     src/metadata/t_comand.cpp
     src/metadata/t_metadata_object_with_sections.cpp
     src/metadata/t_tabular.cpp
+    src/metadata/sections/section_requisites.cpp
+    src/metadata/sections/section_commands.cpp
 )
 
 # 4. Настраиваем include-пути
