@@ -4,12 +4,13 @@
 #include <memory>
 #include <vector>
 #include <QString>
+#include <QDataStream>
 
 namespace v8reader::core::metadata {
 
 /**
  * @brief Класс, представляющий табличную часть объекта метаданных (TabularSection).
- * 
+ *
  * Табличные части используются в документах, планах счетов и других объектах
  * для хранения списков данных (список товаров, список движений и т.д.).
  * Наследуется от TMDO.
@@ -31,7 +32,7 @@ public:
      * @param version Версия формата файла.
      * @return true если парсинг успешен
      */
-    bool Load(QIODevice& stream, int version) override;
+    bool Load(QDataStream& stream, int version) override;
 
     /**
      * @brief Добавление реквизита в табличную часть.

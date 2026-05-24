@@ -4,12 +4,13 @@
 #include <memory>
 #include <vector>
 #include <QString>
+#include <QDataStream>
 
 namespace v8reader::core::metadata {
 
 /**
  * @brief Класс, представляющий команду объекта метаданных (Command).
- * 
+ *
  * Команды используются в формах, панелях навигации и других интерфейсах.
  * Наследуется от TMDO, так как имеет имя, синоним и другие стандартные свойства.
  */
@@ -30,7 +31,7 @@ public:
      * @param version Версия формата файла.
      * @return true если парсинг успешен
      */
-    bool Load(QIODevice& stream, int version) override;
+    bool Load(QDataStream& stream, int version) override;
 
     /**
      * @brief Получение имени действия (Action).

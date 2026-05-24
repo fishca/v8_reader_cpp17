@@ -1,38 +1,45 @@
 #include "t_comand.h"
-#include "../parser/v8_stream_reader.h" // Предполагаемый путь к утилите чтения
+#include <QDataStream>
 
 namespace v8reader::core::metadata {
 
-bool TComand::Load(QIODevice& stream, int version) {
+bool TComand::Load(QDataStream& stream, int version) {
     // 1. Загружаем базовые свойства TMDO (Имя, Синоним, Комментарий и т.д.)
     if (!TMDO::Load(stream, version)) {
         return false;
     }
 
     // 2. Читаем специфичные свойства команды
-    // Структура может отличаться в зависимости от версии формата, 
+    // Структура может отличаться в зависимости от версии формата,
     // здесь приведен примерный порядок чтения на основе типовой структуры 1С
-    
-    parser::V8StreamReader reader(stream, version);
 
     // Чтение поля Action (Действие)
-    if (reader.HasNext()) {
-        m_action = reader.ReadString();
+    qint32 actionLen = 0;
+    stream >> actionLen;
+    if (actionLen > 0) {
+        QByteArray data = stream.readRawData(actionLen * 2);
+        m_action = QString::fromUtf16(reinterpret_cast<const char16_t*>(data.constData()), actionLen);
     }
 
     // Чтение поля Use (Использование)
-    if (reader.HasNext()) {
-        m_use = reader.ReadString();
+    qint32 useLen = 0;
+    stream >> useLen;
+    if (useLen > 0) {
+        QByteArray data = stream.readRawData(useLen * 2);
+        m_use = QString::fromUtf16(reinterpret_cast<const char16_t*>(data.constData()), useLen);
     }
 
     // Чтение поля Presentation (Представление)
-    if (reader.HasNext()) {
-        m_presentation = reader.ReadString();
+    qint32 presLen = 0;
+    stream >> presLen;
+    if (presLen > 0) {
+        QByteArray data = stream.readRawData(presLen * 2);
+        m_presentation = QString::fromUtf16(reinterpret_cast<const char16_t*>(data.constData()), presLen);
     }
-    
+
     // Примечание: Реальный порядок и наличие полей нужно сверять с исходным C++ Builder кодом
     // и тестировать на реальных файлах .cf/.1CD
-    
+
     return true;
 }
 
