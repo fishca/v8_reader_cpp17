@@ -1,8 +1,8 @@
 #pragma once
-#include "Types.h" // Подключаем структуру
+#include "v8reader/core/Types.h" // Подключаем структуру
 #include <functional>
 
-namespace v8::core {
+namespace v8reader::core {
 
     class IV8Repository {
     public:
@@ -22,4 +22,4 @@ namespace v8::core {
 
     std::unique_ptr<IV8Repository> createV8Repository();
 
-} // namespace v8::core
+} // namespace v8reader::core

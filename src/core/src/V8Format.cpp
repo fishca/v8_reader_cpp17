@@ -2,7 +2,7 @@
 #include <charconv>
 #include <system_error>
 
-namespace v8::core {
+namespace v8reader::core {
 
     // ��������������� ������� ��� hex <-> uint �����������
 
@@ -118,4 +118,4 @@ namespace v8::core {
         return hdr;
     }
 
-} // namespace v8::core
+} // namespace v8reader::core

@@ -1,5 +1,5 @@
-#include "t_tabular.h"
-#include "t_requisite.h"
+#include "v8reader/core/metadata/t_tabular.h"
+#include "v8reader/core/metadata/TRequisite.h"
 #include <QDataStream>
 #include <QDebug>
 

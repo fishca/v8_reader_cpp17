@@ -6,5 +6,5 @@ CXX_DEFINES = -DQT_CORE_LIB -DQT_NO_DEBUG
 
 CXX_INCLUDES = -I/workspace/build/src/core/v8reader_core_autogen/include -I/workspace/src/core/include -I/workspace/src/core/src -isystem /usr/include/x86_64-linux-gnu/qt6/QtCore -isystem /usr/include/x86_64-linux-gnu/qt6 -isystem /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++
 
-CXX_FLAGS = -fPIC -std=c++17
+CXX_FLAGS = -O3 -DNDEBUG -fPIC -std=c++17
 

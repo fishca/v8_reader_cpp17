@@ -7,7 +7,7 @@
 #include <optional>
 #include <vector>
 
-namespace v8::core {
+namespace v8reader::core {
 
 enum class TreeNodeType {
     Empty,
@@ -78,4 +78,4 @@ private:
     std::unique_ptr<v8reader::core::TMDO> buildObjectFromNode(TreeNode* node);
 };
 
-} // namespace v8::core
+} // namespace v8reader::core

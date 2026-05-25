@@ -30,7 +30,10 @@ jobs:
       # ✅ install-qt-action удалён — Qt ставится через vcpkg
 
       - name: Clean build directory
-        run: rm -rf build || true
+        run: |
+          if (Test-Path build) {
+            Remove-Item -Path build -Recurse -Force
+          }
 
       - name: Configure CMake
         run: >

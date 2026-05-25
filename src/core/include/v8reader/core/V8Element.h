@@ -1,11 +1,11 @@
 #pragma once
-#include "Types.h"
-#include "V8Format.h"
+#include "v8reader/core/Types.h"
+#include "v8reader/core/V8Format.h"
 #include <vector>
 #include <memory>
 #include <optional>
 
-namespace v8::core {
+namespace v8reader::core {
 
     // ������������� �������� (����� ��� ��������) ������ .cf
     class V8Element {
@@ -53,4 +53,4 @@ namespace v8::core {
         mutable std::optional<uint64_t> cached_modify_time_;
     };
 
-} // namespace v8::core
+} // namespace v8reader::core

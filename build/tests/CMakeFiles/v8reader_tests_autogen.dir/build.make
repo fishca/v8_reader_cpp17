@@ -68,7 +68,7 @@ include tests/CMakeFiles/v8reader_tests_autogen.dir/progress.make
 
 tests/CMakeFiles/v8reader_tests_autogen:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target v8reader_tests"
-	cd /workspace/build/tests && /usr/bin/cmake -E cmake_autogen /workspace/build/tests/CMakeFiles/v8reader_tests_autogen.dir/AutogenInfo.json ""
+	cd /workspace/build/tests && /usr/bin/cmake -E cmake_autogen /workspace/build/tests/CMakeFiles/v8reader_tests_autogen.dir/AutogenInfo.json Release
 
 v8reader_tests_autogen: tests/CMakeFiles/v8reader_tests_autogen
 v8reader_tests_autogen: tests/CMakeFiles/v8reader_tests_autogen.dir/build.make

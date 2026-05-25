@@ -38,6 +38,9 @@ public:
     const QByteArray& getRef() const { return m_ref; }
     void setRef(const QByteArray& ref) { m_ref = ref; }
 
+    const QString& getGuid() const { return m_guid; }
+    void setGuid(const QString& guid) { m_guid = guid; }
+
     // Работа с реквизитами
     const std::vector<std::shared_ptr<TRequisite>>& getRequisites() const { return m_requisites; }
     void addRequisite(std::shared_ptr<TRequisite> req);
@@ -64,18 +67,19 @@ protected:
      * Версия формата влияет только на размер адресов (4 байта для v15, 8 байт для v16),
      * но не на кодировку строк.
      */
-    QString readString(QIODevice& stream, int version);
+    QString readString(QDataStream& stream, int version);
 
     /**
      * @brief Чтение байтового массива (Ref, UUID и т.д.).
      */
-    QByteArray readByteArray(QIODevice& stream, int size);
+    QByteArray readByteArray(QDataStream& stream, int size);
 
 private:
     QString m_name;
     QString m_synonym;
     QString m_comment;
     QByteArray m_ref;
+    QString m_guid;
     std::vector<std::shared_ptr<TRequisite>> m_requisites;
 };
 

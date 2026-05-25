@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <array>
 
-namespace v8::core {
+namespace v8reader::core {
 
     // ========== Заголовки файла ==========
     struct FileHeader15 {
@@ -125,4 +125,4 @@ namespace v8::core {
     using Format15 = FormatPolicy<FatEntry15, BlockHeader15, FileHeader15>;
     using Format16 = FormatPolicy<FatEntry16, BlockHeader16, FileHeader16>;
 
-} // namespace v8::core
+} // namespace v8reader::core

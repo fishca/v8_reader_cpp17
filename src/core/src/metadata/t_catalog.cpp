@@ -1,4 +1,4 @@
-#include "t_catalog.h"
+#include "v8reader/core/metadata/t_catalog.h"
 #include <QDebug>
 
 namespace v8reader::core {

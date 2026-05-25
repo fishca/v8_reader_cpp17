@@ -11,7 +11,7 @@
 #include <codecvt>
 #include <cstring>
 
-namespace v8::core {
+namespace v8reader::core {
     namespace {
         struct SectionInfo {
             const wchar_t* guid;
@@ -1581,4 +1581,4 @@ namespace v8::core {
     template int V8Container::loadImpl<Format15>();
     template int V8Container::loadImpl<Format16>();
 
-} // namespace v8::core
+} // namespace v8reader::core

@@ -1,4 +1,4 @@
-#include "t_metadata_object_with_sections.h"
+#include "v8reader/core/metadata/t_metadata_object_with_sections.h"
 #include <QDataStream>
 #include <QDebug>
 

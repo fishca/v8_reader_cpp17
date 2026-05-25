@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <cstring>
 
-namespace v8::core {
+namespace v8reader::core {
 
     bool V8Unpacker::loadFromFile(const String& path) {
         try {
@@ -64,4 +64,4 @@ namespace v8::core {
         return std::make_unique<V8Unpacker>();
     }
 
-} // namespace v8::core
+} // namespace v8reader::core

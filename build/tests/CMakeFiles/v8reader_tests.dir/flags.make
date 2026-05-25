@@ -6,5 +6,5 @@ CXX_DEFINES = -DQT_CORE_LIB -DQT_NO_DEBUG -DQT_TESTCASE_BUILDDIR=\"/workspace/bu
 
 CXX_INCLUDES = -I/workspace/build/tests/v8reader_tests_autogen/include -I/workspace/src/core/include -isystem /usr/include/x86_64-linux-gnu/qt6/QtCore -isystem /usr/include/x86_64-linux-gnu/qt6 -isystem /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -isystem /usr/include/x86_64-linux-gnu/qt6/QtTest
 
-CXX_FLAGS = -fPIC -DGTEST_HAS_PTHREAD=1 -std=c++17
+CXX_FLAGS = -O3 -DNDEBUG -fPIC -DGTEST_HAS_PTHREAD=1 -std=c++17
 

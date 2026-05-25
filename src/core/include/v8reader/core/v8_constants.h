@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <cstddef>
 
-namespace v8::core {
+namespace v8reader::core {
 
 	// ���������� ������ 1�
 	constexpr const wchar_t* EXT_CF = L".cf";
@@ -29,4 +29,4 @@ namespace v8::core {
 	// ������ ��������� ��������
 	constexpr size_t ELEM_HEADER_FIXED_SIZE = 8 + 8 + 4; // date_create + date_modify + reserved
 
-} // namespace v8::core
+} // namespace v8reader::core

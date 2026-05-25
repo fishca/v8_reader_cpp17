@@ -9,7 +9,7 @@ namespace v8reader::core {
 // Внутренняя реализация V8File на основе V8Container
 class V8FileImpl : public V8File {
 public:
-    explicit V8FileImpl(std::shared_ptr<v8::core::V8Container> container)
+    explicit V8FileImpl(std::shared_ptr<v8reader::core::V8Container> container)
         : m_container(std::move(container)) {}
 
     std::shared_ptr<V8Element> getRoot() const override {
@@ -18,12 +18,12 @@ public:
     }
 
     int getVersion() const override {
-        return m_container->isFormat16() ? 16 : 15;
+        return m_container.get()->isFormat16() ? 16 : 15;
     }
 
     bool isCatalog() const override {
         // Проверяем наличие корневого элемента "root"
-        return m_container->findElement(L"root") != nullptr;
+        return m_container.get()->findElement(L"root") != nullptr;
     }
 
     QVector<std::shared_ptr<V8Element>> findElementsByName(const QString& name) const override {
@@ -33,7 +33,7 @@ public:
     }
 
     std::optional<QByteArray> extractData(const QString& name) const override {
-        auto data = m_container->extractData(name.toStdWString());
+        auto data = m_container.get()->extractData(name.toStdWString());
         if (data.has_value()) {
             return QByteArray(reinterpret_cast<const char*>(data->data()), 
                              static_cast<int>(data->size()));
@@ -42,7 +42,7 @@ public:
     }
 
     std::optional<QString> extractModuleText(const QString& name) const override {
-        auto text = m_container->getModuleText(name.toStdWString());
+        auto text = m_container.get()->getModuleText(name.toStdWString());
         if (text.has_value()) {
             return QString::fromStdWString(*text);
         }
@@ -50,16 +50,16 @@ public:
     }
 
     QString getLastError() const override {
-        return QString::fromStdWString(m_container->getLastError());
+        return QString::fromStdWString(m_container.get()->getLastError());
     }
 
 private:
-    std::shared_ptr<v8::core::V8Container> m_container;
+    std::shared_ptr<v8reader::core::V8Container> m_container;
 };
 
 std::shared_ptr<V8File> V8File::loadFromFile(const QString& filePath) {
     try {
-        auto container = std::make_shared<v8::core::V8Container>(filePath.toStdWString());
+        auto container = std::make_shared<v8reader::core::V8Container>(filePath.toStdWString());
         if (container->load() == 0) {
             return std::make_shared<V8FileImpl>(container);
         }
