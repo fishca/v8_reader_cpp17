@@ -24,8 +24,9 @@ jobs:
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          modules: 'qt5compat qtshadertools'
-          cached: 'true'
+          # Modules removed to avoid installation errors on specific Qt versions. 
+          # Standard modules (Core, Gui, Widgets, Network) are installed by default.
+          cache: true
 
       # ✅ Кэширование vcpkg для других зависимостей (если нужны)
       - name: Cache vcpkg
@@ -102,8 +103,9 @@ jobs:
           host: 'linux'
           target: 'desktop'
           arch: 'gcc_64'
-          modules: 'qt5compat qtshadertools'
-          cached: 'true'
+          # Modules removed to avoid installation errors on specific Qt versions. 
+          # Standard modules (Core, Gui, Widgets, Network) are installed by default.
+          cache: true
 
       # ✅ Кэширование сборки
       - name: Cache build
