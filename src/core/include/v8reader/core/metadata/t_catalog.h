@@ -5,6 +5,7 @@
 #include "sections/section_commands.h"
 #include <memory>
 #include <QString>
+#include <map>
 
 namespace v8reader::core {
 

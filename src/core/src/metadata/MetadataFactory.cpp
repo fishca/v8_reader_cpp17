@@ -26,7 +26,7 @@ std::unique_ptr<TMDO> MetadataFactory::createObject(const QString& typeName) {
 }
 
 bool MetadataFactory::isRegistered(const QString& typeName) {
-    return creators().contains(typeName);
+    return creators().find(typeName) != creators().end();
 }
 
 QStringList MetadataFactory::getRegisteredTypes() {

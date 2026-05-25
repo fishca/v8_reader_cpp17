@@ -22,7 +22,7 @@ public:
     std::unique_ptr<TMDO> createSection(const QString& sectionName) override;
 
     // Методы для загрузки данных (если нужна специфичная логика)
-    bool Load(QDataStream& stream) override;
+    bool Load(QDataStream& stream, int version) override;
 
     // Удобные методы доступа к часто используемым секциям
     /**

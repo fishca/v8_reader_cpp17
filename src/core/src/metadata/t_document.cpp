@@ -92,9 +92,9 @@ std::unique_ptr<TMDO> TDocument::createSection(const QString& sectionName) {
     return std::make_unique<TMDO>(sectionName, Guid());
 }
 
-bool TDocument::Load(QDataStream& stream) {
+bool TDocument::Load(QDataStream& stream, int version) {
     // Вызываем базовую реализацию, которая прочитает имя, GUID и секции
-    if (!MetadataObjectWithSections::Load(stream)) {
+    if (!MetadataObjectWithSections::Load(stream, version)) {
         return false;
     }
     

@@ -4,9 +4,11 @@
 
 namespace v8reader::core {
 
-void MetadataObjectWithSections::Load(QDataStream& stream, int version) {
+bool MetadataObjectWithSections::Load(QDataStream& stream, int version) {
     // Сначала загружаем базовые свойства объекта (имя, синоним и т.д.)
-    TMDO::Load(stream, version);
+    if (!TMDO::Load(stream, version)) {
+        return false;
+    }
 
     // Читаем количество секций
     quint32 sectionCount;
@@ -14,7 +16,7 @@ void MetadataObjectWithSections::Load(QDataStream& stream, int version) {
 
     if (stream.status() != QDataStream::Ok) {
         qWarning() << "Error reading section count for object:" << getName();
-        return;
+        return false;
     }
 
     // Читаем каждую секцию
@@ -25,7 +27,7 @@ void MetadataObjectWithSections::Load(QDataStream& stream, int version) {
         
         if (stream.status() != QDataStream::Ok) {
             qWarning() << "Error reading section name at index" << i << "for object:" << getName();
-            break;
+            return false;
         }
 
         // Создаем экземпляр секции через фабричный метод
@@ -39,8 +41,11 @@ void MetadataObjectWithSections::Load(QDataStream& stream, int version) {
             qWarning() << "Unknown section type:" << sectionName << "in object:" << getName();
             // TODO: Возможно, нужно пропустить данные неизвестной секции в потоке
             // Для этого нужно знать размер секции или иметь маркер конца
+            return false;
         }
     }
+    
+    return true;
 }
 
 TMDO* MetadataObjectWithSections::getSection(const QString& name) const {
@@ -49,7 +54,7 @@ TMDO* MetadataObjectWithSections::getSection(const QString& name) const {
 }
 
 bool MetadataObjectWithSections::hasSection(const QString& name) const {
-    return m_sections.contains(name);
+    return m_sections.find(name) != m_sections.end();
 }
 
 std::vector<QString> MetadataObjectWithSections::getSectionNames() const {

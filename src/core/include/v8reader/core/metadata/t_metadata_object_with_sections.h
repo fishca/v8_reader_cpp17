@@ -24,7 +24,7 @@ public:
      * @param stream Входной поток с данными.
      * @param version Версия формата файла (.1CD).
      */
-    void Load(QDataStream& stream, int version) override;
+    bool Load(QDataStream& stream, int version) override;
 
     /**
      * @brief Получить секцию по имени.
