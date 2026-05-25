@@ -11,25 +11,25 @@ add_library(v8reader::core ALIAS v8reader_core)
 
 # 3. Добавляем источники (проверьте пути!)
 target_sources(v8reader_core PRIVATE
-    src/V8Unpacker.cpp
-    src/V8Container.cpp
-    src/TreeReader.cpp
-    src/V8Element.cpp
-    src/V8Format.cpp
-    src/Guid.cpp
-    src/Types.cpp
-    src/V8File.cpp
-    src/V8Catalog.cpp
-    src/metadata/TMDO.cpp
-    src/metadata/TRequisite.cpp
-    src/metadata/t_comand.cpp
-    src/metadata/t_metadata_object_with_sections.cpp
-    src/metadata/t_tabular.cpp
-    src/metadata/t_moxel.cpp
-    src/metadata/t_catalog.cpp
-    src/metadata/MetadataFactory.cpp
-    src/metadata/sections/section_requisites.cpp
-    src/metadata/sections/section_commands.cpp
+    V8Unpacker.cpp
+    V8Container.cpp
+    TreeReader.cpp
+    V8Element.cpp
+    V8Format.cpp
+    Guid.cpp
+    Types.cpp
+    V8File.cpp
+    V8Catalog.cpp
+    metadata/TMDO.cpp
+    metadata/TRequisite.cpp
+    metadata/t_comand.cpp
+    metadata/t_metadata_object_with_sections.cpp
+    metadata/t_tabular.cpp
+    metadata/t_moxel.cpp
+    metadata/t_catalog.cpp
+    metadata/MetadataFactory.cpp
+    metadata/sections/section_requisites.cpp
+    metadata/sections/section_commands.cpp
 )
 
 # 4. Настраиваем include-пути
