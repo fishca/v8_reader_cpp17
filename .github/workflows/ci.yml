@@ -2,14 +2,13 @@ name: C++ CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, develop ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, develop ]
   workflow_dispatch:
 
 env:
   BUILD_TYPE: Release
-  VCPKG_ROOT: C:\vcpkg
 
 jobs:
   build-windows:
@@ -17,17 +16,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Update vcpkg
+      # ✅ Используем install-qt-action для быстрой установки Qt (2-3 мин вместо 15 мин через vcpkg)
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.7.0'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2019_64'
+          modules: 'qt5compat qtshadertools'
+          cached: 'true'
+
+      # ✅ Кэширование vcpkg для других зависимостей (если нужны)
+      - name: Cache vcpkg
+        uses: actions/cache@v4
+        with:
+          path: |
+            C:\\vcpkg\\installed
+            C:\\vcpkg\\downloads
+          key: vcpkg-win-${{ hashFiles('vcpkg.json') }}
+          restore-keys: |
+            vcpkg-win-
+
+      - name: Install other dependencies via vcpkg (if needed)
         run: |
-          cd C:\vcpkg
-          git fetch --depth=1 origin master
-          git checkout master
-          .\bootstrap-vcpkg.bat
-
-      - name: Install dependencies via vcpkg
-        run: vcpkg install --triplet=x64-windows --no-print-usage
-
-      # ✅ install-qt-action удалён — Qt ставится через vcpkg
+          if (Test-Path vcpkg.json) {
+            vcpkg install --triplet=x64-windows --no-print-usage
+          }
+        continue-on-error: true
 
       - name: Clean build directory
         run: |
@@ -41,9 +57,74 @@ jobs:
           -G "Visual Studio 17 2022"
           -A x64
           -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-          -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake
-          # 👇 CMake будет искать Qt в папке vcpkg/installed/x64-windows
-          -DCMAKE_PREFIX_PATH=${{ env.VCPKG_ROOT }}/installed/x64-windows
+          -DCMAKE_PREFIX_PATH="C:/Qt/6.7.0/msvc2019_64"
+          -DV8READER_BUILD_TESTS=ON
+
+      - name: Build
+        run: cmake --build build --config ${{env.BUILD_TYPE}} --parallel
+
+      - name: Run Tests
+        working-directory: build
+        run: ctest -C ${{env.BUILD_TYPE}} --output-on-failure
+
+  build-linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      # ✅ Используем предустановленные пакеты Ubuntu + install-qt-action
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            libgl1-mesa-dev \
+            libxcb-cursor0 \
+            libxcb-icccm4 \
+            libxcb-image0 \
+            libxcb-keysyms1 \
+            libxcb-randr0 \
+            libxcb-render-util0 \
+            libxcb-shape0 \
+            libxcb-xfixes0 \
+            libxcb-xinerama0 \
+            libxkbcommon-x11-0 \
+            libfontconfig1 \
+            libfreetype6 \
+            libdbus-1-3
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.7.0'
+          host: 'linux'
+          target: 'desktop'
+          arch: 'gcc_64'
+          modules: 'qt5compat qtshadertools'
+          cached: 'true'
+
+      # ✅ Кэширование сборки
+      - name: Cache build
+        uses: actions/cache@v4
+        with:
+          path: |
+            build
+            ~/.cache/vcpkg
+          key: build-linux-${{ github.sha }}
+          restore-keys: |
+            build-linux-
+
+      - name: Clean build directory
+        run: rm -rf build || true
+
+      - name: Configure CMake
+        run: >
+          cmake -B build
+          -G Ninja
+          -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}"
           -DV8READER_BUILD_TESTS=ON
 
       - name: Build
