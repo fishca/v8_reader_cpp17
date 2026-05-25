@@ -1,12 +1,12 @@
-#include "v8reader/core/metadata/section_commands.h"
+#include "v8reader/core/metadata/sections/section_commands.h"
 #include <QDataStream>
 #include <QDebug>
 
 namespace v8reader::core {
 
-void SectionCommands::Load(QDataStream& stream, int version) {
+bool SectionCommands::Load(QDataStream& stream, int version) {
     // Загружаем базовые данные секции
-    TMDO::Load(stream, version);
+    bool result = TMDO::Load(stream, version);
 
     // Читаем количество команд
     quint32 cmdCount;
@@ -14,7 +14,7 @@ void SectionCommands::Load(QDataStream& stream, int version) {
 
     if (stream.status() != QDataStream::Ok) {
         qWarning() << "Error reading commands count in section:" << getName();
-        return;
+        return result;
     }
 
     // Читаем каждую команду
@@ -23,6 +23,8 @@ void SectionCommands::Load(QDataStream& stream, int version) {
         command->Load(stream, version);
         m_commands.push_back(std::move(command));
     }
+    
+    return result;
 }
 
 void SectionCommands::addCommand(std::unique_ptr<TComand> cmd) {

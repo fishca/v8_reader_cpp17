@@ -1,12 +1,12 @@
-#include "v8reader/core/metadata/section_requisites.h"
+#include "v8reader/core/metadata/sections/section_requisites.h"
 #include <QDataStream>
 #include <QDebug>
 
 namespace v8reader::core {
 
-void SectionRequisites::Load(QDataStream& stream, int version) {
+bool SectionRequisites::Load(QDataStream& stream, int version) {
     // Загружаем базовые данные секции (имя и т.д.)
-    TMDO::Load(stream, version);
+    bool result = TMDO::Load(stream, version);
 
     // Читаем количество реквизитов
     quint32 reqCount;
@@ -14,7 +14,7 @@ void SectionRequisites::Load(QDataStream& stream, int version) {
 
     if (stream.status() != QDataStream::Ok) {
         qWarning() << "Error reading requisites count in section:" << getName();
-        return;
+        return result;
     }
 
     // Читаем каждый реквизит
@@ -23,6 +23,8 @@ void SectionRequisites::Load(QDataStream& stream, int version) {
         requisite->Load(stream, version);
         m_requisites.push_back(std::move(requisite));
     }
+    
+    return result;
 }
 
 void SectionRequisites::addRequisite(std::unique_ptr<TRequisite> req) {

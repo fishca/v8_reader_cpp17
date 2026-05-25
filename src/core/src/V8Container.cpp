@@ -341,7 +341,7 @@ namespace v8reader::core {
         stream.avail_in = static_cast<uInt>(src.size());
 
         // вњ… РџРѕРґР°РІР»СЏРµРј [[nodiscard]], С‚Р°Рє РєР°Рє РѕС€РёР±РєСѓ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РЅРёР¶Рµ
-        if (inflateInit2(&stream, -MAX_WBITS) != Z_OK) return {};
+        if (inflateInit2(&stream, -MAX_WBITS) != Z_OK) { inflateEnd(&stream); return {}; }
 
         std::vector<uint8_t> output(1024 * 1024);
         while (true) {
@@ -419,7 +419,7 @@ namespace v8reader::core {
             z_stream stream{};
             stream.next_in = const_cast<Bytef*>(src.data());
             stream.avail_in = static_cast<uInt>(src.size());
-            if (inflateInit2(&stream, windowBits) != Z_OK) return {};
+            if (inflateInit2(&stream, windowBits) != Z_OK) { inflateEnd(&stream); return {}; }
             std::vector<uint8_t> out(1024 * 1024);
             while (true) {
                 stream.next_out = out.data() + stream.total_out;
@@ -693,7 +693,7 @@ namespace v8reader::core {
                 z_stream stream{};
                 stream.next_in = const_cast<Bytef*>(src.data());
                 stream.avail_in = static_cast<uInt>(src.size());
-                if (inflateInit2(&stream, windowBits) != Z_OK) return {};
+                if (inflateInit2(&stream, windowBits) != Z_OK) { inflateEnd(&stream); return {}; }
                 std::vector<uint8_t> out(1024 * 1024);
                 while (true) {
                     stream.next_out = out.data() + stream.total_out;
@@ -1162,7 +1162,7 @@ namespace v8reader::core {
             z_stream stream{};
             stream.next_in = const_cast<Bytef*>(src.data());
             stream.avail_in = static_cast<uInt>(src.size());
-            if (inflateInit2(&stream, windowBits) != Z_OK) return {};
+            if (inflateInit2(&stream, windowBits) != Z_OK) { inflateEnd(&stream); return {}; }
             std::vector<uint8_t> out(1024 * 1024);
             while (true) {
                 stream.next_out = out.data() + stream.total_out;
