@@ -1,12 +1,12 @@
 #pragma once
 
-#include "TMDO.h"
+#include "v8reader/core/metadata/TMDO.h"
 #include <memory>
 #include <vector>
 #include <QString>
 #include <QDataStream>
 
-namespace v8reader::core::metadata {
+namespace v8reader::core {
 
 /**
  * @brief Класс, представляющий команду объекта метаданных (Command).
@@ -54,4 +54,4 @@ private:
     QString m_presentation; // Представление (текст кнопки/пункта меню)
 };
 
-} // namespace v8reader::core::metadata
+} // namespace v8reader::core

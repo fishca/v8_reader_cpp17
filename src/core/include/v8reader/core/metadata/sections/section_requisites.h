@@ -1,16 +1,17 @@
 #pragma once
 
-#include "TMDO.h"
-#include "TRequisite.h"
+#include "v8reader/core/metadata/TMDO.h"
+#include "v8reader/core/metadata/TRequisite.h"
 #include <memory>
 #include <vector>
 #include <QString>
+#include <QDataStream>
 
 namespace v8reader::core {
 
 /**
  * @brief Секция "Реквизиты" (Properties/Requisites).
- * 
+ *
  * Содержит список реквизитов объекта метаданных.
  */
 class SectionRequisites : public TMDO {
@@ -18,7 +19,7 @@ public:
     SectionRequisites() = default;
     ~SectionRequisites() override = default;
 
-    void Load(QDataStream& stream, int version) override;
+    bool Load(QDataStream& stream, int version) override;
 
     /**
      * @brief Добавить реквизит в список.

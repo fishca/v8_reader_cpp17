@@ -1,16 +1,17 @@
 #pragma once
 
-#include "TMDO.h"
-#include "t_comand.h"
+#include "v8reader/core/metadata/TMDO.h"
+#include "v8reader/core/metadata/t_comand.h"
 #include <memory>
 #include <vector>
 #include <QString>
+#include <QDataStream>
 
 namespace v8reader::core {
 
 /**
  * @brief Секция "Команды" (Commands).
- * 
+ *
  * Содержит список команд объекта метаданных.
  */
 class SectionCommands : public TMDO {
@@ -18,7 +19,7 @@ public:
     SectionCommands() = default;
     ~SectionCommands() override = default;
 
-    void Load(QDataStream& stream, int version) override;
+    bool Load(QDataStream& stream, int version) override;
 
     /**
      * @brief Добавить команду в список.
