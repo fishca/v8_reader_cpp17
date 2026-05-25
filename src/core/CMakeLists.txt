@@ -25,7 +25,9 @@ target_sources(v8reader_core PRIVATE
     src/metadata/t_comand.cpp
     src/metadata/t_metadata_object_with_sections.cpp
     src/metadata/t_tabular.cpp
+    src/metadata/t_moxel.cpp
     src/metadata/t_catalog.cpp
+    src/metadata/MetadataFactory.cpp
     src/metadata/sections/section_requisites.cpp
     src/metadata/sections/section_commands.cpp
 )
