@@ -6,5 +6,5 @@ CXX_DEFINES = -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_
 
 CXX_INCLUDES = -I/workspace/build/src/ui/v8reader_ui_autogen/include -I/workspace/src/ui/include -I/workspace/src/ui/src -I/workspace/src/core/include -isystem /usr/include/x86_64-linux-gnu/qt6/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt6 -isystem /usr/include/x86_64-linux-gnu/qt6/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -isystem /usr/include/x86_64-linux-gnu/qt6/QtGui -isystem /usr/include/x86_64-linux-gnu/qt6/QtConcurrent
 
-CXX_FLAGS = -fPIC -std=c++17
+CXX_FLAGS = -O3 -DNDEBUG -fPIC -std=c++17
 

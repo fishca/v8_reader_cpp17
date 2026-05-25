@@ -80,7 +80,7 @@ src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/src/ui/icons
 src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/src/ui/icons/document.png
 src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /usr/lib/qt6/libexec/rcc
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic RCC for resources.qrc"
-	cd /workspace/build/src/ui && /usr/bin/cmake -E cmake_autorcc /workspace/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json 
+	cd /workspace/build/src/ui && /usr/bin/cmake -E cmake_autorcc /workspace/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json Release
 
 src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o: src/ui/CMakeFiles/v8reader_ui.dir/flags.make
 src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o: src/ui/v8reader_ui_autogen/mocs_compilation.cpp

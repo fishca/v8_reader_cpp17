@@ -68,7 +68,7 @@ include src/app/CMakeFiles/v8_reader_autogen.dir/progress.make
 
 src/app/CMakeFiles/v8_reader_autogen:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target v8_reader"
-	cd /workspace/build/src/app && /usr/bin/cmake -E cmake_autogen /workspace/build/src/app/CMakeFiles/v8_reader_autogen.dir/AutogenInfo.json ""
+	cd /workspace/build/src/app && /usr/bin/cmake -E cmake_autogen /workspace/build/src/app/CMakeFiles/v8_reader_autogen.dir/AutogenInfo.json Release
 
 v8_reader_autogen: src/app/CMakeFiles/v8_reader_autogen
 v8_reader_autogen: src/app/CMakeFiles/v8_reader_autogen.dir/build.make

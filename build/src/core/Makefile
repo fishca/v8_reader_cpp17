@@ -418,6 +418,78 @@ src/metadata/TRequisite.cpp.s:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/TRequisite.cpp.s
 .PHONY : src/metadata/TRequisite.cpp.s
 
+src/metadata/sections/section_commands.o: src/metadata/sections/section_commands.cpp.o
+.PHONY : src/metadata/sections/section_commands.o
+
+# target to build an object file
+src/metadata/sections/section_commands.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/sections/section_commands.cpp.o
+.PHONY : src/metadata/sections/section_commands.cpp.o
+
+src/metadata/sections/section_commands.i: src/metadata/sections/section_commands.cpp.i
+.PHONY : src/metadata/sections/section_commands.i
+
+# target to preprocess a source file
+src/metadata/sections/section_commands.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/sections/section_commands.cpp.i
+.PHONY : src/metadata/sections/section_commands.cpp.i
+
+src/metadata/sections/section_commands.s: src/metadata/sections/section_commands.cpp.s
+.PHONY : src/metadata/sections/section_commands.s
+
+# target to generate assembly for a file
+src/metadata/sections/section_commands.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/sections/section_commands.cpp.s
+.PHONY : src/metadata/sections/section_commands.cpp.s
+
+src/metadata/sections/section_requisites.o: src/metadata/sections/section_requisites.cpp.o
+.PHONY : src/metadata/sections/section_requisites.o
+
+# target to build an object file
+src/metadata/sections/section_requisites.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/sections/section_requisites.cpp.o
+.PHONY : src/metadata/sections/section_requisites.cpp.o
+
+src/metadata/sections/section_requisites.i: src/metadata/sections/section_requisites.cpp.i
+.PHONY : src/metadata/sections/section_requisites.i
+
+# target to preprocess a source file
+src/metadata/sections/section_requisites.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/sections/section_requisites.cpp.i
+.PHONY : src/metadata/sections/section_requisites.cpp.i
+
+src/metadata/sections/section_requisites.s: src/metadata/sections/section_requisites.cpp.s
+.PHONY : src/metadata/sections/section_requisites.s
+
+# target to generate assembly for a file
+src/metadata/sections/section_requisites.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/sections/section_requisites.cpp.s
+.PHONY : src/metadata/sections/section_requisites.cpp.s
+
+src/metadata/t_catalog.o: src/metadata/t_catalog.cpp.o
+.PHONY : src/metadata/t_catalog.o
+
+# target to build an object file
+src/metadata/t_catalog.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_catalog.cpp.o
+.PHONY : src/metadata/t_catalog.cpp.o
+
+src/metadata/t_catalog.i: src/metadata/t_catalog.cpp.i
+.PHONY : src/metadata/t_catalog.i
+
+# target to preprocess a source file
+src/metadata/t_catalog.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_catalog.cpp.i
+.PHONY : src/metadata/t_catalog.cpp.i
+
+src/metadata/t_catalog.s: src/metadata/t_catalog.cpp.s
+.PHONY : src/metadata/t_catalog.s
+
+# target to generate assembly for a file
+src/metadata/t_catalog.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_catalog.cpp.s
+.PHONY : src/metadata/t_catalog.cpp.s
+
 src/metadata/t_comand.o: src/metadata/t_comand.cpp.o
 .PHONY : src/metadata/t_comand.o
 
@@ -558,6 +630,15 @@ help:
 	@echo "... src/metadata/TRequisite.o"
 	@echo "... src/metadata/TRequisite.i"
 	@echo "... src/metadata/TRequisite.s"
+	@echo "... src/metadata/sections/section_commands.o"
+	@echo "... src/metadata/sections/section_commands.i"
+	@echo "... src/metadata/sections/section_commands.s"
+	@echo "... src/metadata/sections/section_requisites.o"
+	@echo "... src/metadata/sections/section_requisites.i"
+	@echo "... src/metadata/sections/section_requisites.s"
+	@echo "... src/metadata/t_catalog.o"
+	@echo "... src/metadata/t_catalog.i"
+	@echo "... src/metadata/t_catalog.s"
 	@echo "... src/metadata/t_comand.o"
 	@echo "... src/metadata/t_comand.i"
 	@echo "... src/metadata/t_comand.s"
