@@ -1,7 +1,7 @@
 #include "v8reader/core/V8Element.h"
 #include <cstring>
 
-namespace v8::core {
+namespace v8reader::core {
 
     V8Element::V8Element(const String& name) {
         setName(name);
@@ -94,4 +94,4 @@ namespace v8::core {
         }
     }
 
-} // namespace v8::core
+} // namespace v8reader::core

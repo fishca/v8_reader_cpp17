@@ -1,4 +1,4 @@
-#include "t_comand.h"
+#include "v8reader/core/metadata/t_comand.h"
 #include <QDataStream>
 
 namespace v8reader::core::metadata {
@@ -17,7 +17,8 @@ bool TComand::Load(QDataStream& stream, int version) {
     qint32 actionLen = 0;
     stream >> actionLen;
     if (actionLen > 0) {
-        QByteArray data = stream.readRawData(actionLen * 2);
+        QByteArray data(actionLen * 2, Qt::Uninitialized);
+        stream.readRawData(data.data(), actionLen * 2);
         m_action = QString::fromUtf16(reinterpret_cast<const char16_t*>(data.constData()), actionLen);
     }
 
@@ -25,7 +26,8 @@ bool TComand::Load(QDataStream& stream, int version) {
     qint32 useLen = 0;
     stream >> useLen;
     if (useLen > 0) {
-        QByteArray data = stream.readRawData(useLen * 2);
+        QByteArray data(useLen * 2, Qt::Uninitialized);
+        stream.readRawData(data.data(), useLen * 2);
         m_use = QString::fromUtf16(reinterpret_cast<const char16_t*>(data.constData()), useLen);
     }
 
@@ -33,7 +35,8 @@ bool TComand::Load(QDataStream& stream, int version) {
     qint32 presLen = 0;
     stream >> presLen;
     if (presLen > 0) {
-        QByteArray data = stream.readRawData(presLen * 2);
+        QByteArray data(presLen * 2, Qt::Uninitialized);
+        stream.readRawData(data.data(), presLen * 2);
         m_presentation = QString::fromUtf16(reinterpret_cast<const char16_t*>(data.constData()), presLen);
     }
 

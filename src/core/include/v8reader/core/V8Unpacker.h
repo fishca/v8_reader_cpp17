@@ -1,9 +1,9 @@
 #pragma once
 #include "IV8Repository.h"
-#include "V8Container.h" // 🔑 КРИТИЧЕСКИ ВАЖНО: Подключаем V8Container
+#include "v8reader/core/V8Container.h" // 🔑 КРИТИЧЕСКИ ВАЖНО: Подключаем V8Container
 #include <memory>
 
-namespace v8::core {
+namespace v8reader::core {
 
     class V8Unpacker : public IV8Repository {
     public:
@@ -26,4 +26,4 @@ namespace v8::core {
         mutable std::unique_ptr<V8Container> container_;
     };
 
-} // namespace v8::core
+} // namespace v8reader::core

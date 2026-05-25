@@ -1,5 +1,5 @@
 #include "t_tabular.h"
-#include "TRequisite.h"
+#include "v8reader/core/metadata/TRequisite.h"
 #include <QDataStream>
 
 namespace v8reader::core::metadata {

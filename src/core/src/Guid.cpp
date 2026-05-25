@@ -2,7 +2,7 @@
 #include <sstream>
 #include <iomanip>
 
-namespace v8::core {
+namespace v8reader::core {
 
     String Guid::toString() const {
         std::wstringstream ss;
@@ -36,4 +36,4 @@ namespace v8::core {
         return result;
     }
 
-} // namespace v8::core
+} // namespace v8reader::core

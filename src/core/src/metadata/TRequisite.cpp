@@ -1,6 +1,7 @@
-#include "TRequisite.h"
-#include <QTextCodec>
+#include "v8reader/core/metadata/TRequisite.h"
 #include <QDataStream>
+#include <QString>
+#include <QIODevice>
 
 namespace v8reader::core {
 
@@ -67,7 +68,8 @@ QString TRequisite::readString(QDataStream& stream, int version) {
             return QString();
         }
 
-        QByteArray data = stream.readRawData(length * 2);
+        QByteArray data(length * 2, Qt::Uninitialized);
+        stream.readRawData(data.data(), length * 2);
         return QString::fromUtf16(reinterpret_cast<const char16_t*>(data.constData()), length);
     } else {
         // ANSI строки (версия 15)
@@ -78,9 +80,10 @@ QString TRequisite::readString(QDataStream& stream, int version) {
             return QString();
         }
 
-        QByteArray data = stream.readRawData(length);
-        QTextCodec* codec = QTextCodec::codecForName("CP1251");
-        return codec ? codec->toUnicode(data) : QString::fromLocal8Bit(data);
+        QByteArray data(length, Qt::Uninitialized);
+        stream.readRawData(data.data(), length);
+        // Используем QString::fromLocal8Bit вместо QTextCodec (устарел в Qt6)
+        return QString::fromLocal8Bit(data);
     }
 }
 

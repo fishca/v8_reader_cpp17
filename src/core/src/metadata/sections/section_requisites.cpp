@@ -1,4 +1,4 @@
-#include "section_requisites.h"
+#include "v8reader/core/metadata/section_requisites.h"
 #include <QDataStream>
 #include <QDebug>
 

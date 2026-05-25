@@ -1,13 +1,13 @@
 #pragma once
-#include "Types.h"
-#include "V8Format.h"
-#include "V8Element.h"
+#include "v8reader/core/Types.h"
+#include "v8reader/core/V8Format.h"
+#include "v8reader/core/V8Element.h"
 #include <fstream>
 #include <vector>
 #include <unordered_map>
 #include <memory>
 
-namespace v8::core {
+namespace v8reader::core {
 
     class V8Container {
     public:
@@ -42,4 +42,4 @@ namespace v8::core {
         std::unordered_map<std::wstring, size_t> name_index_;
     };
 
-} // namespace v8::core
+} // namespace v8reader::core

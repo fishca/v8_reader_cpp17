@@ -5,7 +5,7 @@
 #include <regex>
 #include <unordered_set>
 
-namespace v8::core {
+namespace v8reader::core {
 namespace {
 String toLowerCopy(String value) {
     std::transform(value.begin(), value.end(), value.begin(),
@@ -92,10 +92,11 @@ std::unique_ptr<v8reader::core::TMDO> TreeReader::buildObjectFromNode(TreeNode* 
     
     // Создаем объект через фабрику
     // В реальной реализации здесь будет маппинг GUID на тип
-    auto obj = v8reader::core::MetadataFactory::createObject(typeNode->value);
+    QString typeName = QString::fromWCharArray(typeNode->value.c_str());
+    auto obj = v8reader::core::MetadataFactory::createObject(typeName);
     if (obj) {
-        obj->setName(nameNode->value);
-        obj->setGuid(typeNode->value);
+        obj->setName(QString::fromWCharArray(nameNode->value.c_str()));
+        obj->setGuid(typeName);
     }
     
     return obj;
@@ -317,4 +318,4 @@ MetadataBootstrapResult bootstrapMetadataTree(
     return out;
 }
 
-} // namespace v8::core
+} // namespace v8reader::core

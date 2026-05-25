@@ -1,6 +1,7 @@
-#include "TMDO.h"
-#include "TRequisite.h"
+#include "v8reader/core/metadata/TMDO.h"
+#include "v8reader/core/metadata/TRequisite.h"
 #include <QDataStream>
+#include <QIODevice>
 
 namespace v8reader::core {
 
@@ -68,7 +69,8 @@ QString TMDO::readString(QDataStream& stream, int /* version */) {
         return QString();
     }
 
-    QByteArray data = stream.readRawData(length * 2); // 2 байта на символ (UTF-16LE)
+    QByteArray data(length * 2, Qt::Uninitialized);
+    stream.readRawData(data.data(), length * 2); // 2 байта на символ (UTF-16LE)
     return QString::fromUtf16(reinterpret_cast<const char16_t*>(data.constData()), length);
 }
 

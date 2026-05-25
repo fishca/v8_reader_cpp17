@@ -13,7 +13,7 @@ namespace v8reader::core {
  * Представляет узел в иерархии метаданных конфигурации.
  * Используется для навигации по дереву объектов.
  */
-class V8CatalogItem {
+class V8CatalogItem : public std::enable_shared_from_this<V8CatalogItem> {
 public:
     explicit V8CatalogItem(const QString& name, const QString& uuid = {});
     virtual ~V8CatalogItem() = default;

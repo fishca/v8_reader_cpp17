@@ -7,7 +7,7 @@
 #include <memory> // 🔑 Нужно для shared_ptr
 #include <algorithm>
 
-namespace v8::core {
+namespace v8reader::core {
 
     using String = std::wstring;
     using ByteArray = std::vector<uint8_t>;
@@ -47,4 +47,4 @@ namespace v8::core {
         }
     };
 
-} // namespace v8::core
+} // namespace v8reader::core
