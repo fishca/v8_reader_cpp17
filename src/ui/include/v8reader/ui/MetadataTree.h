@@ -4,12 +4,12 @@
 #include <memory>
 #include <unordered_map>
 
-namespace v8::core {
+namespace v8reader::core {
     struct MetadataItem;
     class V8Container;
 }
 
-namespace v8::ui {
+namespace v8reader::ui {
 
     class MetadataTree : public QTreeWidget {
         Q_OBJECT
@@ -18,23 +18,23 @@ namespace v8::ui {
         explicit MetadataTree(QWidget* parent = nullptr);
 
         // 🔑 Меняем аргумент на сырой указатель
-        void populate(const std::shared_ptr<v8::core::MetadataItem>& root,
-            v8::core::V8Container* container);
+        void populate(const std::shared_ptr<v8reader::core::MetadataItem>& root,
+            v8reader::core::V8Container* container);
 
     signals:
         void itemSelected(const std::wstring& itemId, const std::wstring& itemType);
 
     private:
         QTreeWidgetItem* addItem(QTreeWidgetItem* parent,
-            const std::shared_ptr<v8::core::MetadataItem>& item);
+            const std::shared_ptr<v8reader::core::MetadataItem>& item);
         QIcon getIconForType(const QString& type, bool isFolder) const;
 
         std::unordered_map<QTreeWidgetItem*, std::wstring> itemMap_;
-        //std::unique_ptr<v8::core::V8Container> container_;
-        v8::core::V8Container* container_ = nullptr; // 🔑 Теперь храним указатель
+        //std::unique_ptr<v8reader::core::V8Container> container_;
+        v8reader::core::V8Container* container_ = nullptr; // 🔑 Теперь храним указатель
 
     private slots:
         void onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
     };
 
-} // namespace v8::ui
+} // namespace v8reader::ui

@@ -5,7 +5,7 @@
 #include <QPlainTextEdit>
 #include <QFont>
 
-namespace v8::ui {
+namespace v8reader::ui {
 
     ContentPane::ContentPane(QWidget* parent)
         : QTabWidget(parent), container_(nullptr)
@@ -14,7 +14,7 @@ namespace v8::ui {
         setDocumentMode(true);
     }
 
-    void ContentPane::setContainer(v8::core::V8Container* container)
+    void ContentPane::setContainer(v8reader::core::V8Container* container)
     {
         container_ = container;
     }
@@ -48,4 +48,4 @@ namespace v8::ui {
         }
     }
 
-} // namespace v8::ui
+} // namespace v8reader::ui

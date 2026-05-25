@@ -2,7 +2,7 @@
 #include "v8reader/core/V8Container.h"
 #include <QHeaderView>
 
-namespace v8::ui {
+namespace v8reader::ui {
 
     MetadataTree::MetadataTree(QWidget* parent)
         : QTreeWidget(parent), container_(nullptr)
@@ -18,8 +18,8 @@ namespace v8::ui {
             });
     }
 
-    void MetadataTree::populate(const std::shared_ptr<v8::core::MetadataItem>& root,
-        v8::core::V8Container* container) // 🔑 Принимаем указатель
+    void MetadataTree::populate(const std::shared_ptr<v8reader::core::MetadataItem>& root,
+        v8reader::core::V8Container* container) // 🔑 Принимаем указатель
     {
         clear();
         itemMap_.clear();
@@ -34,7 +34,7 @@ namespace v8::ui {
     }
 
     QTreeWidgetItem* MetadataTree::addItem(QTreeWidgetItem* parent,
-        const std::shared_ptr<v8::core::MetadataItem>& item)
+        const std::shared_ptr<v8reader::core::MetadataItem>& item)
     {
         auto* treeItem = parent
             ? new QTreeWidgetItem(parent)
@@ -86,4 +86,4 @@ namespace v8::ui {
         }
     }
 
-} // namespace v8::ui
+} // namespace v8reader::ui

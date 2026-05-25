@@ -3,22 +3,22 @@
 #include <memory>
 
 // Forward declarations
-namespace v8::core { class V8Container; class IV8Repository; }
-namespace v8::ui { class MetadataTree; class ContentPane; }
+namespace v8reader::core { class V8Container; class IV8Repository; }
+namespace v8reader::ui { class MetadataTree; class ContentPane; }
 
 
 QT_BEGIN_NAMESPACE
 class QSplitter; class QAction; class QLabel; class QPlainTextEdit;
 QT_END_NAMESPACE
 
-namespace v8::core { class IV8Repository; }
-namespace v8::ui {
+namespace v8reader::core { class IV8Repository; }
+namespace v8reader::ui {
     class MetadataTree; class ContentPane;
 
     class MainWindow : public QMainWindow {
         Q_OBJECT
     public:
-        explicit MainWindow(std::unique_ptr<v8::core::IV8Repository> repo, QWidget* parent = nullptr);
+        explicit MainWindow(std::unique_ptr<v8reader::core::IV8Repository> repo, QWidget* parent = nullptr);
         ~MainWindow() override;
 
     private slots:
@@ -36,10 +36,10 @@ namespace v8::ui {
         QSplitter* splitter_{};
         QLabel* statusLabel_{};
         QPlainTextEdit* memo_{};
-        std::unique_ptr<v8::core::IV8Repository> repository_;
+        std::unique_ptr<v8reader::core::IV8Repository> repository_;
         // 🔑 НОВОЕ: Храним путь к текущему файлу
         QString currentFilePath_;
         // 🔑 НОВОЕ: Храним контейнер с данными файла
-        std::unique_ptr<v8::core::V8Container> container_;
+        std::unique_ptr<v8reader::core::V8Container> container_;
     };
 }

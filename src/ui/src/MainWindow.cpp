@@ -18,9 +18,9 @@
 #include <QWidget>
 #include <QPlainTextEdit>
 
-namespace v8::ui {
+namespace v8reader::ui {
 
-    MainWindow::MainWindow(std::unique_ptr<v8::core::IV8Repository> repo, QWidget* parent)
+    MainWindow::MainWindow(std::unique_ptr<v8reader::core::IV8Repository> repo, QWidget* parent)
         : QMainWindow(parent), repository_(std::move(repo))
     {
         setWindowTitle(tr("V8 Reader"));
@@ -95,7 +95,7 @@ namespace v8::ui {
         QApplication::setOverrideCursor(Qt::WaitCursor);
 
         // 1. Создаем контейнер
-        auto container = std::make_unique<v8::core::V8Container>(path.toStdWString());
+        auto container = std::make_unique<v8reader::core::V8Container>(path.toStdWString());
 
         // 2. Загружаем
         int result = container->load();
@@ -103,14 +103,14 @@ namespace v8::ui {
         // 🔍 ДИАГНОСТИКА: Выводим результаты в окно "Вывод" (Output) в VS
         qDebug() << "🔍 Load Result Code:" << result;
         qDebug() << "🔍 Last Error:" << QString::fromStdWString(container->getLastError());
-        qDebug() << "🔍 Elements Found:" << container->getElements().size();
+        qDebug() << "🔍 Elements Found:" << static_cast<int>(container->getElements().size());
 
         QApplication::restoreOverrideCursor();
 
-        if (result == v8::core::V8_OK) {
+        if (result == v8reader::core::V8_OK) {
             // 3. Строим дерево
             auto tree = container->buildMetadataTree();
-            qDebug() << "🌳 Tree Root Children:" << tree->children.size();
+            qDebug() << "🌳 Tree Root Children:" << static_cast<int>(tree->children.size());
             memo_->setPlainText(QString::fromStdWString(container->getMetadataSummaryText()));
 
             if (tree->children.empty()) {
@@ -161,4 +161,4 @@ namespace v8::ui {
         }
     }
 
-} // namespace v8::ui
+} // namespace v8reader::ui
