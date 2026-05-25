@@ -41,6 +41,8 @@ jobs:
 
       - name: Install other dependencies via vcpkg (if needed)
         run: |
+          # Устанавливаем zlib и другие зависимости через vcpkg
+          vcpkg install zlib:x64-windows --no-print-usage
           if (Test-Path vcpkg.json) {
             vcpkg install --triplet=x64-windows --no-print-usage
           }
