@@ -28,7 +28,7 @@ SectionRequisites* TCatalog::getRequisitesSection() const {
     if (!section) {
         section = getSection("Requisites");
     }
-    return qobject_cast<SectionRequisites*>(section);
+    return static_cast<SectionRequisites*>(section);
 }
 
 SectionCommands* TCatalog::getCommandsSection() const {
@@ -36,7 +36,7 @@ SectionCommands* TCatalog::getCommandsSection() const {
     if (!section) {
         section = getSection("Commands");
     }
-    return qobject_cast<SectionCommands*>(section);
+    return static_cast<SectionCommands*>(section);
 }
 
 } // namespace v8reader::core

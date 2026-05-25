@@ -1,7 +1,7 @@
 #include "v8reader/core/metadata/t_comand.h"
 #include <QDataStream>
 
-namespace v8reader::core::metadata {
+namespace v8reader::core {
 
 bool TComand::Load(QDataStream& stream, int version) {
     // 1. Загружаем базовые свойства TMDO (Имя, Синоним, Комментарий и т.д.)
@@ -46,4 +46,4 @@ bool TComand::Load(QDataStream& stream, int version) {
     return true;
 }
 
-} // namespace v8reader::core::metadata
+} // namespace v8reader::core
