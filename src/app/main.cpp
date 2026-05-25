@@ -27,8 +27,8 @@ int main(int argc, char* argv[]) {
     parser.process(app);
 
     // Создание ядра и главного окна
-    auto repository = v8::core::createV8Repository();
-    v8::ui::MainWindow window(std::move(repository));
+    auto repository = v8reader::core::createV8Repository();
+    v8reader::ui::MainWindow window(std::move(repository));
     window.show();
 
     // Если файл передан через командную строку — открываем его после показа окна

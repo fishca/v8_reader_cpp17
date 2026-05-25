@@ -25,7 +25,7 @@ public:
      * @param version Версия формата файла
      * @return true если загрузка успешна
      */
-    bool Load(QIODevice& stream, int version) override;
+    bool Load(QDataStream& stream, int version) override;
 
     /**
      * @brief Получить тип мохеля
