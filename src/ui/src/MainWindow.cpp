@@ -108,8 +108,8 @@ namespace v8reader::ui {
         QApplication::restoreOverrideCursor();
 
         if (result == v8reader::core::V8_OK) {
-            // 3. Строим дерево (используем новую версию с логированием)
-            auto tree = container->buildMetadataTree2();
+            // 3. Строим дерево
+            auto tree = container->buildMetadataTree();
             qDebug() << "🌳 Tree Root Children:" << static_cast<int>(tree->children.size());
             memo_->setPlainText(QString::fromStdWString(container->getMetadataSummaryText()));
 
