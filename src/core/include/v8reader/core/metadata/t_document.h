@@ -7,6 +7,10 @@
 
 namespace v8reader::core {
 
+// Forward declaration
+class TRequisite;
+class TComand;
+
 /**
  * @brief Класс, представляющий объект метаданных "Документ".
  * 
@@ -15,7 +19,7 @@ namespace v8reader::core {
  */
 class TDocument : public MetadataObjectWithSections {
 public:
-    explicit TDocument(const QString& name = QString(), const Guid& guid = Guid());
+    explicit TDocument(const QString& name = QString());
     ~TDocument() override = default;
 
     // Переопределяем фабричный метод для создания секций
@@ -23,18 +27,6 @@ public:
 
     // Методы для загрузки данных (если нужна специфичная логика)
     bool Load(QDataStream& stream, int version) override;
-
-    // Удобные методы доступа к часто используемым секциям
-    /**
-     * @brief Получить секцию табличных частей.
-     * Создает её, если она ещё не существует.
-     */
-    std::shared_ptr<TTabular> getTabularSections();
-
-    /**
-     * @brief Получить секцию реквизитов.
-     */
-    std::shared_ptr<TRequisite> getRequisites();
 
 private:
     // Кэш для часто используемых секций (опционально, для производительности)

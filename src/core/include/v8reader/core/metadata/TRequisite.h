@@ -1,6 +1,6 @@
 #pragma once
 
-#include "v8reader/types/v8_types.h"
+#include "v8reader/core/metadata/TMDO.h"
 #include <QString>
 #include <QByteArray>
 #include <QDataStream>
@@ -12,10 +12,10 @@ namespace v8reader::core {
  *
  * Реквизит - это поле данных объекта (например, поле справочника или документа).
  */
-class TRequisite {
+class TRequisite : public TMDO {
 public:
     TRequisite();
-    virtual ~TRequisite();
+    virtual ~TRequisite() override;
 
     // Геттеры и сеттеры
     const QString& getName() const { return m_name; }
@@ -46,7 +46,7 @@ public:
     /**
      * @brief Чтение данных реквизита из потока.
      */
-    virtual bool Load(QDataStream& stream, int version);
+    bool Load(QDataStream& stream, int version) override;
 
 protected:
     QString readString(QDataStream& stream, int version);
