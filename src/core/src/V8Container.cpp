@@ -1029,8 +1029,37 @@ namespace v8reader::core {
             return new_rawFallback();
         }
         return root;
+    }
 
-        auto ensureRawFallback = [&]() -> std::shared_ptr<MetadataItem> {
+    std::shared_ptr<MetadataItem> V8Container::buildMetadataTree2() const {
+        std::wcerr << L"=== [DEBUG] Start buildMetadataTree2 ===\n";
+        std::wcerr << L"[DEBUG] Total elements in container: " << elements_.size() << L"\n";
+
+        if (elements_.empty()) {
+            std::wcerr << L"[DEBUG] WARNING: Elements list is empty! Cannot build tree.\n";
+            auto root = std::make_shared<MetadataItem>();
+            root->name = L"Empty Configuration";
+            root->type = L"Root";
+            root->is_folder = true;
+            return root;
+        }
+
+        // Выводим первые 10 элементов для отладки
+        std::wcerr << L"[DEBUG] First 10 elements:\n";
+        for (size_t i = 0; i < std::min(elements_.size(), size_t(10)); ++i) {
+            std::wcerr << L"  [" << i << L"] Name: " << elements_[i].getName() 
+                       << L", Compressed: " << (elements_[i].isCompressed() ? L"yes" : L"no")
+                       << L", DataSize: " << elements_[i].getData().size() << L"\n";
+        }
+
+        std::wcerr << L"[DEBUG] Calling original buildMetadataTree...\n";
+        std::wcerr << L"=== [DEBUG] End buildMetadataTree2 ===\n";
+        
+        // Делегируем оригинальной функции, так как логика слишком объемная
+        return buildMetadataTree();
+    }
+
+    auto ensureRawFallback = [&]() -> std::shared_ptr<MetadataItem> {
             if (!root->children.empty()) return root;
             std::unordered_map<String, std::vector<String>> groups;
             std::vector<String> special;
