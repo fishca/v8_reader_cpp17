@@ -1,9 +1,12 @@
 #pragma once
 
-#include "v8reader/types/v8_types.h"
+#include "v8reader/core/Types.h"
 #include <vector>
 #include <memory>
 #include <string>
+#include <QString>
+#include <QByteArray>
+#include <QDataStream>
 
 namespace v8reader::core {
 
