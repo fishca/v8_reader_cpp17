@@ -332,8 +332,7 @@ namespace v8reader::core {
         }
 
         return compressed ? decompressZlib(data) : data;
-
-    // ... (РЅР°С‡Р°Р»Рѕ С„Р°Р№Р»Р° Р±РµР· РёР·РјРµРЅРµРЅРёР№) ...
+    }
 
     std::vector<uint8_t> V8Container::decompressZlib(const std::vector<uint8_t>& src) const {
         z_stream stream{};
