@@ -288,6 +288,7 @@ namespace v8reader::core {
 
         is_loaded_ = true;
         return V8_OK;
+    }
 
     std::vector<uint8_t> V8Container::readBlockData(std::ifstream& file, uint64_t start_addr, bool compressed) const {
         std::vector<uint8_t> data;
