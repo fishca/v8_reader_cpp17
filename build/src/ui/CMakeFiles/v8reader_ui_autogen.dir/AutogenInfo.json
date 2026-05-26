@@ -1,12 +1,12 @@
 {
-	"BUILD_DIR" : "/workspace/build/src/ui/v8reader_ui_autogen",
-	"CMAKE_BINARY_DIR" : "/workspace/build",
-	"CMAKE_CURRENT_BINARY_DIR" : "/workspace/build/src/ui",
-	"CMAKE_CURRENT_SOURCE_DIR" : "/workspace/src/ui",
+	"BUILD_DIR" : "/workspace/v8_reader_cpp17/build/src/ui/v8reader_ui_autogen",
+	"CMAKE_BINARY_DIR" : "/workspace/v8_reader_cpp17/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/workspace/v8_reader_cpp17/build/src/ui",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/workspace/v8_reader_cpp17/src/ui",
 	"CMAKE_EXECUTABLE" : "/usr/bin/cmake",
 	"CMAKE_LIST_FILES" : 
 	[
-		"/workspace/src/ui/CMakeLists.txt",
+		"/workspace/v8_reader_cpp17/src/ui/CMakeLists.txt",
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt6/Qt6ConfigVersion.cmake",
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt6/Qt6ConfigVersionImpl.cmake",
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt6/Qt6Config.cmake",
@@ -159,35 +159,35 @@
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt6Concurrent/Qt6ConcurrentTargets-none.cmake",
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt6Concurrent/Qt6ConcurrentAdditionalTargetInfo.cmake",
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt6Concurrent/Qt6ConcurrentVersionlessTargets.cmake",
-		"/workspace/src/ui/resources.qrc"
+		"/workspace/v8_reader_cpp17/src/ui/resources.qrc"
 	],
-	"CMAKE_SOURCE_DIR" : "/workspace",
+	"CMAKE_SOURCE_DIR" : "/workspace/v8_reader_cpp17",
 	"DEP_FILE" : "",
 	"DEP_FILE_RULE_NAME" : "",
 	"HEADERS" : 
 	[
 		[
-			"/workspace/src/ui/include/v8reader/ui/ContentPane.h",
+			"/workspace/v8_reader_cpp17/src/ui/include/v8reader/ui/ContentPane.h",
 			"MU",
 			"6LDD46JK4J/moc_ContentPane.cpp",
 			null
 		],
 		[
-			"/workspace/src/ui/include/v8reader/ui/MainWindow.h",
+			"/workspace/v8_reader_cpp17/src/ui/include/v8reader/ui/MainWindow.h",
 			"MU",
 			"6LDD46JK4J/moc_MainWindow.cpp",
 			null
 		],
 		[
-			"/workspace/src/ui/include/v8reader/ui/MetadataTree.h",
+			"/workspace/v8_reader_cpp17/src/ui/include/v8reader/ui/MetadataTree.h",
 			"MU",
 			"6LDD46JK4J/moc_MetadataTree.cpp",
 			null
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "/workspace/build/src/ui/v8reader_ui_autogen/include",
-	"MOC_COMPILATION_FILE" : "/workspace/build/src/ui/v8reader_ui_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "/workspace/v8_reader_cpp17/build/src/ui/v8reader_ui_autogen/include",
+	"MOC_COMPILATION_FILE" : "/workspace/v8_reader_cpp17/build/src/ui/v8reader_ui_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : 
 	[
 		"QT_CONCURRENT_LIB",
@@ -205,9 +205,9 @@
 	],
 	"MOC_INCLUDES" : 
 	[
-		"/workspace/src/ui/include",
-		"/workspace/src/ui/src",
-		"/workspace/src/core/include",
+		"/workspace/v8_reader_cpp17/src/ui/include",
+		"/workspace/v8_reader_cpp17/src/ui/src",
+		"/workspace/v8_reader_cpp17/src/core/include",
 		"/usr/include/x86_64-linux-gnu/qt6/QtWidgets",
 		"/usr/include/x86_64-linux-gnu/qt6",
 		"/usr/include/x86_64-linux-gnu/qt6/QtCore",
@@ -240,22 +240,22 @@
 		"-c",
 		"/usr/share/cmake-3.25/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "/workspace/build/src/ui/v8reader_ui_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "/workspace/v8_reader_cpp17/build/src/ui/v8reader_ui_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 2,
-	"PARSE_CACHE_FILE" : "/workspace/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE" : "/workspace/v8_reader_cpp17/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "/usr/lib/qt6/libexec/moc",
 	"QT_UIC_EXECUTABLE" : "/usr/lib/qt6/libexec/uic",
 	"QT_VERSION_MAJOR" : 6,
 	"QT_VERSION_MINOR" : 4,
-	"SETTINGS_FILE" : "/workspace/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE" : "/workspace/v8_reader_cpp17/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
-		[ "/workspace/src/ui/src/ContentPane.cpp", "MU", null ],
-		[ "/workspace/src/ui/src/MainWindow.cpp", "MU", null ],
-		[ "/workspace/src/ui/src/MetadataTree.cpp", "MU", null ]
+		[ "/workspace/v8_reader_cpp17/src/ui/src/ContentPane.cpp", "MU", null ],
+		[ "/workspace/v8_reader_cpp17/src/ui/src/MainWindow.cpp", "MU", null ],
+		[ "/workspace/v8_reader_cpp17/src/ui/src/MetadataTree.cpp", "MU", null ]
 	],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],

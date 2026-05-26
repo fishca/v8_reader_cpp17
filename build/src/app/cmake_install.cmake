@@ -1,4 +1,4 @@
-# Install script for directory: /workspace/src/app
+# Install script for directory: /workspace/v8_reader_cpp17/src/app
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

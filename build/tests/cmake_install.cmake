@@ -1,4 +1,4 @@
-# Install script for directory: /workspace/tests
+# Install script for directory: /workspace/v8_reader_cpp17/tests
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

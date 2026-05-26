@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /workspace
+CMAKE_SOURCE_DIR = /workspace/v8_reader_cpp17
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /workspace/build
+CMAKE_BINARY_DIR = /workspace/v8_reader_cpp17/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -97,14 +97,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /workspace/build && $(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles /workspace/build/tests//CMakeFiles/progress.marks
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 0
+	cd /workspace/v8_reader_cpp17/build && $(CMAKE_COMMAND) -E cmake_progress_start /workspace/v8_reader_cpp17/build/CMakeFiles /workspace/v8_reader_cpp17/build/tests//CMakeFiles/progress.marks
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/v8_reader_cpp17/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/clean
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/clean
 .PHONY : clean
 
 # The main clean target
@@ -113,22 +113,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/preinstall
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/preinstall
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /workspace/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /workspace/v8_reader_cpp17/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 tests/CMakeFiles/v8reader_tests.dir/rule:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/v8reader_tests.dir/rule
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/v8reader_tests.dir/rule
 .PHONY : tests/CMakeFiles/v8reader_tests.dir/rule
 
 # Convenience name for target.
@@ -137,12 +137,12 @@ v8reader_tests: tests/CMakeFiles/v8reader_tests.dir/rule
 
 # fast build rule for target.
 v8reader_tests/fast:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/build
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/build
 .PHONY : v8reader_tests/fast
 
 # Convenience name for target.
 tests/CMakeFiles/v8reader_tests_autogen.dir/rule:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/v8reader_tests_autogen.dir/rule
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/v8reader_tests_autogen.dir/rule
 .PHONY : tests/CMakeFiles/v8reader_tests_autogen.dir/rule
 
 # Convenience name for target.
@@ -151,7 +151,7 @@ v8reader_tests_autogen: tests/CMakeFiles/v8reader_tests_autogen.dir/rule
 
 # fast build rule for target.
 v8reader_tests_autogen/fast:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests_autogen.dir/build.make tests/CMakeFiles/v8reader_tests_autogen.dir/build
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests_autogen.dir/build.make tests/CMakeFiles/v8reader_tests_autogen.dir/build
 .PHONY : v8reader_tests_autogen/fast
 
 core/V8File_test.o: core/V8File_test.cpp.o
@@ -159,7 +159,7 @@ core/V8File_test.o: core/V8File_test.cpp.o
 
 # target to build an object file
 core/V8File_test.cpp.o:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/core/V8File_test.cpp.o
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/core/V8File_test.cpp.o
 .PHONY : core/V8File_test.cpp.o
 
 core/V8File_test.i: core/V8File_test.cpp.i
@@ -167,7 +167,7 @@ core/V8File_test.i: core/V8File_test.cpp.i
 
 # target to preprocess a source file
 core/V8File_test.cpp.i:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/core/V8File_test.cpp.i
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/core/V8File_test.cpp.i
 .PHONY : core/V8File_test.cpp.i
 
 core/V8File_test.s: core/V8File_test.cpp.s
@@ -175,7 +175,7 @@ core/V8File_test.s: core/V8File_test.cpp.s
 
 # target to generate assembly for a file
 core/V8File_test.cpp.s:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/core/V8File_test.cpp.s
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/core/V8File_test.cpp.s
 .PHONY : core/V8File_test.cpp.s
 
 core/test_metadata_classes.o: core/test_metadata_classes.cpp.o
@@ -183,7 +183,7 @@ core/test_metadata_classes.o: core/test_metadata_classes.cpp.o
 
 # target to build an object file
 core/test_metadata_classes.cpp.o:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/core/test_metadata_classes.cpp.o
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/core/test_metadata_classes.cpp.o
 .PHONY : core/test_metadata_classes.cpp.o
 
 core/test_metadata_classes.i: core/test_metadata_classes.cpp.i
@@ -191,7 +191,7 @@ core/test_metadata_classes.i: core/test_metadata_classes.cpp.i
 
 # target to preprocess a source file
 core/test_metadata_classes.cpp.i:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/core/test_metadata_classes.cpp.i
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/core/test_metadata_classes.cpp.i
 .PHONY : core/test_metadata_classes.cpp.i
 
 core/test_metadata_classes.s: core/test_metadata_classes.cpp.s
@@ -199,7 +199,7 @@ core/test_metadata_classes.s: core/test_metadata_classes.cpp.s
 
 # target to generate assembly for a file
 core/test_metadata_classes.cpp.s:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/core/test_metadata_classes.cpp.s
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/core/test_metadata_classes.cpp.s
 .PHONY : core/test_metadata_classes.cpp.s
 
 v8reader_tests_autogen/mocs_compilation.o: v8reader_tests_autogen/mocs_compilation.cpp.o
@@ -207,7 +207,7 @@ v8reader_tests_autogen/mocs_compilation.o: v8reader_tests_autogen/mocs_compilati
 
 # target to build an object file
 v8reader_tests_autogen/mocs_compilation.cpp.o:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/v8reader_tests_autogen/mocs_compilation.cpp.o
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/v8reader_tests_autogen/mocs_compilation.cpp.o
 .PHONY : v8reader_tests_autogen/mocs_compilation.cpp.o
 
 v8reader_tests_autogen/mocs_compilation.i: v8reader_tests_autogen/mocs_compilation.cpp.i
@@ -215,7 +215,7 @@ v8reader_tests_autogen/mocs_compilation.i: v8reader_tests_autogen/mocs_compilati
 
 # target to preprocess a source file
 v8reader_tests_autogen/mocs_compilation.cpp.i:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/v8reader_tests_autogen/mocs_compilation.cpp.i
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/v8reader_tests_autogen/mocs_compilation.cpp.i
 .PHONY : v8reader_tests_autogen/mocs_compilation.cpp.i
 
 v8reader_tests_autogen/mocs_compilation.s: v8reader_tests_autogen/mocs_compilation.cpp.s
@@ -223,7 +223,7 @@ v8reader_tests_autogen/mocs_compilation.s: v8reader_tests_autogen/mocs_compilati
 
 # target to generate assembly for a file
 v8reader_tests_autogen/mocs_compilation.cpp.s:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/v8reader_tests_autogen/mocs_compilation.cpp.s
+	cd /workspace/v8_reader_cpp17/build && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/v8reader_tests.dir/build.make tests/CMakeFiles/v8reader_tests.dir/v8reader_tests_autogen/mocs_compilation.cpp.s
 .PHONY : v8reader_tests_autogen/mocs_compilation.cpp.s
 
 # Help Target
@@ -257,6 +257,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /workspace/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /workspace/v8_reader_cpp17/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

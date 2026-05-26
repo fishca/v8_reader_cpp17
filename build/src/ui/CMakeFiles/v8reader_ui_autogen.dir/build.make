@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /workspace
+CMAKE_SOURCE_DIR = /workspace/v8_reader_cpp17
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /workspace/build
+CMAKE_BINARY_DIR = /workspace/v8_reader_cpp17/build
 
 # Utility rule file for v8reader_ui_autogen.
 
@@ -67,8 +67,8 @@ include src/ui/CMakeFiles/v8reader_ui_autogen.dir/compiler_depend.make
 include src/ui/CMakeFiles/v8reader_ui_autogen.dir/progress.make
 
 src/ui/CMakeFiles/v8reader_ui_autogen:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target v8reader_ui"
-	cd /workspace/build/src/ui && /usr/bin/cmake -E cmake_autogen /workspace/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/AutogenInfo.json Release
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/workspace/v8_reader_cpp17/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target v8reader_ui"
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/cmake -E cmake_autogen /workspace/v8_reader_cpp17/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/AutogenInfo.json Release
 
 v8reader_ui_autogen: src/ui/CMakeFiles/v8reader_ui_autogen
 v8reader_ui_autogen: src/ui/CMakeFiles/v8reader_ui_autogen.dir/build.make
@@ -79,10 +79,10 @@ src/ui/CMakeFiles/v8reader_ui_autogen.dir/build: v8reader_ui_autogen
 .PHONY : src/ui/CMakeFiles/v8reader_ui_autogen.dir/build
 
 src/ui/CMakeFiles/v8reader_ui_autogen.dir/clean:
-	cd /workspace/build/src/ui && $(CMAKE_COMMAND) -P CMakeFiles/v8reader_ui_autogen.dir/cmake_clean.cmake
+	cd /workspace/v8_reader_cpp17/build/src/ui && $(CMAKE_COMMAND) -P CMakeFiles/v8reader_ui_autogen.dir/cmake_clean.cmake
 .PHONY : src/ui/CMakeFiles/v8reader_ui_autogen.dir/clean
 
 src/ui/CMakeFiles/v8reader_ui_autogen.dir/depend:
-	cd /workspace/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /workspace /workspace/src/ui /workspace/build /workspace/build/src/ui /workspace/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /workspace/v8_reader_cpp17/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /workspace/v8_reader_cpp17 /workspace/v8_reader_cpp17/src/ui /workspace/v8_reader_cpp17/build /workspace/v8_reader_cpp17/build/src/ui /workspace/v8_reader_cpp17/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : src/ui/CMakeFiles/v8reader_ui_autogen.dir/depend
 

@@ -155,14 +155,14 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.25/Modules/Platform/Linux.cmake"
   "/usr/share/cmake-3.25/Modules/Platform/UnixPaths.cmake"
   "/usr/share/cmake-3.25/Modules/SelectLibraryConfigurations.cmake"
-  "/workspace/CMakeLists.txt"
+  "/workspace/v8_reader_cpp17/CMakeLists.txt"
   "CMakeFiles/3.25.1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.25.1/CMakeSystem.cmake"
-  "/workspace/src/app/CMakeLists.txt"
-  "/workspace/src/core/CMakeLists.txt"
-  "/workspace/src/ui/CMakeLists.txt"
-  "/workspace/src/ui/resources.qrc"
-  "/workspace/tests/CMakeLists.txt"
+  "/workspace/v8_reader_cpp17/src/app/CMakeLists.txt"
+  "/workspace/v8_reader_cpp17/src/core/CMakeLists.txt"
+  "/workspace/v8_reader_cpp17/src/ui/CMakeLists.txt"
+  "/workspace/v8_reader_cpp17/src/ui/resources.qrc"
+  "/workspace/v8_reader_cpp17/tests/CMakeLists.txt"
   )
 
 # The corresponding makefile is:

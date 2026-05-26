@@ -55,7 +55,7 @@ private:
     QString m_name;
     QString m_synonym;
     QString m_typeDescription;
-    int m_index = -1;
+    int m_index = 0;
     int m_length = 0;
     int m_precision = 0;
     bool m_allowNull = false;

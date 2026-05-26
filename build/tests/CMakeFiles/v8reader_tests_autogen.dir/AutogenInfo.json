@@ -1,12 +1,12 @@
 {
-	"BUILD_DIR" : "/workspace/build/tests/v8reader_tests_autogen",
-	"CMAKE_BINARY_DIR" : "/workspace/build",
-	"CMAKE_CURRENT_BINARY_DIR" : "/workspace/build/tests",
-	"CMAKE_CURRENT_SOURCE_DIR" : "/workspace/tests",
+	"BUILD_DIR" : "/workspace/v8_reader_cpp17/build/tests/v8reader_tests_autogen",
+	"CMAKE_BINARY_DIR" : "/workspace/v8_reader_cpp17/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/workspace/v8_reader_cpp17/build/tests",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/workspace/v8_reader_cpp17/tests",
 	"CMAKE_EXECUTABLE" : "/usr/bin/cmake",
 	"CMAKE_LIST_FILES" : 
 	[
-		"/workspace/tests/CMakeLists.txt",
+		"/workspace/v8_reader_cpp17/tests/CMakeLists.txt",
 		"/usr/share/cmake-3.25/Modules/FindGTest.cmake",
 		"/usr/share/cmake-3.25/Modules/GoogleTest.cmake",
 		"/usr/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake",
@@ -83,19 +83,19 @@
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt6Test/Qt6TestAdditionalTargetInfo.cmake",
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt6Test/Qt6TestVersionlessTargets.cmake"
 	],
-	"CMAKE_SOURCE_DIR" : "/workspace",
+	"CMAKE_SOURCE_DIR" : "/workspace/v8_reader_cpp17",
 	"DEP_FILE" : "",
 	"DEP_FILE_RULE_NAME" : "",
 	"HEADERS" : [],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "/workspace/build/tests/v8reader_tests_autogen/include",
-	"MOC_COMPILATION_FILE" : "/workspace/build/tests/v8reader_tests_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "/workspace/v8_reader_cpp17/build/tests/v8reader_tests_autogen/include",
+	"MOC_COMPILATION_FILE" : "/workspace/v8_reader_cpp17/build/tests/v8reader_tests_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : 
 	[
 		"QT_CORE_LIB",
 		"QT_NO_DEBUG",
-		"QT_TESTCASE_BUILDDIR=\"/workspace/build/tests\"",
-		"QT_TESTCASE_SOURCEDIR=\"/workspace/tests\"",
+		"QT_TESTCASE_BUILDDIR=\"/workspace/v8_reader_cpp17/build/tests\"",
+		"QT_TESTCASE_SOURCEDIR=\"/workspace/v8_reader_cpp17/tests\"",
 		"QT_TESTLIB_LIB"
 	],
 	"MOC_DEPEND_FILTERS" : 
@@ -107,7 +107,7 @@
 	],
 	"MOC_INCLUDES" : 
 	[
-		"/workspace/src/core/include",
+		"/workspace/v8_reader_cpp17/src/core/include",
 		"/usr/include/x86_64-linux-gnu/qt6/QtCore",
 		"/usr/include/x86_64-linux-gnu/qt6",
 		"/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++",
@@ -138,21 +138,25 @@
 		"-c",
 		"/usr/share/cmake-3.25/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "/workspace/build/tests/v8reader_tests_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "/workspace/v8_reader_cpp17/build/tests/v8reader_tests_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 2,
-	"PARSE_CACHE_FILE" : "/workspace/build/tests/CMakeFiles/v8reader_tests_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE" : "/workspace/v8_reader_cpp17/build/tests/CMakeFiles/v8reader_tests_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "/usr/lib/qt6/libexec/moc",
 	"QT_UIC_EXECUTABLE" : "/usr/lib/qt6/libexec/uic",
 	"QT_VERSION_MAJOR" : 6,
 	"QT_VERSION_MINOR" : 4,
-	"SETTINGS_FILE" : "/workspace/build/tests/CMakeFiles/v8reader_tests_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE" : "/workspace/v8_reader_cpp17/build/tests/CMakeFiles/v8reader_tests_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
-		[ "/workspace/tests/core/V8File_test.cpp", "MU", null ],
-		[ "/workspace/tests/core/test_metadata_classes.cpp", "MU", null ]
+		[ "/workspace/v8_reader_cpp17/tests/core/V8File_test.cpp", "MU", null ],
+		[
+			"/workspace/v8_reader_cpp17/tests/core/test_metadata_classes.cpp",
+			"MU",
+			null
+		]
 	],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],

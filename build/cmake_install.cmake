@@ -1,4 +1,4 @@
-# Install script for directory: /workspace
+# Install script for directory: /workspace/v8_reader_cpp17
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,22 +44,22 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/workspace/build/src/core/cmake_install.cmake")
+  include("/workspace/v8_reader_cpp17/build/src/core/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/workspace/build/src/ui/cmake_install.cmake")
+  include("/workspace/v8_reader_cpp17/build/src/ui/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/workspace/build/src/app/cmake_install.cmake")
+  include("/workspace/v8_reader_cpp17/build/src/app/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/workspace/build/tests/cmake_install.cmake")
+  include("/workspace/v8_reader_cpp17/build/tests/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -70,5 +70,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/workspace/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/workspace/v8_reader_cpp17/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

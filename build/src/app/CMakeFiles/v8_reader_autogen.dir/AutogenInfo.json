@@ -1,12 +1,12 @@
 {
-	"BUILD_DIR" : "/workspace/build/src/app/v8_reader_autogen",
-	"CMAKE_BINARY_DIR" : "/workspace/build",
-	"CMAKE_CURRENT_BINARY_DIR" : "/workspace/build/src/app",
-	"CMAKE_CURRENT_SOURCE_DIR" : "/workspace/src/app",
+	"BUILD_DIR" : "/workspace/v8_reader_cpp17/build/src/app/v8_reader_autogen",
+	"CMAKE_BINARY_DIR" : "/workspace/v8_reader_cpp17/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/workspace/v8_reader_cpp17/build/src/app",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/workspace/v8_reader_cpp17/src/app",
 	"CMAKE_EXECUTABLE" : "/usr/bin/cmake",
 	"CMAKE_LIST_FILES" : 
 	[
-		"/workspace/src/app/CMakeLists.txt",
+		"/workspace/v8_reader_cpp17/src/app/CMakeLists.txt",
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt6/Qt6ConfigVersion.cmake",
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt6/Qt6ConfigVersionImpl.cmake",
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt6/Qt6Config.cmake",
@@ -148,13 +148,13 @@
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt6Widgets/Qt6WidgetsVersionlessTargets.cmake",
 		"/usr/lib/x86_64-linux-gnu/cmake/Qt6Widgets/Qt6WidgetsMacros.cmake"
 	],
-	"CMAKE_SOURCE_DIR" : "/workspace",
+	"CMAKE_SOURCE_DIR" : "/workspace/v8_reader_cpp17",
 	"DEP_FILE" : "",
 	"DEP_FILE_RULE_NAME" : "",
 	"HEADERS" : [],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "/workspace/build/src/app/v8_reader_autogen/include",
-	"MOC_COMPILATION_FILE" : "/workspace/build/src/app/v8_reader_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "/workspace/v8_reader_cpp17/build/src/app/v8_reader_autogen/include",
+	"MOC_COMPILATION_FILE" : "/workspace/v8_reader_cpp17/build/src/app/v8_reader_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : 
 	[
 		"QT_CONCURRENT_LIB",
@@ -172,8 +172,8 @@
 	],
 	"MOC_INCLUDES" : 
 	[
-		"/workspace/src/core/include",
-		"/workspace/src/ui/include",
+		"/workspace/v8_reader_cpp17/src/core/include",
+		"/workspace/v8_reader_cpp17/src/ui/include",
 		"/usr/include/x86_64-linux-gnu/qt6/QtCore",
 		"/usr/include/x86_64-linux-gnu/qt6",
 		"/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++",
@@ -206,20 +206,20 @@
 		"-c",
 		"/usr/share/cmake-3.25/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "/workspace/build/src/app/v8_reader_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "/workspace/v8_reader_cpp17/build/src/app/v8_reader_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 2,
-	"PARSE_CACHE_FILE" : "/workspace/build/src/app/CMakeFiles/v8_reader_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE" : "/workspace/v8_reader_cpp17/build/src/app/CMakeFiles/v8_reader_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "/usr/lib/qt6/libexec/moc",
 	"QT_UIC_EXECUTABLE" : "/usr/lib/qt6/libexec/uic",
 	"QT_VERSION_MAJOR" : 6,
 	"QT_VERSION_MINOR" : 4,
-	"SETTINGS_FILE" : "/workspace/build/src/app/CMakeFiles/v8_reader_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE" : "/workspace/v8_reader_cpp17/build/src/app/CMakeFiles/v8_reader_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
-		[ "/workspace/src/app/main.cpp", "MU", null ]
+		[ "/workspace/v8_reader_cpp17/src/app/main.cpp", "MU", null ]
 	],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],

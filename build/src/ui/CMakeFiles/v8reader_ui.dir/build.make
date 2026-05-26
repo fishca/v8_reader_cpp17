@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /workspace
+CMAKE_SOURCE_DIR = /workspace/v8_reader_cpp17
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /workspace/build
+CMAKE_BINARY_DIR = /workspace/v8_reader_cpp17/build
 
 # Include any dependencies generated for this target.
 include src/ui/CMakeFiles/v8reader_ui.dir/depend.make
@@ -69,88 +69,88 @@ include src/ui/CMakeFiles/v8reader_ui.dir/progress.make
 # Include the compile flags for this target's objects.
 include src/ui/CMakeFiles/v8reader_ui.dir/flags.make
 
-src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/src/ui/resources.qrc
+src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/v8_reader_cpp17/src/ui/resources.qrc
 src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: src/ui/CMakeFiles/v8reader_ui_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json
-src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/src/ui/icons/folder.png
-src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/src/ui/icons/module.png
-src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/src/ui/icons/report.png
-src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/src/ui/icons/processing.png
-src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/src/ui/icons/file.png
-src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/src/ui/icons/catalog.png
-src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/src/ui/icons/document.png
+src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/v8_reader_cpp17/src/ui/icons/folder.png
+src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/v8_reader_cpp17/src/ui/icons/module.png
+src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/v8_reader_cpp17/src/ui/icons/report.png
+src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/v8_reader_cpp17/src/ui/icons/processing.png
+src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/v8_reader_cpp17/src/ui/icons/file.png
+src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/v8_reader_cpp17/src/ui/icons/catalog.png
+src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /workspace/v8_reader_cpp17/src/ui/icons/document.png
 src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp: /usr/lib/qt6/libexec/rcc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic RCC for resources.qrc"
-	cd /workspace/build/src/ui && /usr/bin/cmake -E cmake_autorcc /workspace/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json Release
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/workspace/v8_reader_cpp17/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic RCC for resources.qrc"
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/cmake -E cmake_autorcc /workspace/v8_reader_cpp17/build/src/ui/CMakeFiles/v8reader_ui_autogen.dir/AutoRcc_resources_EWIEGA46WW_Info.json Release
 
 src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o: src/ui/CMakeFiles/v8reader_ui.dir/flags.make
 src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o: src/ui/v8reader_ui_autogen/mocs_compilation.cpp
 src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o: src/ui/CMakeFiles/v8reader_ui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o -MF CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o -c /workspace/build/src/ui/v8reader_ui_autogen/mocs_compilation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/v8_reader_cpp17/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o"
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o -MF CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.o -c /workspace/v8_reader_cpp17/build/src/ui/v8reader_ui_autogen/mocs_compilation.cpp
 
 src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.i"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/build/src/ui/v8reader_ui_autogen/mocs_compilation.cpp > CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.i
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/v8_reader_cpp17/build/src/ui/v8reader_ui_autogen/mocs_compilation.cpp > CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.i
 
 src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.s"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/build/src/ui/v8reader_ui_autogen/mocs_compilation.cpp -o CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.s
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/v8_reader_cpp17/build/src/ui/v8reader_ui_autogen/mocs_compilation.cpp -o CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/mocs_compilation.cpp.s
 
 src/ui/CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.o: src/ui/CMakeFiles/v8reader_ui.dir/flags.make
-src/ui/CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.o: /workspace/src/ui/src/MainWindow.cpp
+src/ui/CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.o: /workspace/v8_reader_cpp17/src/ui/src/MainWindow.cpp
 src/ui/CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.o: src/ui/CMakeFiles/v8reader_ui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object src/ui/CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.o"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/ui/CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.o -MF CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.o.d -o CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.o -c /workspace/src/ui/src/MainWindow.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/v8_reader_cpp17/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object src/ui/CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.o"
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/ui/CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.o -MF CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.o.d -o CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.o -c /workspace/v8_reader_cpp17/src/ui/src/MainWindow.cpp
 
 src/ui/CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.i"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/ui/src/MainWindow.cpp > CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.i
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/v8_reader_cpp17/src/ui/src/MainWindow.cpp > CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.i
 
 src/ui/CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.s"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/ui/src/MainWindow.cpp -o CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.s
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/v8_reader_cpp17/src/ui/src/MainWindow.cpp -o CMakeFiles/v8reader_ui.dir/src/MainWindow.cpp.s
 
 src/ui/CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.o: src/ui/CMakeFiles/v8reader_ui.dir/flags.make
-src/ui/CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.o: /workspace/src/ui/src/MetadataTree.cpp
+src/ui/CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.o: /workspace/v8_reader_cpp17/src/ui/src/MetadataTree.cpp
 src/ui/CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.o: src/ui/CMakeFiles/v8reader_ui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/ui/CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.o"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/ui/CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.o -MF CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.o.d -o CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.o -c /workspace/src/ui/src/MetadataTree.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/v8_reader_cpp17/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/ui/CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.o"
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/ui/CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.o -MF CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.o.d -o CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.o -c /workspace/v8_reader_cpp17/src/ui/src/MetadataTree.cpp
 
 src/ui/CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.i"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/ui/src/MetadataTree.cpp > CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.i
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/v8_reader_cpp17/src/ui/src/MetadataTree.cpp > CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.i
 
 src/ui/CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.s"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/ui/src/MetadataTree.cpp -o CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.s
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/v8_reader_cpp17/src/ui/src/MetadataTree.cpp -o CMakeFiles/v8reader_ui.dir/src/MetadataTree.cpp.s
 
 src/ui/CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o: src/ui/CMakeFiles/v8reader_ui.dir/flags.make
-src/ui/CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o: /workspace/src/ui/src/ContentPane.cpp
+src/ui/CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o: /workspace/v8_reader_cpp17/src/ui/src/ContentPane.cpp
 src/ui/CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o: src/ui/CMakeFiles/v8reader_ui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/ui/CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/ui/CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o -MF CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o.d -o CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o -c /workspace/src/ui/src/ContentPane.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/v8_reader_cpp17/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/ui/CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o"
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/ui/CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o -MF CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o.d -o CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o -c /workspace/v8_reader_cpp17/src/ui/src/ContentPane.cpp
 
 src/ui/CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.i"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/ui/src/ContentPane.cpp > CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.i
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/v8_reader_cpp17/src/ui/src/ContentPane.cpp > CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.i
 
 src/ui/CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.s"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/ui/src/ContentPane.cpp -o CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.s
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/v8_reader_cpp17/src/ui/src/ContentPane.cpp -o CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.s
 
 src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.o: src/ui/CMakeFiles/v8reader_ui.dir/flags.make
 src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.o: src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp
 src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.o: src/ui/CMakeFiles/v8reader_ui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.o"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.o -MF CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.o.d -o CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.o -c /workspace/build/src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/workspace/v8_reader_cpp17/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.o"
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.o -MF CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.o.d -o CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.o -c /workspace/v8_reader_cpp17/build/src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp
 
 src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.i"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/build/src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp > CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.i
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/v8_reader_cpp17/build/src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp > CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.i
 
 src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.s"
-	cd /workspace/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/build/src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp -o CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.s
+	cd /workspace/v8_reader_cpp17/build/src/ui && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/v8_reader_cpp17/build/src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp -o CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.s
 
 # Object files for target v8reader_ui
 v8reader_ui_OBJECTS = \
@@ -170,19 +170,19 @@ src/ui/libv8reader_ui.a: src/ui/CMakeFiles/v8reader_ui.dir/src/ContentPane.cpp.o
 src/ui/libv8reader_ui.a: src/ui/CMakeFiles/v8reader_ui.dir/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp.o
 src/ui/libv8reader_ui.a: src/ui/CMakeFiles/v8reader_ui.dir/build.make
 src/ui/libv8reader_ui.a: src/ui/CMakeFiles/v8reader_ui.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX static library libv8reader_ui.a"
-	cd /workspace/build/src/ui && $(CMAKE_COMMAND) -P CMakeFiles/v8reader_ui.dir/cmake_clean_target.cmake
-	cd /workspace/build/src/ui && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/v8reader_ui.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/workspace/v8_reader_cpp17/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX static library libv8reader_ui.a"
+	cd /workspace/v8_reader_cpp17/build/src/ui && $(CMAKE_COMMAND) -P CMakeFiles/v8reader_ui.dir/cmake_clean_target.cmake
+	cd /workspace/v8_reader_cpp17/build/src/ui && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/v8reader_ui.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 src/ui/CMakeFiles/v8reader_ui.dir/build: src/ui/libv8reader_ui.a
 .PHONY : src/ui/CMakeFiles/v8reader_ui.dir/build
 
 src/ui/CMakeFiles/v8reader_ui.dir/clean:
-	cd /workspace/build/src/ui && $(CMAKE_COMMAND) -P CMakeFiles/v8reader_ui.dir/cmake_clean.cmake
+	cd /workspace/v8_reader_cpp17/build/src/ui && $(CMAKE_COMMAND) -P CMakeFiles/v8reader_ui.dir/cmake_clean.cmake
 .PHONY : src/ui/CMakeFiles/v8reader_ui.dir/clean
 
 src/ui/CMakeFiles/v8reader_ui.dir/depend: src/ui/v8reader_ui_autogen/EWIEGA46WW/qrc_resources.cpp
-	cd /workspace/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /workspace /workspace/src/ui /workspace/build /workspace/build/src/ui /workspace/build/src/ui/CMakeFiles/v8reader_ui.dir/DependInfo.cmake --color=$(COLOR)
+	cd /workspace/v8_reader_cpp17/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /workspace/v8_reader_cpp17 /workspace/v8_reader_cpp17/src/ui /workspace/v8_reader_cpp17/build /workspace/v8_reader_cpp17/build/src/ui /workspace/v8_reader_cpp17/build/src/ui/CMakeFiles/v8reader_ui.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : src/ui/CMakeFiles/v8reader_ui.dir/depend
 
