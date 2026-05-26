@@ -102,7 +102,7 @@ jobs:
           version: '6.7.0'
           host: 'linux'
           target: 'desktop'
-          arch: 'gcc_64'
+          arch: 'linux_gcc_64'
           cache: true
 
       # ✅ Кэширование сборки
