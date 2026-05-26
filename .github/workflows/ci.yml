@@ -71,9 +71,9 @@ jobs:
 
       - name: Upload Windows Artifacts
         uses: actions/upload-artifact@v4
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop')
         with:
-          name: v8_reader-windows
+          name: v8_reader-windows-${{ github.run_number }}
           path: |
             build/src/app/Release/v8_reader.exe
             build/src/core/Release/v8reader_core.lib
@@ -150,9 +150,9 @@ jobs:
 
       - name: Upload Linux Artifacts
         uses: actions/upload-artifact@v4
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop')
         with:
-          name: v8_reader-linux
+          name: v8_reader-linux-${{ github.run_number }}
           path: |
             build/src/app/v8_reader
             build/src/core/libv8reader_core.a
@@ -162,18 +162,18 @@ jobs:
   release:
     needs: [build-windows, build-linux]
     runs-on: ubuntu-22.04
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop')
     steps:
       - name: Download Windows Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: v8_reader-windows
+          name: v8_reader-windows-${{ github.run_number }}
           path: ./artifacts/windows
 
       - name: Download Linux Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: v8_reader-linux
+          name: v8_reader-linux-${{ github.run_number }}
           path: ./artifacts/linux
 
       - name: Create Release Archive
@@ -186,8 +186,10 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: release_assets/*
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('dev-build-{0}', github.run_number) }}
+          name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('Development Build #{0}', github.run_number) }}
           generate_release_notes: true
           draft: false
-          prerelease: false
+          prerelease: ${{ !startsWith(github.ref, 'refs/tags/') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
