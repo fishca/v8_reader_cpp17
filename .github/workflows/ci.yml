@@ -39,20 +39,16 @@ jobs:
           restore-keys: |
             vcpkg-win-
 
-      - name: Install other dependencies via vcpkg (if needed)
+      - name: Install other dependencies via vcpkg
         run: |
-          # Устанавливаем zlib и другие зависимости через vcpkg
-          vcpkg install zlib:x64-windows --no-print-usage
+          # Устанавливаем zlib через vcpkg
+          vcpkg install zlib:x64-windows
           if (Test-Path vcpkg.json) {
-            vcpkg install --triplet=x64-windows --no-print-usage
+            vcpkg integrate install
+            vcpkg install --triplet=x64-windows
           }
-        continue-on-error: true
-
-      - name: Clean build directory
-        run: |
-          if (Test-Path build) {
-            Remove-Item -Path build -Recurse -Force
-          }
+          # Выводим путь к установленному zlib для отладки
+          Write-Host "ZLIB installed at: $env:VCPKG_ROOT\installed\x64-windows"
 
       - name: Configure CMake
         run: >
@@ -61,6 +57,7 @@ jobs:
           -A x64
           -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
           -DCMAKE_PREFIX_PATH="C:/Qt/6.7.0/msvc2019_64"
+          -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
           -DV8READER_BUILD_TESTS=ON
 
       - name: Build
