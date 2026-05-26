@@ -104,7 +104,6 @@ jobs:
           target: 'desktop'
           arch: 'gcc_64'
           cache: true
-          modules: 'qtbase'
 
       # ✅ Кэширование сборки
       - name: Cache build
