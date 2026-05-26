@@ -10,6 +10,7 @@
 #include <iostream>
 #include <codecvt>
 #include <cstring>
+#include <QDebug>
 
 namespace v8reader::core {
     namespace {
