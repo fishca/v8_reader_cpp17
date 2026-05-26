@@ -353,20 +353,18 @@ namespace v8reader::core {
                 break;
             }
             if (ret != Z_OK) {
-                (void)inflateEnd(&stream); // вњ… РЇРІРЅРѕ РёРіРЅРѕСЂРёСЂСѓРµРј, РµСЃР»Рё СѓР¶Рµ СѓРїР°Р»Рё
+                (void)inflateEnd(&stream); // подавляем предупреждение
                 return {};
             }
-            if (stream.avail_out == 0) output.resize(output.size() * 2);
         }
-
-        (void)inflateEnd(&stream); // вњ… РџРѕРґР°РІР»СЏРµРј РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ
+        (void)inflateEnd(&stream);
         return output;
-
-    // ... (РѕСЃС‚Р°Р»СЊРЅРѕР№ РєРѕРґ Р±РµР· РёР·РјРµРЅРµРЅРёР№) ...
+    }
 
     const V8Element* V8Container::findElement(const String& name) const {
         auto it = name_index_.find(name);
         return (it == name_index_.end()) ? nullptr : &elements_[it->second];
+    }
 
     std::optional<String> V8Container::getModuleText(const String& name) const {
         const auto* elem = findElement(name);
@@ -391,11 +389,13 @@ namespace v8reader::core {
         }
         catch (...) { return std::nullopt; }
 #endif
+    }
 
     std::optional<std::vector<uint8_t>> V8Container::extractData(const String& name) const {
         const auto* elem = findElement(name);
         if (!elem) return std::nullopt;
         return elem->isCompressed() ? decompressZlib(elem->getData()) : elem->getData();
+    }
 
     String V8Container::getMetadataSummaryText() const {
         auto toLower = [](String v) {
@@ -658,6 +658,7 @@ namespace v8reader::core {
         }
         out += L"Total objects: " + std::to_wstring(total);
         return out;
+    }
 
     std::shared_ptr<MetadataItem> V8Container::buildMetadataTree() const {
         auto root = std::make_shared<MetadataItem>();
@@ -909,7 +910,7 @@ namespace v8reader::core {
                 std::wcerr << L"[md-bootstrap] fallback metadata_guid=" << activeMetadataGuid << L"\n";
             }
         }
-        if (!activeMetadataTree) return ensureRawFallback();
+        if (!activeMetadataTree) return new_rawFallback();
 
         auto new_collectSectionGuidsRegex = [&](const String& sectionGuid) -> std::vector<String> {
             std::vector<String> out;
@@ -1019,12 +1020,9 @@ namespace v8reader::core {
         }
 
         if (root->children.empty()) {
-            return ensureRawFallback();
+            return new_rawFallback();
         }
         return root;
 
-    // рџ”‘ РЇРІРЅР°СЏ РёРЅСЃС‚Р°РЅС†РёР°С†РёСЏ С€Р°Р±Р»РѕРЅРѕРІ (РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РґР»СЏ РєРѕРјРїРёР»СЏС†РёРё)
-    template int V8Container::loadImpl<Format15>();
-    template int V8Container::loadImpl<Format16>();
-
+    }
 } // namespace v8reader::core
