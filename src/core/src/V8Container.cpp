@@ -1052,11 +1052,35 @@ namespace v8reader::core {
                        << L", DataSize: " << elements_[i].getData().size() << L"\n";
         }
 
+        // Проверяем наличие ключевых элементов
+        bool hasRoot = false;
+        bool hasConfig = false;
+        for (const auto& elem : elements_) {
+            String nameLower = elem.getName();
+            std::transform(nameLower.begin(), nameLower.end(), nameLower.begin(), ::towlower);
+            
+            if (nameLower == L"root") hasRoot = true;
+            if (nameLower.find(L"config") != String::npos || isGuidLike(elem.getName())) hasConfig = true;
+        }
+        
+        std::wcerr << L"[DEBUG] Has 'root' element: " << (hasRoot ? L"yes" : L"no") << L"\n";
+        std::wcerr << L"[DEBUG] Has config/GUID elements: " << (hasConfig ? L"yes" : L"no") << L"\n";
+
         std::wcerr << L"[DEBUG] Calling original buildMetadataTree...\n";
+        auto result = buildMetadataTree();
+        
+        std::wcerr << L"[DEBUG] Result tree has " << (result ? result->children.size() : 0) << L" top-level children\n";
+        if (result) {
+            for (const auto& child : result->children) {
+                std::wcerr << L"  - Child: " << child->name << L" (type=" << child->type 
+                           << L", is_folder=" << (child->is_folder ? L"yes" : L"no")
+                           << L", children=" << child->children.size() << L")\n";
+            }
+        }
+        
         std::wcerr << L"=== [DEBUG] End buildMetadataTree2 ===\n";
         
-        // Делегируем оригинальной функции, так как логика слишком объемная
-        return buildMetadataTree();
+        return result;
     }
 
     auto ensureRawFallback = [&]() -> std::shared_ptr<MetadataItem> {
