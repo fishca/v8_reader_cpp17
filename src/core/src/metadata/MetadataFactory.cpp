@@ -1,4 +1,4 @@
-#include "MetadataFactory.h"
+#include "v8reader/core/metadata/MetadataFactory.h"
 #include <QMutexLocker>
 #include <QMutex>
 

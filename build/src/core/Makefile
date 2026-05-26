@@ -370,6 +370,30 @@ src/V8Unpacker.cpp.s:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/V8Unpacker.cpp.s
 .PHONY : src/V8Unpacker.cpp.s
 
+src/metadata/MetadataFactory.o: src/metadata/MetadataFactory.cpp.o
+.PHONY : src/metadata/MetadataFactory.o
+
+# target to build an object file
+src/metadata/MetadataFactory.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/MetadataFactory.cpp.o
+.PHONY : src/metadata/MetadataFactory.cpp.o
+
+src/metadata/MetadataFactory.i: src/metadata/MetadataFactory.cpp.i
+.PHONY : src/metadata/MetadataFactory.i
+
+# target to preprocess a source file
+src/metadata/MetadataFactory.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/MetadataFactory.cpp.i
+.PHONY : src/metadata/MetadataFactory.cpp.i
+
+src/metadata/MetadataFactory.s: src/metadata/MetadataFactory.cpp.s
+.PHONY : src/metadata/MetadataFactory.s
+
+# target to generate assembly for a file
+src/metadata/MetadataFactory.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/MetadataFactory.cpp.s
+.PHONY : src/metadata/MetadataFactory.cpp.s
+
 src/metadata/TMDO.o: src/metadata/TMDO.cpp.o
 .PHONY : src/metadata/TMDO.o
 
@@ -514,6 +538,30 @@ src/metadata/t_comand.cpp.s:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_comand.cpp.s
 .PHONY : src/metadata/t_comand.cpp.s
 
+src/metadata/t_document.o: src/metadata/t_document.cpp.o
+.PHONY : src/metadata/t_document.o
+
+# target to build an object file
+src/metadata/t_document.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_document.cpp.o
+.PHONY : src/metadata/t_document.cpp.o
+
+src/metadata/t_document.i: src/metadata/t_document.cpp.i
+.PHONY : src/metadata/t_document.i
+
+# target to preprocess a source file
+src/metadata/t_document.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_document.cpp.i
+.PHONY : src/metadata/t_document.cpp.i
+
+src/metadata/t_document.s: src/metadata/t_document.cpp.s
+.PHONY : src/metadata/t_document.s
+
+# target to generate assembly for a file
+src/metadata/t_document.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_document.cpp.s
+.PHONY : src/metadata/t_document.cpp.s
+
 src/metadata/t_metadata_object_with_sections.o: src/metadata/t_metadata_object_with_sections.cpp.o
 .PHONY : src/metadata/t_metadata_object_with_sections.o
 
@@ -537,6 +585,30 @@ src/metadata/t_metadata_object_with_sections.s: src/metadata/t_metadata_object_w
 src/metadata/t_metadata_object_with_sections.cpp.s:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_metadata_object_with_sections.cpp.s
 .PHONY : src/metadata/t_metadata_object_with_sections.cpp.s
+
+src/metadata/t_moxel.o: src/metadata/t_moxel.cpp.o
+.PHONY : src/metadata/t_moxel.o
+
+# target to build an object file
+src/metadata/t_moxel.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_moxel.cpp.o
+.PHONY : src/metadata/t_moxel.cpp.o
+
+src/metadata/t_moxel.i: src/metadata/t_moxel.cpp.i
+.PHONY : src/metadata/t_moxel.i
+
+# target to preprocess a source file
+src/metadata/t_moxel.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_moxel.cpp.i
+.PHONY : src/metadata/t_moxel.cpp.i
+
+src/metadata/t_moxel.s: src/metadata/t_moxel.cpp.s
+.PHONY : src/metadata/t_moxel.s
+
+# target to generate assembly for a file
+src/metadata/t_moxel.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/core/CMakeFiles/v8reader_core.dir/build.make src/core/CMakeFiles/v8reader_core.dir/src/metadata/t_moxel.cpp.s
+.PHONY : src/metadata/t_moxel.cpp.s
 
 src/metadata/t_tabular.o: src/metadata/t_tabular.cpp.o
 .PHONY : src/metadata/t_tabular.o
@@ -624,6 +696,9 @@ help:
 	@echo "... src/V8Unpacker.o"
 	@echo "... src/V8Unpacker.i"
 	@echo "... src/V8Unpacker.s"
+	@echo "... src/metadata/MetadataFactory.o"
+	@echo "... src/metadata/MetadataFactory.i"
+	@echo "... src/metadata/MetadataFactory.s"
 	@echo "... src/metadata/TMDO.o"
 	@echo "... src/metadata/TMDO.i"
 	@echo "... src/metadata/TMDO.s"
@@ -642,9 +717,15 @@ help:
 	@echo "... src/metadata/t_comand.o"
 	@echo "... src/metadata/t_comand.i"
 	@echo "... src/metadata/t_comand.s"
+	@echo "... src/metadata/t_document.o"
+	@echo "... src/metadata/t_document.i"
+	@echo "... src/metadata/t_document.s"
 	@echo "... src/metadata/t_metadata_object_with_sections.o"
 	@echo "... src/metadata/t_metadata_object_with_sections.i"
 	@echo "... src/metadata/t_metadata_object_with_sections.s"
+	@echo "... src/metadata/t_moxel.o"
+	@echo "... src/metadata/t_moxel.i"
+	@echo "... src/metadata/t_moxel.s"
 	@echo "... src/metadata/t_tabular.o"
 	@echo "... src/metadata/t_tabular.i"
 	@echo "... src/metadata/t_tabular.s"

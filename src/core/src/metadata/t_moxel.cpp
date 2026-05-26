@@ -1,4 +1,4 @@
-#include "t_moxel.h"
+#include "v8reader/core/metadata/t_moxel.h"
 #include <QDataStream>
 
 namespace v8reader::core::metadata {
@@ -26,10 +26,12 @@ bool TMoxel::Load(QDataStream& stream, int version) {
 
     // Читаем сами данные
     if (dataSize > 0) {
-        m_data = stream.readRawData(dataSize);
-        if (m_data.size() != dataSize) {
+        QByteArray buffer(dataSize, Qt::Uninitialized);
+        int bytesRead = stream.readRawData(buffer.data(), dataSize);
+        if (bytesRead != dataSize) {
             return false; // Ошибка чтения
         }
+        m_data = buffer;
     }
 
     return true;
