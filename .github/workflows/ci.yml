@@ -76,7 +76,7 @@ jobs:
           -A x64
           -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
           -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}"
-          -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
+          "-DCMAKE_TOOLCHAIN_FILE=$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
           -DV8READER_BUILD_TESTS=ON
 
       - name: Build
