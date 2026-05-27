@@ -38,16 +38,33 @@ jobs:
           restore-keys: |
             vcpkg-win-
 
+      - name: Setup vcpkg
+        run: |
+          # Устанавливаем VCPKG_ROOT если не установлен
+          if (-not $env:VCPKG_ROOT) {
+            $env:VCPKG_ROOT = "C:\vcpkg"
+            echo "VCPKG_ROOT=C:\vcpkg" >> $env:GITHUB_ENV
+          }
+          
+          # Клонируем vcpkg если не существует
+          if (-not (Test-Path $env:VCPKG_ROOT)) {
+            git clone https://github.com/microsoft/vcpkg.git $env:VCPKG_ROOT
+            & $env:VCPKG_ROOT\bootstrap-vcpkg.bat
+          }
+          
+          # Интегрируем vcpkg
+          & $env:VCPKG_ROOT\vcpkg integrate install
+
       - name: Install other dependencies via vcpkg
         run: |
           # Устанавливаем zlib через vcpkg
           vcpkg install zlib:x64-windows
           if (Test-Path vcpkg.json) {
-            vcpkg integrate install
             vcpkg install --triplet=x64-windows
           }
           # Выводим путь к установленному zlib для отладки
           Write-Host "ZLIB installed at: $env:VCPKG_ROOT\installed\x64-windows"
+          Write-Host "VCPKG_ROOT is: $env:VCPKG_ROOT"
 
       - name: Clean build directory
         run: Remove-Item -Recurse -Force build -ErrorAction SilentlyContinue; if (Test-Path build) { Remove-Item -Recurse -Force build }
