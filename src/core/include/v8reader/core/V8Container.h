@@ -24,6 +24,9 @@ namespace v8reader::core {
         [[nodiscard]] String getMetadataSummaryText() const;
         [[nodiscard]] std::optional<std::vector<uint8_t>> extractData(const String& name) const;
         [[nodiscard]] std::optional<String> getModuleText(const String& name) const;
+        
+        // Для использования в MetadataTreeBuilder
+        [[nodiscard]] std::vector<uint8_t> decompressZlib(const std::vector<uint8_t>& src) const;
 
     private:
         template<typename Format>
@@ -31,7 +34,6 @@ namespace v8reader::core {
 
         [[nodiscard]] bool detectFormat(std::ifstream& file);
         [[nodiscard]] std::vector<uint8_t> readBlockData(std::ifstream& file, uint64_t start_addr, bool compressed) const;
-        [[nodiscard]] std::vector<uint8_t> decompressZlib(const std::vector<uint8_t>& src) const;
 
         String filepath_;
         bool is_format16_ = false;
