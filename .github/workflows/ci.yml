@@ -86,6 +86,32 @@ jobs:
         working-directory: build
         run: ctest -C ${{ env.BUILD_TYPE }} --output-on-failure
 
+      - name: Deploy Qt dependencies (Windows)
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        run: |
+          # Копируем исполняемый файл во временную папку для деплоя
+          mkdir -p deploy_windows
+          Copy-Item build/src/app/Release/v8_reader.exe deploy_windows/
+          
+          # Запускаем windeployqt для копирования всех зависимостей Qt
+          $qtBinPath = "$env:Qt6_DIR/bin"
+          & "$qtBinPath/windeployqt.exe" --release --no-compiler-runtime --no-translations deploy_windows/v8_reader.exe
+          
+          # Копируем дополнительные DLL из vcpkg (zlib и другие)
+          if (Test-Path "$env:VCPKG_ROOT/installed/x64-windows/bin/zlib1.dll") {
+            Copy-Item "$env:VCPKG_ROOT/installed/x64-windows/bin/zlib1.dll" deploy_windows/
+          }
+          
+          # Копируем MSVC runtime redistributable
+          $vcRedistDir = "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Redist/MSVC"
+          if (Test-Path $vcRedistDir) {
+            $latestVersion = Get-ChildItem $vcRedistDir | Sort-Object Name -Descending | Select-Object -First 1
+            $x64Path = "$vcRedistDir/$($latestVersion.Name)/x64"
+            if (Test-Path $x64Path) {
+              Get-ChildItem $x64Path -Filter "*.dll" | Copy-Item -Destination deploy_windows/
+            }
+          }
+
       - name: Upload Windows Artifacts
         uses: actions/upload-artifact@v4
         if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop')
@@ -95,6 +121,14 @@ jobs:
             build/src/app/Release/v8_reader.exe
             build/src/core/Release/v8reader_core.lib
             build/src/ui/Release/v8reader_ui.lib
+          retention-days: 30
+
+      - name: Upload Windows Release Artifact
+        uses: actions/upload-artifact@v4
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        with:
+          name: v8_reader-windows-release-${{ github.run_number }}
+          path: deploy_windows/
           retention-days: 30
 
   build-linux:
@@ -165,6 +199,56 @@ jobs:
         working-directory: build
         run: ctest -C ${{ env.BUILD_TYPE }} --output-on-failure
 
+      - name: Deploy Qt dependencies (Linux)
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        run: |
+          # Создаем папку для деплоя
+          mkdir -p deploy_linux/bin deploy_linux/lib
+          
+          # Копируем исполняемый файл
+          cp build/src/app/v8_reader deploy_linux/bin/
+          
+          # Используем linuxdeployqt для сбора зависимостей
+          wget -q https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-x86_64.AppImage
+          chmod +x linuxdeployqt-x86_64.AppImage
+          
+          # Запускаем linuxdeployqt
+          ./linuxdeployqt-x86_64.AppImage deploy_linux/bin/v8_reader -appimage -verbose=2 || true
+          
+          # Если linuxdeployqt не сработал, копируем библиотеки вручную
+          if [ ! -d "deploy_linux/lib" ] || [ -z "$(ls -A deploy_linux/lib 2>/dev/null)" ]; then
+            # Копируем основные библиотеки Qt
+            cp $Qt6_DIR/lib/libQt6Core.so* deploy_linux/lib/ 2>/dev/null || true
+            cp $Qt6_DIR/lib/libQt6Gui.so* deploy_linux/lib/ 2>/dev/null || true
+            cp $Qt6_DIR/lib/libQt6Widgets.so* deploy_linux/lib/ 2>/dev/null || true
+            cp $Qt6_DIR/lib/libQt6DBus.so* deploy_linux/lib/ 2>/dev/null || true
+            
+            # Копируем плагины платформ
+            mkdir -p deploy_linux/plugins/platforms
+            cp -r $Qt6_DIR/plugins/platforms/libqxcb.so deploy_linux/plugins/platforms/ 2>/dev/null || true
+            cp -r $Qt6_DIR/plugins/platforms/libqlinuxfb.so deploy_linux/plugins/platforms/ 2>/dev/null || true
+            cp -r $Qt6_DIR/plugins/platforms/libqoffscreen.so deploy_linux/plugins/platforms/ 2>/dev/null || true
+            
+            # Копируем плагины изображений
+            mkdir -p deploy_linux/plugins/imageformats
+            cp -r $Qt6_DIR/plugins/imageformats/*.so deploy_linux/plugins/imageformats/ 2>/dev/null || true
+            
+            # Копируем ICU библиотеки
+            cp $Qt6_DIR/lib/libicui18n.so* deploy_linux/lib/ 2>/dev/null || true
+            cp $Qt6_DIR/lib/libicuuc.so* deploy_linux/lib/ 2>/dev/null || true
+            cp $Qt6_DIR/lib/libicudata.so* deploy_linux/lib/ 2>/dev/null || true
+          fi
+          
+          # Создаем скрипт запуска
+          cat > deploy_linux/run.sh << 'EOF'
+          #!/bin/bash
+          DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+          export LD_LIBRARY_PATH="$DIR/lib:$LD_LIBRARY_PATH"
+          export QT_QPA_PLATFORM_PLUGIN_PATH="$DIR/plugins/platforms"
+          exec "$DIR/bin/v8_reader" "$@"
+          EOF
+          chmod +x deploy_linux/run.sh
+
       - name: Upload Linux Artifacts
         uses: actions/upload-artifact@v4
         if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop')
@@ -176,21 +260,29 @@ jobs:
             build/src/ui/libv8reader_ui.a
           retention-days: 30
 
+      - name: Upload Linux Release Artifact
+        uses: actions/upload-artifact@v4
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        with:
+          name: v8_reader-linux-release-${{ github.run_number }}
+          path: deploy_linux/
+          retention-days: 30
+
   release:
     needs: [build-windows, build-linux]
     runs-on: ubuntu-22.04
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     steps:
-      - name: Download Windows Artifacts
+      - name: Download Windows Release Artifact
         uses: actions/download-artifact@v4
         with:
-          name: v8_reader-windows-${{ github.run_number }}
+          name: v8_reader-windows-release-${{ github.run_number }}
           path: ./artifacts/windows
 
-      - name: Download Linux Artifacts
+      - name: Download Linux Release Artifact
         uses: actions/download-artifact@v4
         with:
-          name: v8_reader-linux-${{ github.run_number }}
+          name: v8_reader-linux-release-${{ github.run_number }}
           path: ./artifacts/linux
 
       - name: Create Release Archive
